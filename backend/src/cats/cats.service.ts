@@ -20,6 +20,7 @@ export class CatsService {
     const isCatExist = await this.catsRepository.existsByEmail(email);
 
     if (isCatExist) {
+      return "이미 있는 고양이"
       throw new UnauthorizedException("해당하는 고양이는 이미 존재합니다");
     }
 

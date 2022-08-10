@@ -7,6 +7,7 @@ import userSlice from "../slices/user"
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store/reducer';
 import { useEffect } from "react";
+import router, { useRouter } from 'next/router'
 
 
 interface LayoutProps {
@@ -18,6 +19,12 @@ const AppLayout = ({ children }: LayoutProps) => {
     const user = useSelector((state: RootState) => state.user.me);
     const dispatch = useDispatch();
 
+    const logOut = () => {
+        alert("로그아웃 성공");
+        localStorage.removeItem("mes-token")
+        router.push('/')
+
+    }
 
     const loginCheck = async () => {
         console.log("login check");
@@ -54,7 +61,7 @@ const AppLayout = ({ children }: LayoutProps) => {
 
     return (
         <div>
-            {isLoggedIn ? <span>{user.name} 님 안녕하세요 <button>로그 아웃</button> </span> : (
+            {isLoggedIn ? <span>{user.name} 님 안녕하세요 <button onClick = {() => logOut()}>로그 아웃</button> </span> : (
                 <LoginForm />
             )}
             {children}

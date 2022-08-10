@@ -5,6 +5,8 @@ import api from "../utils/api"
 import userSlice from "../slices/user"
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store/reducer';
+import router, { useRouter } from 'next/router'
+
 
 type Props = {
 }
@@ -68,6 +70,7 @@ function LoginForm({ }: Props) {
                     placeholder="password"
                 />
                 <button onClick={handleClick}>Login</button>
+                <button onClick={() => router.push('/signup')}>회원 가입</button>
             </LoginBar>
         </div>
     )

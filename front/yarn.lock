@@ -1760,6 +1760,11 @@
   dependencies:
     "wrappy" "1"
 
+"open-color@^1.9.1":
+  "integrity" "sha512-vCseG/EQ6/RcvxhUcGJiHViOgrtz4x0XbZepXvKik66TMGkvbmjeJrKFyBEx6daG5rNyyd14zYXhz0hZVwQFOw=="
+  "resolved" "https://registry.npmjs.org/open-color/-/open-color-1.9.1.tgz"
+  "version" "1.9.1"
+
 "optionator@^0.9.1":
   "integrity" "sha512-74RlY5FCnhq4jRxVUPKDaRwrVNXMqsGsiW6AJw4XK8hmtm10wC0ypZBLw5IIp85NZMr91+qd1RvvENwg7jjRFw=="
   "resolved" "https://registry.npmjs.org/optionator/-/optionator-0.9.1.tgz"
