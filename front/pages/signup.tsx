@@ -3,6 +3,9 @@ import SignUpForm from "../components/SignUpForm"
 
 type Props = {}
 
+
+
+
 function SignUp({}: Props) {
   return (
     <div style={{display:'flex', justifyContent:"center", alignItems:"center", minHeight:"100vh"}}>
