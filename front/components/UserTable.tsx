@@ -16,6 +16,12 @@ const rows = [
   { email: "hyun@daum.net", name: 'hyun' }
 ];
 
+interface IRow {
+  _id: number;
+  email: string;
+  name: string;
+}
+
 
 function UserTable() {
   const [column, setColumn] = useState<Array<IExcelHeaderType>>(
@@ -46,9 +52,20 @@ function UserTable() {
     getAllCats();
   }, []);
 
+  function rowKeyGetter(row: IRow) {
+    return row._id;
+  }
+
+  function setRow(e: any) {
+    console.log("e : ", e);
+
+    setBasicRow(e)
+
+  }
+
   return (
     <div>
-      <DataGrid columns={column} rows={basicRow} />
+      <DataGrid columns={column} rows={basicRow} onRowsChange={(e) => setRow(e)} />
     </div>
   );
 }
