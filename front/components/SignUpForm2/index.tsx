@@ -74,7 +74,7 @@ function SignUpForm2() {
 
         <div>
             <header>
-                <h2>회원 가입</h2>
+                <h2>회원 가입 22</h2>
             </header>
 
             <Form onSubmit={handleSubmit(onSubmit)}>

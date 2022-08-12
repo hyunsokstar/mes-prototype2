@@ -50,7 +50,7 @@ function SignUpForm() {
         } catch (error) {
         }
 
-        
+
     }
 
     const handleInputChange = (e) => {
@@ -74,7 +74,7 @@ function SignUpForm() {
 
         <div>
             <header>
-                <h2>회원 가압</h2>
+                <h2>회원 가입 11</h2>
             </header>
 
             <div className="form" style={{width: "500px", border:"1px solid black", padding:"10px"}}>
