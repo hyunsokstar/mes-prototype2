@@ -17,9 +17,9 @@
     "next-redux-wrapper": "^7.0.5",
     "open-color": "^1.9.1",
     "react": "^18.2.0",
-    "react-cool-form": "^0.4.1",
     "react-data-grid": "^7.0.0-beta.13",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.34.0",
     "react-redux": "^8.0.2",
     "styled-components": "^5.3.5"
   },

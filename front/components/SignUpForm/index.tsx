@@ -48,9 +48,9 @@ function SignUpForm() {
             }
 
         } catch (error) {
-
         }
 
+        
     }
 
     const handleInputChange = (e) => {

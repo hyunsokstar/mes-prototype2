@@ -1,5 +1,5 @@
 import React from 'react'
-import SignUpForm from "../components/SignUpForm"
+import SignUpForm2 from "../components/SignUpForm2"
 
 type Props = {}
 
@@ -9,7 +9,7 @@ type Props = {}
 function SignUp({}: Props) {
   return (
     <div style={{display:'flex', justifyContent:"center", alignItems:"center", minHeight:"100vh"}}>
-      <SignUpForm />
+      <SignUpForm2 />
     </div>
   )
 }
