@@ -8,19 +8,6 @@ import ExcelTable from "../components/Excel/ExcelTable";
 import { SelectColumn } from "react-data-grid";
 
 
-
-const rows = [
-  { email: "terecal@daum.net", name: 'chulsu' },
-  { email: "hyun@daum.net", name: 'hyun' }
-];
-
-interface IRow {
-  _id: number;
-  email: string;
-  name: string;
-}
-
-
 function UserTable() {
   const [column, setColumn] = useState<Array<IExcelHeaderType>>(
     columnlist.member
@@ -32,7 +19,6 @@ function UserTable() {
     },
   ]);
   const [selectList, setSelectList] = useState<Set<any>>(new Set());
-  const [selectRow, setSelectRow] = useState<number>(0);
 
 
   const getAllCats = async () => {
@@ -43,7 +29,17 @@ function UserTable() {
       );
       console.log("response : ", response);
       if (response.data.success) {
-        setBasicRow(response.data.data)
+
+        const data_for_table = response.data.data;
+
+        const new_rows = data_for_table.map((row:any)=> {
+          return {
+            ...row,
+            id: row._id
+          }
+        })
+
+        setBasicRow(new_rows)
       }
     } catch (error) {
     }
@@ -54,33 +50,11 @@ function UserTable() {
   }, []);
 
   function setRow(e: any) {
-    console.log("e : ", e);
+    // console.log("e : ", e);
     setBasicRow(e)
   }
 
-
-
   const competeId = (rows: any) => {
-    // const tempRow = [...rows];
-    // const spliceRow = [...rows];
-    // spliceRow.splice(selectRow, 1);
-    // const isCheck = spliceRow.some(
-    //   (row) =>
-    //     row.tmpId === tempRow[selectRow].tmpId &&
-    //     row.tmpId !== undefined &&
-    //     row.tmpId !== ""
-    // );
-
-    // if (spliceRow) {
-    //   if (isCheck) {
-    //     return Notiflix.Report.warning(
-    //       "아이디 경고",
-    //       `중복되는 아이디가 존재합니다.`,
-    //       "확인"
-    //     );
-    //   }
-    // }
-
     setBasicRow(rows);
   };
 
@@ -95,6 +69,7 @@ function UserTable() {
         //@ts-ignore
         setSelectList={setSelectList}
         setRow={(e) => {
+          // console.log("e ; ", e);
           let tmp: Set<any> = selectList;
           e.map((v, i) => {
             if (v.isChange) {
@@ -105,7 +80,7 @@ function UserTable() {
           setSelectList(tmp);
           competeId(e);
         }} 
-        
+
         />
     </div>
   );

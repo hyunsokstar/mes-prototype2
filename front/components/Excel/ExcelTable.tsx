@@ -33,26 +33,17 @@ const ExcelTable = ({ data_for_rows, data_for_columns, selectList, setRow, setSe
         <>
             <DataGrid
                 rowKeyGetter={rowKeyGetter}
-
                 columns={data_for_columns}
                 rows={data_for_rows}
                 onRowsChange={(data, idx) => {
-                    setSelectRow && setSelectRow(idx.indexes[0])
-
+                    // setSelectRow && setSelectRow(idx.indexes[0])
                     setRow(data, idx.indexes[0])
-                    
                 }}
                 onSelectedRowsChange={(row) => {
+                    console.log("row : ", row);
                     setSelectedRows(row)
                 }}
-                selectedRows={selectedRows}
-                onRowClick={(row, col) => {
-                    // alert("여기")
-                    console.log("row 클릭 : row : ",);
-                    onRowClick && onRowClick(row)
-                    setSelectRow && setSelectRow(row)
-                }}
-                
+                selectedRows={selectedRows}                
             />
         </>
     )
