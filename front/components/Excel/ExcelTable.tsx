@@ -1,0 +1,61 @@
+import React, { useState, useEffect } from 'react'
+import DataGrid from 'react-data-grid'
+
+
+type IProps = {
+    data_for_rows: Array<any>
+    data_for_columns: Array<any>
+    setRow: (row: Array<any>, index: number) => void
+    selectList: ReadonlySet<number>
+    setSelectRow?: (index: number) => void
+    onRowClick?: (row: any) => void
+    setSelectList?: (selectedRows: ReadonlySet<number>) => void
+
+}
+
+
+const ExcelTable = ({ data_for_rows, data_for_columns, selectList, setRow, setSelectRow, onRowClick , setSelectList}: IProps) => {
+    const [selectedRows, setSelectedRows] = useState<ReadonlySet<number>>(selectList ?? new Set())
+
+    const rowKeyGetter = (row: any) => {
+        return row?.id;
+    }
+
+    useEffect(() => {
+        setSelectList && setSelectList(selectedRows)
+    }, [selectedRows])
+
+    useEffect(() => {
+        setSelectedRows(selectList)
+      }, [selectList])
+
+    return (
+        <>
+            <DataGrid
+                rowKeyGetter={rowKeyGetter}
+
+                columns={data_for_columns}
+                rows={data_for_rows}
+                onRowsChange={(data, idx) => {
+                    setSelectRow && setSelectRow(idx.indexes[0])
+
+                    setRow(data, idx.indexes[0])
+                    
+                }}
+                onSelectedRowsChange={(row) => {
+                    setSelectedRows(row)
+                }}
+                selectedRows={selectedRows}
+                onRowClick={(row, col) => {
+                    // alert("여기")
+                    console.log("row 클릭 : row : ",);
+                    onRowClick && onRowClick(row)
+                    setSelectRow && setSelectRow(row)
+                }}
+                
+            />
+        </>
+    )
+}
+
+export default ExcelTable

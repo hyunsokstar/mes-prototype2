@@ -4,12 +4,10 @@ import axios from "axios";
 import DataGrid from 'react-data-grid';
 import { IExcelHeaderType } from "../types/type";
 import { columnlist } from "../common/columnInit";
+import ExcelTable from "../components/Excel/ExcelTable";
+import { SelectColumn } from "react-data-grid";
 
 
-// const columns = [
-//   { key: 'id', name: 'ID' },
-//   { key: 'title', name: 'Title' }
-// ];
 
 const rows = [
   { email: "terecal@daum.net", name: 'chulsu' },
@@ -33,6 +31,9 @@ function UserTable() {
       name: "",
     },
   ]);
+  const [selectList, setSelectList] = useState<Set<any>>(new Set());
+  const [selectRow, setSelectRow] = useState<number>(0);
+
 
   const getAllCats = async () => {
     try {
@@ -52,20 +53,60 @@ function UserTable() {
     getAllCats();
   }, []);
 
-  function rowKeyGetter(row: IRow) {
-    return row._id;
-  }
-
   function setRow(e: any) {
     console.log("e : ", e);
-
     setBasicRow(e)
-
   }
+
+
+
+  const competeId = (rows: any) => {
+    // const tempRow = [...rows];
+    // const spliceRow = [...rows];
+    // spliceRow.splice(selectRow, 1);
+    // const isCheck = spliceRow.some(
+    //   (row) =>
+    //     row.tmpId === tempRow[selectRow].tmpId &&
+    //     row.tmpId !== undefined &&
+    //     row.tmpId !== ""
+    // );
+
+    // if (spliceRow) {
+    //   if (isCheck) {
+    //     return Notiflix.Report.warning(
+    //       "아이디 경고",
+    //       `중복되는 아이디가 존재합니다.`,
+    //       "확인"
+    //     );
+    //   }
+    // }
+
+    setBasicRow(rows);
+  };
 
   return (
     <div>
-      <DataGrid columns={column} rows={basicRow} onRowsChange={(e) => setRow(e)} />
+      <button>저장</button>
+      <ExcelTable
+      
+        data_for_rows={basicRow}
+        data_for_columns={[SelectColumn, ...column]}
+        selectList={selectList}
+        //@ts-ignore
+        setSelectList={setSelectList}
+        setRow={(e) => {
+          let tmp: Set<any> = selectList;
+          e.map((v, i) => {
+            if (v.isChange) {
+              tmp.add(v.id)
+              v.isChange = false
+            }
+          });
+          setSelectList(tmp);
+          competeId(e);
+        }} 
+        
+        />
     </div>
   );
 }
