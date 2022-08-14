@@ -21,6 +21,12 @@ export class CatsRepository {
         return await this.catModel.create(cat);
     }
 
+    // let doc = await Character.findOneAndUpdate(filter, update);
+
+    async update(filter, cat: CatRequestDto): Promise<Cat> {
+        return await this.catModel.findOneAndUpdate(filter,cat);
+    }    
+
     async findCatByIdWithoutPassword(
         catId: string,
     ): Promise<CatCurrentDto | null> {

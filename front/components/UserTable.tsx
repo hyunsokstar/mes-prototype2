@@ -66,9 +66,18 @@ function UserTable() {
     try {
       console.log("basicRow :: ", basicRow);
 
+      const data_for_save = basicRow.filter((row) => {
+        if (selectList.has(row.id)) {
+          return row
+        }
+      })
+
+      console.log("data_for_save : ", data_for_save);
+      
+
       const response = await axios.post(
         `${api.cats}/saveMembers`,
-        { users: basicRow },
+        { users: data_for_save },
         { withCredentials: true }
       );
 
@@ -90,9 +99,9 @@ function UserTable() {
 
     setBasicRow([
       {
-        id: `user_${random_id}`,
+        id: `${random_id}`,
         email: null,
-        name:null,
+        name: null,
       },
       ...basicRow,
     ]);

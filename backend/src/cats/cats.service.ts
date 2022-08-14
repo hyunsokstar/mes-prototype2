@@ -17,18 +17,22 @@ export class CatsService {
 
   async saveMultiUsers(data: any) {
     const { users } = data;
-    // console.log("users check : ", users);
+    console.log("users check : ", users.length);
 
-    users.map(async (user) => {
+    users.map(async (user, index) => {
       const isCatExist = await this.catsRepository.existsByEmail(user.email);
       // const hashedPassword = bcrypt.hash(user.password, 10);
 
       if (isCatExist) {
         console.log("isCatExist : ", isCatExist);
         console.log("user.email  : ", user.email);
-        console.log("회원 정보가 이미 존재");
+        console.log("회원 정보가 이미 존재", index);
+
+        const filter = { email: user.email }
+        const cat = await this.catsRepository.update(filter, { email: user.email, name: user.name, password: "1234" })
+
       } else {
-        console.log("회원 정보 생성 !");
+        console.log("회원 정보 생성 !", index);
         const cat = this.catsRepository.create({
           email: user.email,
           name: user.name,
