@@ -10,11 +10,36 @@ import { CatsRepository } from './cats.repository';
 @Injectable()
 export class CatsService {
   constructor(private readonly catsRepository: CatsRepository) { }
-  
+
   hiCatService() {
     return "hi cat ser !!"
   }
-  
+
+  async saveMultiUsers(data: any) {
+    const { users } = data;
+    // console.log("users check : ", users);
+
+    users.map((user) => {
+      const isCatExist = this.catsRepository.existsByEmail(user.email);
+      // const hashedPassword = bcrypt.hash(user.password, 10);
+
+      if (isCatExist) {
+        console.log("user.email  : ", user.email);
+        console.log("회원 정보가 이미 존재");
+      } else {
+        console.log("회원 정보 생성 !");
+        const cat = this.catsRepository.create({
+          email: user.eamil,
+          name: user.name,
+          password: "1234",
+        });
+      }
+    })
+
+    return "회원 정보 저장 성공 !"
+
+  }
+
   async signUp(body: CatRequestDto) {
     const { email, name, password } = body;
     const isCatExist = await this.catsRepository.existsByEmail(email);

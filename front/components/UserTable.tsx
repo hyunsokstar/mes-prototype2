@@ -65,6 +65,9 @@ function UserTable() {
     console.log("회원 저장 버튼 클릭 !!");
 
     try {
+      console.log("basicRow :: ", basicRow);
+      
+
       const response = await axios.post(
         `${api.cats}/saveMembers`,
         // { users: [{id:"1", email:"tere@daum.net"}, {id:"2", email:"hyun@daum.net"}] },
@@ -75,8 +78,9 @@ function UserTable() {
 
       if (response.data) {
         console.log("response.data : ", response.data);
-        
       }
+
+      
 
     } catch (error: any) {
       console.log("error : ", error);

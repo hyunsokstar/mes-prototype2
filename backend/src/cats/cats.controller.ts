@@ -59,11 +59,11 @@ export class CatsController {
   }
 
   @Post("saveMembers")
-  async saveUsers(@Body() data) {
+  async saveMultiUsers(@Body() data) {
     console.log("유저 테이블 정보 저장 check !!");
-    console.log("body data !!: ", data);
-
-    return "유저 테이블 정보 저장 !!"
+    // console.log("body data : ", data);
+    return this.CatsService.saveMultiUsers(data);
+    
   }
 
   @ApiResponse({
