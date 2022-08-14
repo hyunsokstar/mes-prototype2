@@ -101,8 +101,13 @@ function UserTable() {
   return (
     <div>
 
+
+      <br /><br />
+
       <button onClick={() => addRowForExcelTable()}>행 추가</button>
       <button onClick={() => saveUser()}>저장 하기</button>
+
+      <br /><br />
 
       <ExcelTable
         data_for_rows={basicRow}
