@@ -13,6 +13,9 @@ export class CatsRepository {
     async existsByEmail(email: string): Promise<boolean> {
         const result = await this.catModel.exists({ email });
 
+        console.log("result for catModel.exists : ", result);
+        
+
         if (result) return true
         else return false
 
