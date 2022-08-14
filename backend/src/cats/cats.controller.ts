@@ -62,8 +62,8 @@ export class CatsController {
   async saveMultiUsers(@Body() data) {
     console.log("유저 테이블 정보 저장 check !!");
     // console.log("body data : ", data);
-    return this.CatsService.saveMultiUsers(data);
     
+    return this.CatsService.saveMultiUsers(data);
   }
 
   @ApiResponse({

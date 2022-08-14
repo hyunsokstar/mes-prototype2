@@ -66,12 +66,12 @@ function UserTable() {
 
     try {
       console.log("basicRow :: ", basicRow);
-      
+
 
       const response = await axios.post(
         `${api.cats}/saveMembers`,
         // { users: [{id:"1", email:"tere@daum.net"}, {id:"2", email:"hyun@daum.net"}] },
-        { users:basicRow },
+        { users: basicRow },
         { withCredentials: true }
       );
       // console.log("response.data : ", response.data);
@@ -80,11 +80,11 @@ function UserTable() {
         console.log("response.data : ", response.data);
       }
 
-      
+
 
     } catch (error: any) {
       console.log("error : ", error);
-      
+
     }
 
   }
@@ -112,8 +112,8 @@ function UserTable() {
           setSelectList(tmp);
           competeId(e);
         }}
-
       />
+      
     </div>
   );
 }

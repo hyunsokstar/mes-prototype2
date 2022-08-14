@@ -19,17 +19,19 @@ export class CatsService {
     const { users } = data;
     // console.log("users check : ", users);
 
-    users.map((user) => {
-      const isCatExist = this.catsRepository.existsByEmail(user.email);
+    users.map(async (user) => {
+      const isCatExist = await this.catsRepository.existsByEmail(user.email);
       // const hashedPassword = bcrypt.hash(user.password, 10);
 
       if (isCatExist) {
+        console.log("isCatExist : ", isCatExist);
+        
         console.log("user.email  : ", user.email);
         console.log("회원 정보가 이미 존재");
       } else {
         console.log("회원 정보 생성 !");
         const cat = this.catsRepository.create({
-          email: user.eamil,
+          email: user.email,
           name: user.name,
           password: "1234",
         });
