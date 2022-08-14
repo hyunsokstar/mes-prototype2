@@ -1,7 +1,7 @@
 import { HttpException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Cat } from './cats.schema';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { CatRequestDto } from './dto/cats.request.dto';
 import { CatsRepository } from './cats.repository';
@@ -20,15 +20,27 @@ export class CatsService {
     console.log("users check : ", users.length);
 
     users.map(async (user, index) => {
-      const isCatExist = await this.catsRepository.existsByEmail(user.email);
-      // const hashedPassword = bcrypt.hash(user.password, 10);
+      // const isCatExist = await this.catsRepository.existsByEmail(user.email);
+
+      let isCatExist;
+
+      if (mongoose.isValidObjectId(user.id)) {
+        isCatExist = await this.catsRepository.existsById(user.id);
+
+      } else {
+        isCatExist = false
+      }
+
+      console.log("user : ", user)
+
+      console.log("isCatExist : ", isCatExist);
 
       if (isCatExist) {
         console.log("isCatExist : ", isCatExist);
         console.log("user.email  : ", user.email);
         console.log("회원 정보가 이미 존재", index);
 
-        const filter = { email: user.email }
+        const filter = { _id: user.id }
         const cat = await this.catsRepository.update(filter, { email: user.email, name: user.name, password: "1234" })
 
       } else {

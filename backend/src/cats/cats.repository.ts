@@ -16,6 +16,13 @@ export class CatsRepository {
         if (result) return true
         else return false
     }
+    async existsById(id: string): Promise<boolean> {
+        const result = await this.catModel.exists({ _id: id });
+        // return result;
+        if (result) return true
+        else return false
+    }
+
 
     async create(cat: CatRequestDto): Promise<Cat> {
         return await this.catModel.create(cat);
@@ -24,8 +31,8 @@ export class CatsRepository {
     // let doc = await Character.findOneAndUpdate(filter, update);
 
     async update(filter, cat: CatRequestDto): Promise<Cat> {
-        return await this.catModel.findOneAndUpdate(filter,cat);
-    }    
+        return await this.catModel.findOneAndUpdate(filter, cat);
+    }
 
     async findCatByIdWithoutPassword(
         catId: string,
