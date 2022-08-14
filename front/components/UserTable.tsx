@@ -10,7 +10,6 @@ import { SelectColumn } from "react-data-grid";
 
 
 
-
 function UserTable() {
   const [column, setColumn] = useState<Array<IExcelHeaderType>>(
     columnlist.member

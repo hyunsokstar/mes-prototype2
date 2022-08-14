@@ -1,13 +1,22 @@
 import React from 'react'
+import styled from 'styled-components';
+
 
 type Props = {}
 
-const TextEditor = ({ row, column, onRowChange, onClose }: any) => {
 
+const Input = styled.input`
+    width: 100%;
+    padding: 10px;
+    border: none;
+    text-align: center;
+`;
+
+const TextEditor = ({ row, column, onRowChange, onClose }: any) => {
 
     return (
         <div>
-            <input type="text"
+            <Input type="text"
                 onChange={(event) => {
                     let eventValue = event.target.value
 
