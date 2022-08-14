@@ -67,31 +67,42 @@ function UserTable() {
     try {
       console.log("basicRow :: ", basicRow);
 
-
       const response = await axios.post(
         `${api.cats}/saveMembers`,
-        // { users: [{id:"1", email:"tere@daum.net"}, {id:"2", email:"hyun@daum.net"}] },
         { users: basicRow },
         { withCredentials: true }
       );
-      // console.log("response.data : ", response.data);
 
       if (response.data) {
         console.log("response.data : ", response.data);
       }
 
 
-
     } catch (error: any) {
       console.log("error : ", error);
-
     }
 
+  }
+
+  const addRowForExcelTable = () => {
+
+    console.log("행 추가 : ");
+    const random_id = Math.random() * 1000;
+
+    setBasicRow([
+      {
+        id: `user_${random_id}`,
+        email: null,
+        name:null,
+      },
+      ...basicRow,
+    ]);
   }
 
   return (
     <div>
 
+      <button onClick={() => addRowForExcelTable()}>행 추가</button>
       <button onClick={() => saveUser()}>저장 하기</button>
 
       <ExcelTable
@@ -113,7 +124,7 @@ function UserTable() {
           competeId(e);
         }}
       />
-      
+
     </div>
   );
 }

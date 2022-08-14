@@ -29,7 +29,7 @@ const ExcelTable = ({ data_for_rows, data_for_columns, setRow, selectList, setSe
     return (
         <>
             <DataGrid
-                rowKeyGetter={rowKeyGetter}
+                rowKeyGetter={(row) => row.id || ""}
                 columns={data_for_columns}
                 rows={data_for_rows}
                 onRowsChange={(data, idx) => {

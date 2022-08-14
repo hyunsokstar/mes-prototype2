@@ -25,7 +25,6 @@ export class CatsService {
 
       if (isCatExist) {
         console.log("isCatExist : ", isCatExist);
-        
         console.log("user.email  : ", user.email);
         console.log("회원 정보가 이미 존재");
       } else {
