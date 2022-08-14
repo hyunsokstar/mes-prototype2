@@ -8,6 +8,9 @@ import ExcelTable from "../components/Excel/ExcelTable";
 import { SelectColumn } from "react-data-grid";
 
 
+
+
+
 function UserTable() {
   const [column, setColumn] = useState<Array<IExcelHeaderType>>(
     columnlist.member
@@ -20,6 +23,15 @@ function UserTable() {
   ]);
   const [selectList, setSelectList] = useState<Set<any>>(new Set());
 
+  const customize_data_for_table = (data: any) => {
+    const data_for_table = data.map((row: any) => {
+      return {
+        ...row,
+        id: row._id
+      }
+    })
+    return data_for_table;
+  }
 
   const getAllCats = async () => {
     try {
@@ -29,40 +41,56 @@ function UserTable() {
       );
       console.log("response : ", response);
       if (response.data.success) {
+        const rows_from_res = response.data.data;
+        const data_for_table = customize_data_for_table(rows_from_res);
 
-        const data_for_table = response.data.data;
-
-        const new_rows = data_for_table.map((row:any)=> {
-          return {
-            ...row,
-            id: row._id
-          }
-        })
-
-        setBasicRow(new_rows)
+        setBasicRow(data_for_table);
       }
     } catch (error) {
     }
-  }
-
-  useEffect(() => {
-    getAllCats();
-  }, []);
-
-  function setRow(e: any) {
-    // console.log("e : ", e);
-    setBasicRow(e)
   }
 
   const competeId = (rows: any) => {
     setBasicRow(rows);
   };
 
+  useEffect(() => {
+    getAllCats();
+  }, []);
+
+
+  // todo:
+  // 저장 버튼 클릭 체크된 행 정보를 백엔드로 보내서 저장 처리 
+  const saveUser = async () => {
+    console.log("회원 저장 버튼 클릭 !!");
+
+    try {
+      const response = await axios.post(
+        `${api.cats}/saveMembers`,
+        // { users: [{id:"1", email:"tere@daum.net"}, {id:"2", email:"hyun@daum.net"}] },
+        { users:basicRow },
+        { withCredentials: true }
+      );
+      // console.log("response.data : ", response.data);
+
+      if (response.data) {
+        console.log("response.data : ", response.data);
+        
+      }
+
+    } catch (error: any) {
+      console.log("error : ", error);
+      
+    }
+
+  }
+
   return (
     <div>
-      <button>저장</button>
+
+      <button onClick={() => saveUser()}>저장 하기</button>
+
       <ExcelTable
-      
         data_for_rows={basicRow}
         data_for_columns={[SelectColumn, ...column]}
         selectList={selectList}
@@ -79,9 +107,9 @@ function UserTable() {
           });
           setSelectList(tmp);
           competeId(e);
-        }} 
+        }}
 
-        />
+      />
     </div>
   );
 }

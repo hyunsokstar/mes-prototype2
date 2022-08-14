@@ -7,14 +7,11 @@ type IProps = {
     data_for_columns: Array<any>
     setRow: (row: Array<any>, index: number) => void
     selectList: ReadonlySet<number>
-    setSelectRow?: (index: number) => void
-    onRowClick?: (row: any) => void
     setSelectList?: (selectedRows: ReadonlySet<number>) => void
-
 }
 
 
-const ExcelTable = ({ data_for_rows, data_for_columns, selectList, setRow, setSelectRow, onRowClick , setSelectList}: IProps) => {
+const ExcelTable = ({ data_for_rows, data_for_columns, setRow, selectList, setSelectList }: IProps) => {
     const [selectedRows, setSelectedRows] = useState<ReadonlySet<number>>(selectList ?? new Set())
 
     const rowKeyGetter = (row: any) => {
@@ -27,7 +24,7 @@ const ExcelTable = ({ data_for_rows, data_for_columns, selectList, setRow, setSe
 
     useEffect(() => {
         setSelectedRows(selectList)
-      }, [selectList])
+    }, [selectList])
 
     return (
         <>
@@ -43,7 +40,7 @@ const ExcelTable = ({ data_for_rows, data_for_columns, selectList, setRow, setSe
                     console.log("row : ", row);
                     setSelectedRows(row)
                 }}
-                selectedRows={selectedRows}                
+                selectedRows={selectedRows}
             />
         </>
     )

@@ -51,11 +51,19 @@ export class CatsController {
   }
 
   @Get("allCats")
-  getAllCats(){
+  getAllCats() {
     const allCats = this.CatsService.findAllCats();
     console.log("allCats : ", allCats);
 
     return allCats;
+  }
+
+  @Post("saveMembers")
+  async saveUsers(@Body() data) {
+    console.log("유저 테이블 정보 저장 check !!");
+    console.log("body data !!: ", data);
+
+    return "유저 테이블 정보 저장 !!"
   }
 
   @ApiResponse({
@@ -72,7 +80,6 @@ export class CatsController {
   async signUp(@Body() body: CatRequestDto) {
     console.log("body : ", body);
     console.log("회원 가입 실행 확인 !!");
-
     return await this.CatsService.signUp(body);
   }
 
