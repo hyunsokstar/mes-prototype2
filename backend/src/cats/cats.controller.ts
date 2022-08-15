@@ -75,26 +75,6 @@ export class CatsController {
     return this.CatsService.deleteMultiUsers(data);
   }
 
-  // router.route("/delete").delete(function(req, res) {
-  //   details.deleteMany(
-  //     {
-  //       _id: {
-  //         $in: [
-  //           "5dc4705254a67437ca1aafb0",
-  //           "5dc4705554a67437ca1aafb1",
-  //           "5dc4705854a67437ca1aafb2"
-  //         ]
-  //       }
-  //     },
-  //     function(err, result) {
-  //       if (err) {
-  //         res.send(err);
-  //       } else {
-  //         res.send(result);
-  //       }
-  //     }
-  //   );
-  // });
   
   @ApiResponse({
     status: 500,
