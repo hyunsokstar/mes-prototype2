@@ -2,7 +2,7 @@
 
 <pre>
 git:
-https://github.com/hyunsokstar/prototo-mes
+https://github.com/hyunsokstar/mes-prototype2
 
 실행:
      백엔드: 
@@ -22,7 +22,8 @@ https://github.com/hyunsokstar/prototo-mes
 4. 테이블 사이즈 디비와 연동 하기
 5. 페이지위에 검색창 추가 , 모달 + 검색 
 6. 마일스톤 컨셉으로 테이블에 업무 관련 정보 저장 하도록 해보기
-7. 이외의 페이지 만들어 보기
+7. 페이지 추가해서 수주 정보 등록 페이지 클론 해보기
+8. 배포 해보기
 
 노트 정리
    http://www.skilnote-for-mes.shop/wm/myshortcut/prototype-for-mes2/1
