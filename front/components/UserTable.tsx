@@ -6,6 +6,7 @@ import { IExcelHeaderType } from "../types/type";
 import { columnlist } from "../common/columnInit";
 import ExcelTable from "../components/Excel/ExcelTable";
 import { SelectColumn } from "react-data-grid";
+import Password from 'antd/lib/input/Password';
 
 
 
@@ -25,7 +26,9 @@ function UserTable() {
     const data_for_table = data.map((row: any) => {
       return {
         ...row,
-        id: row._id
+        id: row._id,
+        password: row.password,
+        passwordCheck: row.passwordCheck
       }
     })
     return data_for_table;
@@ -61,6 +64,16 @@ function UserTable() {
   // 저장 버튼 클릭 체크된 행 정보를 백엔드로 보내서 저장 처리 
   const saveUser = async () => {
     console.log("회원 저장 버튼 클릭 !!");
+
+    basicRow.map((row) => {
+      console.log("row : ", row);
+      
+      if (row.password !== row.passwordCheck) {
+        alert("비밀번호와 비밀번호 확인이 일치 하지 않습니다");
+        return
+      }
+    })
+
     try {
       console.log("basicRow :: ", basicRow);
       const data_for_save = basicRow.filter((row) => {
@@ -68,6 +81,7 @@ function UserTable() {
           return row
         }
       })
+
       console.log("data_for_save : ", data_for_save);
       const response = await axios.post(
         `${api.cats}/saveMembers`,
@@ -146,30 +160,6 @@ function UserTable() {
 
   }
 
-  // const saveUser = async () => {
-  //   console.log("회원 저장 버튼 클릭 !!");
-  //   try {
-  //     console.log("basicRow :: ", basicRow);
-  //     const data_for_save = basicRow.filter((row) => {
-  //       if (selectList.has(row.id)) {
-  //         return row
-  //       }
-  //     })
-  //     console.log("data_for_save : ", data_for_save);
-  //     const response = await axios.post(
-  //       `${api.cats}/saveMembers`,
-  //       { users: data_for_save },
-  //       { withCredentials: true }
-  //     );
-  //     if (response.data) {
-  //       console.log("response.data : ", response.data);
-  //     }
-  //   } catch (error: any) {
-  //     console.log("error : ", error);
-  //   }
-  // }
-
-
   return (
     <div>
       <br /><br />
@@ -189,7 +179,10 @@ function UserTable() {
         //@ts-ignore
         setSelectList={setSelectList}
         setRow={(e) => {
-          // console.log("e ; ", e);
+
+          console.log("e : ", e);
+
+
           let tmp: Set<any> = selectList;
           e.map((v, i) => {
             if (v.isChange) {

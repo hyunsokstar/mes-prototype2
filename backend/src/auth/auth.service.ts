@@ -16,8 +16,20 @@ export class AuthService {
     async jwtlogin(data: LoginRequestDto) {
         const { email, password } = data;
         // db 에서 email 에 해당하는 cat 정보 가져오기
+
+        console.log("email : ", email);
+        console.log("password : ", password);
+        
+        
+
         const cat = await this.catsRepository.findCatByEmail(email);
         console.log("cat info : ", cat);
+
+        console.log("cat.password : ", cat.password);
+        console.log("password : ", password);
+        console.log("cat.password == pasword ", cat.password === password);
+        
+        
 
 
         if (!cat) {
@@ -33,6 +45,8 @@ export class AuthService {
 
         // 통과 못하면 에러 발생
         if (!isPasswordValidated) {
+            console.log("여기인가? ");
+            
             throw new UnauthorizedException('이메일과 비밀번호를 확인해주세요.');
         }
 

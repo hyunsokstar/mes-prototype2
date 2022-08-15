@@ -15,7 +15,7 @@ export class CatsService {
     return "hi cat ser !!"
   }
 
-  async deleteMultiUsers(data: any){
+  async deleteMultiUsers(data: any) {
     // console.log("data for delete : ", data.ids_for_delete);
     const ids_for_delete = data.ids_for_delete;
     const result = await this.catsRepository.deleteUsersByIdsArray(ids_for_delete);
@@ -36,8 +36,8 @@ export class CatsService {
     // );    
 
     console.log('result : ', result);
-    
-    
+
+
     return "회원 정보 삭제 성공";
 
   }
@@ -59,28 +59,33 @@ export class CatsService {
       }
 
       console.log("user : ", user)
-
       console.log("isCatExist : ", isCatExist);
 
       if (isCatExist) {
         console.log("isCatExist : ", isCatExist);
         console.log("user.email  : ", user.email);
         console.log("회원 정보가 이미 존재", index);
+        const hashedPassword = await bcrypt.hash(user.password, 10);
+
 
         const filter = { _id: user.id }
-        const cat = await this.catsRepository.update(filter, { email: user.email, name: user.name, password: "1234" })
+        const cat = await this.catsRepository.update(filter, { email: user.email, name: user.name, password: hashedPassword })
 
       } else {
         console.log("회원 정보 생성 !", index);
+
+        const hashedPassword = await bcrypt.hash(user.password, 10);
+
+
         const cat = this.catsRepository.create({
           email: user.email,
           name: user.name,
-          password: "1234",
+          password: hashedPassword,
         });
       }
     })
 
-    return "회원 정보 저장 성공 !"
+    return "회원 정보 저장 성공2 !"
 
   }
 
