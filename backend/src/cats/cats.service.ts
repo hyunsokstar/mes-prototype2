@@ -15,6 +15,33 @@ export class CatsService {
     return "hi cat ser !!"
   }
 
+  async deleteMultiUsers(data: any){
+    // console.log("data for delete : ", data.ids_for_delete);
+    const ids_for_delete = data.ids_for_delete;
+    const result = await this.catsRepository.deleteUsersByIdsArray(ids_for_delete);
+
+    // details.deleteMany(
+    //   {
+    //     _id: {
+    //       $in: ids_for_delete
+    //     }
+    //   },
+    //   function(err, result) {
+    //     if (err) {
+    //       res.send(err);
+    //     } else {
+    //       res.send(result);
+    //     }
+    //   }
+    // );    
+
+    console.log('result : ', result);
+    
+    
+    return "회원 정보 삭제 성공";
+
+  }
+
   async saveMultiUsers(data: any) {
     const { users } = data;
     console.log("users check : ", users.length);

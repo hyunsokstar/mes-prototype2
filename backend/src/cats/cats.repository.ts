@@ -10,6 +10,21 @@ import { CatCurrentDto } from './dto/cats.current.dto';
 export class CatsRepository {
     constructor(@InjectModel(Cat.name) private readonly catModel: Model<Cat>) { }
 
+    async deleteUsersByIdsArray(ids_for_delete: []) {
+
+        console.log("ids_for_delete : ", ids_for_delete);
+        const result = await this.catModel.deleteMany(
+            {
+                _id: {
+                    $in: ids_for_delete
+                }
+            },
+        );
+
+        return result;
+
+    }
+
     async existsByEmail(email: string): Promise<boolean> {
         const result = await this.catModel.exists({ email });
         // return result;
@@ -22,7 +37,6 @@ export class CatsRepository {
         if (result) return true
         else return false
     }
-
 
     async create(cat: CatRequestDto): Promise<Cat> {
         return await this.catModel.create(cat);

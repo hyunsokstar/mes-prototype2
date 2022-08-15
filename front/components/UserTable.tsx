@@ -62,34 +62,25 @@ function UserTable() {
   // 저장 버튼 클릭 체크된 행 정보를 백엔드로 보내서 저장 처리 
   const saveUser = async () => {
     console.log("회원 저장 버튼 클릭 !!");
-
     try {
       console.log("basicRow :: ", basicRow);
-
       const data_for_save = basicRow.filter((row) => {
         if (selectList.has(row.id)) {
           return row
         }
       })
-
       console.log("data_for_save : ", data_for_save);
-      
-
       const response = await axios.post(
         `${api.cats}/saveMembers`,
         { users: data_for_save },
         { withCredentials: true }
       );
-
       if (response.data) {
         console.log("response.data : ", response.data);
       }
-
-
     } catch (error: any) {
       console.log("error : ", error);
     }
-
   }
 
   const addRowForExcelTable = () => {
@@ -107,14 +98,88 @@ function UserTable() {
     ]);
   }
 
+
+  const deleteUserForCheck = async () => {
+    console.log("삭제 버튼 클릭");
+    console.log("basicRow : ", basicRow);
+
+
+    try {
+      const rows_for_delete = basicRow.filter((row) => {
+        console.log("row : ", row);
+
+        if (selectList.has(row.id)) {
+          return row._id
+        }
+
+      })
+
+      console.log("rows_for_delete : ", rows_for_delete);
+
+      const ids_for_delete = rows_for_delete.map((row) => {
+        return row.id
+      })
+
+      console.log("ids_for_delete : ", ids_for_delete); // ['62f8c8c77297cfa7f1e05154', '62f8f230ed2082e4d5cb287d']
+
+      const response = await axios.post(
+        `${api.cats}/deleteMembers`,
+        { ids_for_delete: ids_for_delete },
+        { withCredentials: true }
+      );
+
+      if (response.data.success) {
+        console.log("response.data : ", response.data);
+
+        const basic_row_after_delete = basicRow.filter((row) => {
+          if (!ids_for_delete.includes(row.id)) {
+            return row
+          }
+        })
+        alert("행 삭제 성공 !");
+        setBasicRow(basic_row_after_delete);
+      }
+
+    } catch (error) {
+
+    }
+
+
+  }
+
+  // const saveUser = async () => {
+  //   console.log("회원 저장 버튼 클릭 !!");
+  //   try {
+  //     console.log("basicRow :: ", basicRow);
+  //     const data_for_save = basicRow.filter((row) => {
+  //       if (selectList.has(row.id)) {
+  //         return row
+  //       }
+  //     })
+  //     console.log("data_for_save : ", data_for_save);
+  //     const response = await axios.post(
+  //       `${api.cats}/saveMembers`,
+  //       { users: data_for_save },
+  //       { withCredentials: true }
+  //     );
+  //     if (response.data) {
+  //       console.log("response.data : ", response.data);
+  //     }
+  //   } catch (error: any) {
+  //     console.log("error : ", error);
+  //   }
+  // }
+
+
   return (
     <div>
-
-
       <br /><br />
 
       <button onClick={() => addRowForExcelTable()}>행 추가</button>
       <button onClick={() => saveUser()}>저장 하기</button>
+
+      <button onClick={() => deleteUserForCheck()}>행 삭제</button>
+
 
       <br /><br />
 
