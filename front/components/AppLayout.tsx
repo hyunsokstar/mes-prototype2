@@ -60,8 +60,8 @@ const AppLayout = ({ children }: LayoutProps) => {
     }, [])
 
     return (
-        <div>
-            {isLoggedIn ? <span>{user.name} 님 안녕하세요 <button onClick = {() => logOut()}>로그 아웃</button> </span> : (
+        <div >
+            {isLoggedIn ? <div style={{float: "right"}}>{user.name} 님 안녕하세요 <button onClick = {() => logOut()}>로그 아웃</button> </div> : (
                 <LoginForm />
             )}
             {children}
