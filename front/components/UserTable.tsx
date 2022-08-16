@@ -67,7 +67,7 @@ function UserTable() {
 
     basicRow.map((row) => {
       console.log("row : ", row);
-      
+
       if (row.password !== row.passwordCheck) {
         alert("비밀번호와 비밀번호 확인이 일치 하지 않습니다");
         return
@@ -164,11 +164,11 @@ function UserTable() {
     <div>
       <br /><br />
 
-      <button onClick={() => addRowForExcelTable()}>행 추가</button>
-      <button onClick={() => saveUser()}>저장 하기</button>
-
-      <button onClick={() => deleteUserForCheck()}>행 삭제</button>
-
+      <div style={{ display: "flex", justifyContent: "flex-end", marginRight:"10px", gap:"10px" }}>
+        <button onClick={() => addRowForExcelTable()}>행 추가</button>
+        <button onClick={() => saveUser()}>저장 하기</button>
+        <button onClick={() => deleteUserForCheck()}>행 삭제</button>
+      </div>
 
       <br /><br />
 

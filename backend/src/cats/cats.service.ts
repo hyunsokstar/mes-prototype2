@@ -44,7 +44,7 @@ export class CatsService {
 
   async saveMultiUsers(data: any) {
     const { users } = data;
-    console.log("users check : ", users.length);
+    // console.log("users check : ", users);
 
     users.map(async (user, index) => {
       // const isCatExist = await this.catsRepository.existsByEmail(user.email);
@@ -58,18 +58,18 @@ export class CatsService {
         isCatExist = false
       }
 
-      console.log("user : ", user)
+      // console.log("user : ", user)
       console.log("isCatExist : ", isCatExist);
 
       if (isCatExist) {
-        console.log("isCatExist : ", isCatExist);
-        console.log("user.email  : ", user.email);
+        // console.log("isCatExist : ", isCatExist);
+        // console.log("user.email  : ", user.email);
         console.log("회원 정보가 이미 존재", index);
         const hashedPassword = await bcrypt.hash(user.password, 10);
 
 
         const filter = { _id: user.id }
-        const cat = await this.catsRepository.update(filter, { email: user.email, name: user.name, password: hashedPassword })
+        const cat = await this.catsRepository.update(filter, { email: user.email, name: user.name, password: hashedPassword, height:user.height, gender:user.gender })
 
       } else {
         console.log("회원 정보 생성 !", index);
@@ -77,15 +77,21 @@ export class CatsService {
         const hashedPassword = await bcrypt.hash(user.password, 10);
 
 
-        const cat = this.catsRepository.create({
+        const cat = await this.catsRepository.create({
           email: user.email,
           name: user.name,
           password: hashedPassword,
+          height: user.height,
+          gender: user.gender,
         });
+
+        // console.log("cat save result :: ", cat);
+        
+
       }
     })
 
-    return "회원 정보 저장 성공2 !"
+    return "회원 정보 저장 성공 !!"
 
   }
 
@@ -104,6 +110,8 @@ export class CatsService {
       email,
       name,
       password: hashedPassword,
+      height: 177,
+      gender: "man"
     });
 
     return cat.readOnlyData;

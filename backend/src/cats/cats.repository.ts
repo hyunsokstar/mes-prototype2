@@ -39,6 +39,10 @@ export class CatsRepository {
     }
 
     async create(cat: CatRequestDto): Promise<Cat> {
+
+        console.log("cat :::::", cat);
+        
+
         return await this.catModel.create(cat);
     }
 
