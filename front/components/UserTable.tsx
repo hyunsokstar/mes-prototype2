@@ -59,54 +59,101 @@ function UserTable() {
     getAllCats();
   }, []);
 
+  function checkForRequiredField(row: any) {
 
+    let missed_field = []
+
+    if(!row.email){
+      missed_field.push("email")
+    }
+
+    if(!row.name){
+      missed_field.push("name")
+    }    
+
+    if(!row.password){
+      missed_field.push("password")
+    }
+
+    if(!row.passwordCheck){
+      missed_field.push("passwordCheck");
+    }
+
+    if(!row.height){
+      missed_field.push("height");
+    }
+    
+    if(!row.gender){
+      missed_field.push("gender");
+    }
+    
+    return missed_field;
+    
+  }
+  
   // todo:
   // 저장 버튼 클릭 체크된 행 정보를 백엔드로 보내서 저장 처리 
   const saveUser = async () => {
     console.log("회원 저장 버튼 클릭 !!");
-
+    
+    let missed_field: string | any[] = [];
+    
     basicRow.map((row) => {
-      console.log("row : ", row);
-
+      // console.log("row : ", row);
+      
+      
       if (row.password !== row.passwordCheck) {
         alert("비밀번호와 비밀번호 확인이 일치 하지 않습니다");
         return
       }
     })
+    
+    
+    const data_for_save = basicRow.filter((row) => {
+      
+      if (selectList.has(row.id)) {
+        missed_field = checkForRequiredField(row)    
+        return row
+      }
+    })
+    
+    if (missed_field.length) {
+      alert("필수 필드에 입력해 주세요 : "+ missed_field);
+      return
+    } else {
+      console.log("필수 필드 충족");
+      
+    }
 
     try {
-      console.log("basicRow :: ", basicRow);
-      const data_for_save = basicRow.filter((row) => {
-        if (selectList.has(row.id)) {
-          return row
-        }
-      })
-
       console.log("data_for_save : ", data_for_save);
       const response = await axios.post(
         `${api.cats}/saveMembers`,
         { users: data_for_save },
         { withCredentials: true }
-      );
-      if (response.data) {
-        console.log("response.data : ", response.data);
+        );
+        if (response.data) {
+          console.log("response.data : ", response.data);
+        }
+
+        alert(response.data.data);
+
+      } catch (error: any) {
+        console.log("error : ", error);
       }
-    } catch (error: any) {
-      console.log("error : ", error);
     }
-  }
-
-  const addRowForExcelTable = () => {
-
-    console.log("행 추가 : ");
-    const random_id = Math.random() * 1000;
-
-    setBasicRow([
-      {
-        id: `${random_id}`,
-        email: null,
-        name: null,
-      },
+    
+    const addRowForExcelTable = () => {
+      
+      console.log("행 추가 : ");
+      const random_id = Math.random() * 1000;
+      
+      setBasicRow([
+        {
+          id: `${random_id}`,
+          email: null,
+          name: null,
+        },
       ...basicRow,
     ]);
   }
@@ -164,7 +211,7 @@ function UserTable() {
     <div>
       <br /><br />
 
-      <div style={{ display: "flex", justifyContent: "flex-end", marginRight:"10px", gap:"10px" }}>
+      <div style={{ display: "flex", justifyContent: "flex-end", marginRight: "10px", gap: "10px" }}>
         <button onClick={() => addRowForExcelTable()}>행 추가</button>
         <button onClick={() => saveUser()}>저장 하기</button>
         <button onClick={() => deleteUserForCheck()}>행 삭제</button>
