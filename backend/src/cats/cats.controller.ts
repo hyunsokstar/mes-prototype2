@@ -74,7 +74,6 @@ export class CatsController {
     
     return this.CatsService.deleteMultiUsers(data);
   }
-
   
   @ApiResponse({
     status: 500,
