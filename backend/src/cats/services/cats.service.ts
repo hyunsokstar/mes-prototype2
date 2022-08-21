@@ -1,10 +1,10 @@
 import { HttpException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Cat } from './cats.schema';
+import { Cat } from '../cats.schema';
 import mongoose, { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import { CatRequestDto } from './dto/cats.request.dto';
-import { CatsRepository } from './cats.repository';
+import { CatRequestDto } from '../dto/cats.request.dto';
+import { CatsRepository } from '../cats.repository';
 
 
 @Injectable()
@@ -13,6 +13,19 @@ export class CatsService {
 
   hiCatService() {
     return "hi cat ser !!"
+  }
+
+  async uploadImg(cat: Cat, files: Express.Multer.File[]) {
+    const fileName = `cats/${files[0].filename}`;
+
+    console.log(fileName);
+
+    const newCat = await this.catsRepository.findByIdAndUpdateImg(
+      cat.id,
+      fileName,
+    );
+    console.log(newCat);
+    return newCat;
   }
 
   async deleteMultiUsers(data: any) {
@@ -69,7 +82,7 @@ export class CatsService {
 
 
         const filter = { _id: user.id }
-        const cat = await this.catsRepository.update(filter, { email: user.email, name: user.name, password: hashedPassword, height:user.height, gender:user.gender })
+        const cat = await this.catsRepository.update(filter, { email: user.email, name: user.name, password: hashedPassword, height: user.height, gender: user.gender })
 
       } else {
         console.log("회원 정보 생성 !", index);
@@ -86,7 +99,7 @@ export class CatsService {
         });
 
         // console.log("cat save result :: ", cat);
-        
+
 
       }
     })

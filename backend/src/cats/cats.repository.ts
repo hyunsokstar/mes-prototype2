@@ -20,10 +20,20 @@ export class CatsRepository {
                 }
             },
         );
-
         return result;
-
     }
+
+    async findByIdAndUpdateImg(id: string, fileName: string) {
+        const cat = await this.catModel.findById(id);
+
+        cat.imgUrl = `http://localhost:8000/media/${fileName}`;
+
+        const newCat = await cat.save();
+
+        console.log(newCat);
+        return newCat.readOnlyData;
+    }
+
 
     async existsByEmail(email: string): Promise<boolean> {
         const result = await this.catModel.exists({ email });
@@ -41,7 +51,7 @@ export class CatsRepository {
     async create(cat: CatRequestDto): Promise<Cat> {
 
         console.log("cat :::::", cat);
-        
+
 
         return await this.catModel.create(cat);
     }

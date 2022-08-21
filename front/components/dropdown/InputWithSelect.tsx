@@ -9,8 +9,7 @@ import React, { useRef } from 'react'
 
 // period_unit : 0(day) , 1(week) , 2(month)
 const InputWithSelect = ({ row, column, onRowChange }: any) => {
-
-    console.log("row for input: ", row);
+    // console.log("row for input: ", row);
 
 
     //     const typeOfUnit = (unit : 'kg' | '장') : 0 | 1 | undefined  => {

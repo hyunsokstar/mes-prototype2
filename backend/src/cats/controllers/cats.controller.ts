@@ -1,6 +1,6 @@
-import { JwtAuthGuard } from './../auth/jwt/jwt.guard';
-import { PositiveIntPipe } from './../common/pipes/positiveInt.pipe';
-import { CatsService } from './cats.service';
+import { JwtAuthGuard } from '../../auth/jwt/jwt.guard';
+import { PositiveIntPipe } from '../../common/pipes/positiveInt.pipe';
+import { CatsService } from '../services/cats.service';
 import { getSystemErrorMap } from 'util';
 import {
   Controller, Delete, Get, HttpException, Param, Patch, Post, Put, UseFilters, ParseIntPipe,
@@ -8,17 +8,24 @@ import {
   Body,
   UseGuards,
   Req,
+  UploadedFiles,
 } from '@nestjs/common';
 import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
-import { SuccessInterceptor } from './../common/interceptors/success.interceptor';
-import { CatRequestDto } from './dto/cats.request.dto';
+import { SuccessInterceptor } from '../../common/interceptors/success.interceptor';
+import { CatRequestDto } from '../dto/cats.request.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { ReadOnlyCatDto } from './dto/cat.dto';
+import { ReadOnlyCatDto } from '../dto/cat.dto';
 import { AuthService } from 'src/auth/auth.service';
 import { LoginRequestDto } from 'src/auth/dto/login.request.dto';
 import { Request } from "express"
 import { CurrentUser } from 'src/common/decorators/user.decorator';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+
+
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { multerOptions } from 'src/common/utils/multer.options';
+
+import { Cat } from '../cats.schema';
 
 
 @Controller('cats')
@@ -50,7 +57,7 @@ export class CatsController {
     return cat.readOnlyData;
   }
 
-  
+
   @Get("allCats")
   getAllCats() {
     const allCats = this.CatsService.findAllCats();
@@ -63,7 +70,7 @@ export class CatsController {
   async saveMultiUsers(@Body() data) {
     console.log("유저 테이블 정보 저장 check !!");
     // console.log("body data : ", data);
-    
+
     return this.CatsService.saveMultiUsers(data);
   }
 
@@ -71,10 +78,10 @@ export class CatsController {
   async deleteMultiUsers(@Body() data) {
     console.log("유저 테이블 정보 저장 check !!");
     // console.log("body data : ", data);
-    
+
     return this.CatsService.deleteMultiUsers(data);
   }
-  
+
   @ApiResponse({
     status: 500,
     description: 'server Errror'
@@ -103,9 +110,25 @@ export class CatsController {
     return 'logout';
   }
 
-  @Post('upload/cats')
-  uploadCatImg() {
-    return 'uploadImg';
+  // @ApiOperation({ summary: "프로필 이미지 업로드" })
+  // @UseInterceptors(FileInterceptor("file"))
+  // @Post('upload')
+  // uploadCatImg() {
+  //   return 'uploadImg';
+  // }
+
+  @ApiOperation({ summary: "이미지 대량 업로드" })
+  @UseInterceptors(FilesInterceptor("image", 10, multerOptions('cats')))
+  @UseGuards(JwtAuthGuard)
+  @Post('upload')
+  uploadCatImg(
+    @UploadedFiles() files: Array<Express.Multer.File>,
+    @CurrentUser() cat: Cat,
+  ) {
+    console.log(files);
+    // return 'uploadImg';
+    // return { image: `http://localhost:8000/media/cats/${files[0].filename}` }
+    return this.CatsService.uploadImg(cat, files);
   }
 
 }

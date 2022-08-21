@@ -22,7 +22,7 @@ export class Cat extends Document {
   @IsEmail()
   @IsNotEmpty()
   email: string;
-  
+
   @Prop()
   age: number;
 
@@ -56,10 +56,10 @@ export class Cat extends Document {
   @IsNotEmpty()
   password: string;
 
-  
-  @Prop()
-  @IsString()
-  imgUrl: string;
+
+  // @Prop()
+  // @IsString()
+  // imgUrl: string;
 
   @ApiProperty({
     example: 177,
@@ -78,15 +78,27 @@ export class Cat extends Document {
   @ApiProperty({
     example: "man",
     description: "성별"
-  })  
+  })
   @IsString()
   gender: string;
-  
-  readonly readOnlyData: { id: string; email: string; name: string }
+
+  @Prop({
+    default:
+      'none',
+  })
+  @IsString()
+  imgUrl: string;
+
+  readonly readOnlyData: {
+    id: string;
+    email: string;
+    name: string,
+    imgUrl: string;
+  };
+
 }
 
 export const CatSchema = SchemaFactory.createForClass(Cat);
-
 
 // 가상 필드 사용법은 다음과 같다.
 // 형식적으로 알아 두자
@@ -94,6 +106,7 @@ CatSchema.virtual('readOnlyData').get(function (this: Cat) {
   return {
     id: this.id,
     email: this.email,
-    name: this.name
+    name: this.name,
+    imgUrl: this.imgUrl
   }
 })
