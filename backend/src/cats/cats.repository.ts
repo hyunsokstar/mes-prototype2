@@ -23,15 +23,27 @@ export class CatsRepository {
         return result;
     }
 
-    async findByIdAndUpdateImg(id: string, fileName: string) {
-        const cat = await this.catModel.findById(id);
+    async findByIdAndUpdateImg(rowId: string, fileName: string) {
+        // const cat = await this.catModel.findById(id);
 
-        cat.imgUrl = `http://localhost:8000/media/${fileName}`;
+        console.log("rowId for repo : ", rowId);
+        
 
-        const newCat = await cat.save();
+        const new_cat = await this.catModel.findByIdAndUpdate(rowId, { imgUrl: `http://localhost:8000/media/${fileName}` },
+            function (err, docs) {
+                if (err) {
+                    console.log(err)
+                }
+                else {
+                    console.log("Updated User : ", docs);
+                }
 
-        console.log(newCat);
-        return newCat.readOnlyData;
+            });
+
+        // const newCat = await cat.save();
+
+        // console.log(newCat);
+        return new_cat;
     }
 
 

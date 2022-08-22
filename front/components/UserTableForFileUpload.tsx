@@ -7,9 +7,17 @@ import { columnlist } from "../common/columnInit";
 import ExcelTable from "./Excel/ExcelTable";
 import { SelectColumn } from "react-data-grid";
 import Password from 'antd/lib/input/Password';
+// import {
+  
+// } from "../slices/user";
+// import { useSelector } from "react-redux";
+import User from "../slices/user";
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../store/reducer';
 
 
 function UserTableForFileUpload() {
+  
   const [column, setColumn] = useState<Array<IExcelHeaderType>>(
     columnlist.member2
   );
@@ -20,6 +28,15 @@ function UserTableForFileUpload() {
     },
   ]);
   const [selectList, setSelectList] = useState<Set<any>>(new Set());
+  const dispatch = useDispatch();
+
+  const { me } = useSelector((state: RootState) => state.user);
+ 
+  useEffect(()=> {
+    // console.log("me : ", me);
+    console.log("me.accessToken", me.accessToken);
+  }, [me])
+
 
   const customize_data_for_table = (data: any) => {
     const data_for_table = data.map((row: any) => {

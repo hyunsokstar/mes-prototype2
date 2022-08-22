@@ -22,28 +22,31 @@ const AppLayout = ({ children }: LayoutProps) => {
     const logOut = () => {
         alert("로그아웃 성공");
         localStorage.removeItem("mes-token")
-        router.push('/')
+        // router.push('/')
+
+        dispatch(
+            userSlice.actions.logoutUser(),
+        );
 
     }
 
     const loginCheck = async () => {
-        console.log("login check");
-
+        // console.log("login check");
         const current_token = localStorage.getItem("mes-token");
         console.log("current_token : ", current_token);
-        
 
-        const login_user = await axios.post(`${api.cats}/login_check`, {},{
+
+        const login_user = await axios.post(`${api.cats}/login_check`, {}, {
             withCredentials: true,
             headers: {
-              Authorization: "Bearer "+current_token,
+                Authorization: "Bearer " + current_token,
             },
-          });
+        });
 
-          console.log("login_user : ", login_user);
-          
+        // console.log("login_user : ", login_user);
 
-          if (login_user.data.success) {
+
+        if (login_user.data.success) {
             dispatch(
                 userSlice.actions.setUser({
                     email: login_user.data.data.email,
@@ -52,16 +55,16 @@ const AppLayout = ({ children }: LayoutProps) => {
                 }),
             );
         }
-        
+
     }
 
-    useEffect(()=> {
+    useEffect(() => {
         loginCheck();
     }, [])
 
     return (
         <div >
-            {isLoggedIn ? <div style={{float: "right"}}>{user.name} 님 안녕하세요 <button onClick = {() => logOut()}>로그 아웃</button> </div> : (
+            {isLoggedIn ? <div style={{ float: "right" }}>{user.name} 님 안녕하세요 <button onClick={() => logOut()}>로그 아웃</button> </div> : (
                 <LoginForm />
             )}
             {children}

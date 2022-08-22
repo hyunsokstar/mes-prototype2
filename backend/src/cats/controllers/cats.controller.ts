@@ -119,16 +119,20 @@ export class CatsController {
 
   @ApiOperation({ summary: "이미지 대량 업로드" })
   @UseInterceptors(FilesInterceptor("image", 10, multerOptions('cats')))
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Post('upload')
   uploadCatImg(
     @UploadedFiles() files: Array<Express.Multer.File>,
-    @CurrentUser() cat: Cat,
+    @Body() data
+    // @CurrentUser() cat: Cat,
   ) {
     console.log(files);
+    console.log("data : ", data);
+    console.log("data : ", data.rowId);
+    
     // return 'uploadImg';
     // return { image: `http://localhost:8000/media/cats/${files[0].filename}` }
-    return this.CatsService.uploadImg(cat, files);
+    return this.CatsService.uploadImg(data.rowId, files);
   }
 
 }

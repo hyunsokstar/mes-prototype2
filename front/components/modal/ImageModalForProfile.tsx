@@ -1,37 +1,8 @@
-// import React from 'react'
-
-// type Props = {
-//     url: string
-//     open: boolean
-// }
-
-// function ImageModalForProfile({url, open, }: Props) {
-//   return (
-//     <div>ImageModalForProfile</div>
-//   )
-// }
-
-// export default ImageModalForProfile
-
 import { log } from "console";
 import React, { useEffect, useState } from "react";
 import Modal from 'react-modal'
 import styled from 'styled-components'
 
-import Link from 'next/link'
-
-
-// GiClockwiseRotation
-// FaRedo
-// FaUndo
-
-
-// 확대 FaSearchPlus
-// 축소 FaSearchMinus
-// 오른 FaRedo
-// 왼 FaUndo
-// 저장 save
-// 닫기 FaWindowClose
 
 // 오른쪽
 import { FaSearchPlus, FaSearchMinus, FaSave, FaRedo, FaUndo, FaWindowClose } from "react-icons/fa";
@@ -74,7 +45,7 @@ const ImageModalForProfile = ({ url, modalOpen, setIsModalOpen }: IProps) => {
     const [originalHeight, setOriginalHeight] = useState(0);
     const [imageDegree, setImageDegree] = useState(0);
 
-    console.log("url : ", url);
+    // console.log("url : ", url);
 
     const mode = (mode: any) => {
         let imgMode;
@@ -120,7 +91,6 @@ const ImageModalForProfile = ({ url, modalOpen, setIsModalOpen }: IProps) => {
     const imageButtonClickHandler = (option: any) => {
         // e.preventDefault();
         // console.log("e : ", e);
-
 
         if (option == "original") {
             console.log("original");
@@ -244,18 +214,18 @@ const ImageModalForProfile = ({ url, modalOpen, setIsModalOpen }: IProps) => {
         let img = new Image();
         img.src = url;
         let width = img.width;
-        console.log("imagePercent : ", imagePercent);
+        // console.log("imagePercent : ", imagePercent);
         const ratio = imagePercent / 100;
-        console.log("ratio : ", ratio);
+        // console.log("ratio : ", ratio);
 
 
         if (option === "original_image") {
-            console.log("width : ", width);
+            // console.log("width : ", width);
             return width * ratio;
         } else if (option === "custom_image") {
             return 800 * ratio
         }
-        console.log("hi");
+        // console.log("hi");
     }
 
     const calculateHeight = (option: string, imagePercent: number) => {
@@ -264,8 +234,8 @@ const ImageModalForProfile = ({ url, modalOpen, setIsModalOpen }: IProps) => {
         let height = img.height;
         const ratio = imagePercent / 100;
 
-        console.log("imagePercent : ", imagePercent);
-        console.log("height : ", height);
+        // console.log("imagePercent : ", imagePercent);
+        // console.log("height : ", height);
 
         if (option === "original_image") {
             return height;
@@ -313,7 +283,7 @@ const ImageModalForProfile = ({ url, modalOpen, setIsModalOpen }: IProps) => {
 
                             {/* <Link href={url} target="_blank" download>Download</Link> */}
 
-                            <a href={url} download={"sample.jpg"}>
+                            <a href={url} download={url}>
                                 <FaSave
                                     onClick={() => console.log("save")}
                                 />
@@ -322,43 +292,6 @@ const ImageModalForProfile = ({ url, modalOpen, setIsModalOpen }: IProps) => {
                             <FaWindowClose
                                 onClick={() => close_modal(false)}
                             />
-
-                            {/* <img
-                                onClick={imageButtonClickHandler}
-                                name="enlargement"
-                                src={Plus}
-                                style={{ borderRadius: "4px", width: "24px", height: "24px", marginRight: "4px", marginLeft: '4px' }}
-                            />
-
-                            <img
-                                onClick={imageButtonClickHandler}
-                                name="reduction"
-                                src={Minus}
-                                style={{ borderRadius: "4px", width: "24px", height: "24px", marginRight: "4px", marginLeft: '4px' }}
-                            />
-                            <img
-                                onClick={imageButtonClickHandler}
-                                name="rotation+"
-                                src={rotation_right}
-                            />
-                            <img
-                                onClick={imageButtonClickHandler}
-                                name="rotation-"
-                                src={rotation_left}
-                                style={{ borderRadius: "4px", width: "24px", height: "24px", marginRight: "4px", marginLeft: '4px' }}
-                            />
-
-                            <img
-                                onClick={() => console.log("저장 버튼 클릭")}
-                                src={floppy_disk}
-                                style={{ borderRadius: "4px", width: "24px", height: "24px", marginRight: "4px", marginLeft: '4px' }}
-                            />
-
-                            <img
-                                onClick={() => close_modal(false)}
-                                src={Close}
-                                style={{ borderRadius: "4px", width: "24px", height: "24px", marginRight: "4px", marginLeft: '4px' }}
-                            /> */}
 
                         </div>
                         <br />
