@@ -121,7 +121,7 @@ export class CatsController {
   @UseInterceptors(FilesInterceptor("image", 10, multerOptions('cats')))
   // @UseGuards(JwtAuthGuard)
   @Post('upload')
-  uploadCatImg(
+  async uploadCatImg(
     @UploadedFiles() files: Array<Express.Multer.File>,
     @Body() data
     // @CurrentUser() cat: Cat,
@@ -130,9 +130,10 @@ export class CatsController {
     console.log("data : ", data);
     console.log("data : ", data.rowId);
     
-    // return 'uploadImg';
-    // return { image: `http://localhost:8000/media/cats/${files[0].filename}` }
-    return this.CatsService.uploadImg(data.rowId, files);
+    await this.CatsService.uploadImg(data.rowId, files);
+
+    return "파일 업로드 성공";
+
   }
 
 }

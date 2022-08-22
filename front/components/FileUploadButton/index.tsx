@@ -35,7 +35,7 @@ function FileUploadButton({ row, column, onRowChange }: IProps) {
   }
 
   const uploadOneFileByAxios = async (e: any, rowId: string) => {
-    console.log("hi file down load e : ", e);
+    // console.log("hi file down load e : ", e);
     const data = new FormData()
     data.append('image', e.target.files[0])
     data.append('rowId', rowId)
@@ -49,13 +49,19 @@ function FileUploadButton({ row, column, onRowChange }: IProps) {
     })
 
     console.log("파일 업로드 성공 !", response);
+
+    if(response.data.success){
+      onRowChange({ ...row, imageExist: true })
+    }
+
+
   }
 
   return (
     <>
       <ImageModalForProfile url={row.imgUrl} modalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
       <div>
-        {row.imgUrl === "none" ? (
+        {row.imgUrl === "none" && !row.imageExist ? (
           <div>
             <button
               onClick={() => {

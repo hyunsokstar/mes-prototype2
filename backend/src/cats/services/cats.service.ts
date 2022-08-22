@@ -17,16 +17,13 @@ export class CatsService {
 
   async uploadImg(rowId: string, files: Express.Multer.File[]) {
     const fileName = `cats/${files[0].filename}`;
-    console.log("rowId for service : ", rowId);
-    
-    // console.log(fileName);
+    console.log("fileName : ", fileName);
 
-    const newCat = await this.catsRepository.findByIdAndUpdateImg(
+    return await this.catsRepository.findByIdAndUpdateImg(
       rowId,
       fileName,
     );
-    // console.log(newCat);
-    return newCat;
+
   }
 
   async deleteMultiUsers(data: any) {

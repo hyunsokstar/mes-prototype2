@@ -24,40 +24,27 @@ export class CatsRepository {
     }
 
     async findByIdAndUpdateImg(rowId: string, fileName: string) {
-        // const cat = await this.catModel.findById(id);
-
         console.log("rowId for repo : ", rowId);
-        
 
-        const new_cat = await this.catModel.findByIdAndUpdate(rowId, { imgUrl: `http://localhost:8000/media/${fileName}` },
-            function (err, docs) {
-                if (err) {
-                    console.log(err)
-                }
-                else {
-                    console.log("Updated User : ", docs);
-                }
+        const result = await this.catModel.findByIdAndUpdate(rowId, { imgUrl: `http://localhost:8000/media/${fileName}` });
+        return result;
 
-            });
-
-        // const newCat = await cat.save();
-
-        // console.log(newCat);
-        return new_cat;
     }
 
 
     async existsByEmail(email: string): Promise<boolean> {
         const result = await this.catModel.exists({ email });
-        // return result;
         if (result) return true
         else return false
     }
+
     async existsById(id: string): Promise<boolean> {
         const result = await this.catModel.exists({ _id: id });
-        // return result;
+
         if (result) return true
+
         else return false
+
     }
 
     async create(cat: CatRequestDto): Promise<Cat> {
@@ -68,7 +55,6 @@ export class CatsRepository {
         return await this.catModel.create(cat);
     }
 
-    // let doc = await Character.findOneAndUpdate(filter, update);
 
     async update(filter, cat: CatRequestDto): Promise<Cat> {
         return await this.catModel.findOneAndUpdate(filter, cat);
