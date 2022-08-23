@@ -255,6 +255,9 @@ function UserTableForFileUpload() {
           setSelectList(tmp);
           competeId(e);
         }}
+        editable
+        resizable
+        resizeSave
       />
 
     </div>

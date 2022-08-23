@@ -8,10 +8,13 @@ type IProps = {
     setRow: (row: Array<any>, index: number) => void
     selectList: ReadonlySet<number>
     setSelectList?: (selectedRows: ReadonlySet<number>) => void
+    editable?: boolean
+    resizable?: boolean
+    resizeSave?:boolean
 }
 
 
-const ExcelTable = ({ data_for_rows, data_for_columns, setRow, selectList, setSelectList }: IProps) => {
+const ExcelTable = ({ data_for_rows, data_for_columns, setRow, selectList, setSelectList, resizable, editable }: IProps) => {
     const [selectedRows, setSelectedRows] = useState<ReadonlySet<number>>(selectList ?? new Set())
 
     const rowKeyGetter = (row: any) => {
@@ -41,6 +44,18 @@ const ExcelTable = ({ data_for_rows, data_for_columns, setRow, selectList, setSe
                     setSelectedRows(row)
                 }}
                 selectedRows={selectedRows}
+
+                defaultColumnOptions={{
+                    resizable: resizable,
+                    editable: editable,
+                }}
+
+                onColumnResize={(v, i) => {
+                    console.log("v, i : ", v, i);
+
+                }}            
+
+
             />
         </>
     )
