@@ -6,7 +6,6 @@ import { IExcelHeaderType } from "../types/type";
 import { columnlist } from "../common/columnInit";
 import ExcelTable from "../components/Excel/ExcelTable";
 import { SelectColumn } from "react-data-grid";
-import Password from 'antd/lib/input/Password';
 
 
 

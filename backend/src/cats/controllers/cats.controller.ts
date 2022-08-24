@@ -136,4 +136,22 @@ export class CatsController {
 
   }
 
+  @ApiOperation({ summary: "유저 테이블 검색" })
+  @Post('searchUsers')
+  async searchForUsers(
+    @Body() data
+  ) {
+    console.log("data : ", data);
+    console.log("searchWorld : ", data.searchOption);
+    console.log("searchOption : ", data.searchKeyword);
+
+    const searchOption = data.searchOption;
+    const searchKeyword = data.searchKeyword;
+    
+    const search_result = await this.CatsService.searchUsers(searchOption, searchKeyword);
+
+    return search_result;
+
+  }
+
 }

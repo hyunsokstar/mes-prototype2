@@ -1,3 +1,4 @@
+import { log } from 'console';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -8,6 +9,18 @@ import { CatCurrentDto } from './dto/cats.current.dto';
 
 @Injectable()
 export class CatsRepository {
+    async searchUsers(searchOption: string, searchKeyword: string) {
+        console.log("검색 조건 check  : " , searchOption, searchKeyword);
+        // const search_result = await this.catModel.find({ $searchOption: searchKeyword });
+        // let search_result;
+
+        // let field_exist = await this.catModel.find({ qty1234: { $exists: true, $nin: [ 5, 15 ] } })
+        // console.log("field_exist : ", field_exist);
+        
+        const search_result = await this.catModel.find().where(searchOption).regex(searchKeyword);
+
+        return search_result;
+    }
     constructor(@InjectModel(Cat.name) private readonly catModel: Model<Cat>) { }
 
     async deleteUsersByIdsArray(ids_for_delete: []) {
