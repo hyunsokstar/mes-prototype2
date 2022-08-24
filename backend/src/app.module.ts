@@ -6,13 +6,14 @@ import { CatsModule } from './cats/cats.module';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
+import { ColumnsModule } from './columns/columns.module';
 
 
 @Module({
   imports: [ConfigModule.forRoot(),CatsModule, MongooseModule.forRoot(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-  }), AuthModule],
+  }), AuthModule, ColumnsModule],
   controllers: [AppController],
   providers: [AppService],
 })

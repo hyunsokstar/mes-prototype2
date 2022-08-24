@@ -13,7 +13,8 @@ import { MulterModule } from '@nestjs/platform-express/multer';
     MulterModule.register({
       dest: './upload',
     }),
-    MongooseModule.forFeature([{ name: Cat.name, schema: CatSchema }]), forwardRef(() => AuthModule)],
+    MongooseModule.forFeature([{ name: Cat.name, schema: CatSchema }]), forwardRef(() => AuthModule)
+  ],
   controllers: [CatsController],
   providers: [CatsService, CatsRepository],
   exports: [CatsService, CatsRepository],
