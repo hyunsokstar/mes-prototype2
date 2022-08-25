@@ -9,6 +9,8 @@ import { CatCurrentDto } from './dto/cats.current.dto';
 
 @Injectable()
 export class CatsRepository {
+    constructor(@InjectModel(Cat.name) private readonly catModel: Model<Cat>) { }
+    
     async searchUsers(searchOption: string, searchKeyword: string) {
         console.log("검색 조건 check  : " , searchOption, searchKeyword);
         // const search_result = await this.catModel.find({ $searchOption: searchKeyword });
@@ -21,7 +23,6 @@ export class CatsRepository {
 
         return search_result;
     }
-    constructor(@InjectModel(Cat.name) private readonly catModel: Model<Cat>) { }
 
     async deleteUsersByIdsArray(ids_for_delete: []) {
 

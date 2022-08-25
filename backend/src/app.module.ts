@@ -10,7 +10,7 @@ import { ColumnsModule } from './columns/columns.module';
 
 
 @Module({
-  imports: [ConfigModule.forRoot(),CatsModule, MongooseModule.forRoot(process.env.MONGODB_URI, {
+  imports: [ConfigModule.forRoot(),CatsModule,ColumnsModule, MongooseModule.forRoot(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   }), AuthModule, ColumnsModule],

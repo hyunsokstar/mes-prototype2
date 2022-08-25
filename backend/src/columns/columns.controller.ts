@@ -9,10 +9,9 @@ export class ColumnsController {
     
     @Get("")
     getAllCats() {
-    //   const allCats = this.CatsService.findAllCats();
-    //   console.log("allCats : ", allCats);
+    // const allCats = this.ColumnsService.findAllCats("name_test");
   
-      return "columns controller success";
+      return "test";
     }
 
 }

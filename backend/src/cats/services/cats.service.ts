@@ -9,12 +9,13 @@ import { CatsRepository } from '../cats.repository';
 
 @Injectable()
 export class CatsService {
+  constructor(private readonly catsRepository: CatsRepository) { }
+  
   async searchUsers(searchOption: string, searchKeyword:string) {
 
     return await this.catsRepository.searchUsers(searchOption , searchKeyword)
-
   }
-  constructor(private readonly catsRepository: CatsRepository) { }
+  
 
   hiCatService() {
     return "hi cat ser !!"

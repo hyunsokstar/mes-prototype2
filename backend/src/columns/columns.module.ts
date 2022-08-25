@@ -12,5 +12,7 @@ import { ColumnNames, ColumnNamesSchema } from './columns.schema';
   ],
   controllers: [ColumnsController],
   providers: [ColumnsService]
+  // exports: [ColumnsService ],
+
 })
 export class ColumnsModule { }
