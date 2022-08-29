@@ -33,8 +33,24 @@ export class CatsColumns extends Document {
   @IsNotEmpty()
   name: string;
 
+  @ApiProperty({
+    example: "width",
+    description: "컬럼 길이"
+  })
   @Prop()
   width: number;
+
+  @ApiProperty({
+    example: "editor",
+    description: "에디터 종류"
+  })
+  @Prop({
+    required: true,
+  })
+  @IsString()
+  @IsNotEmpty()
+  editor: string;
+
 
   readonly readOnlyData: {
     id: string;

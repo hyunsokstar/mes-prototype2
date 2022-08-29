@@ -142,12 +142,21 @@ export class CatsController {
 
   }
 
+  // crud for columns
+
   @Post("save_columns")
   async saveColumns(@Body() data) {
     console.log("컬럼 데이터 저장 !!", data);
     const search_result = await this.CatsService.saveColumnDatas(data);
 
     return "save columns"
+  }
+
+  @Get("all_cats_columns")
+  getAllColumnsForCats(@CurrentUser() cat) {
+    const allCatsColumnns = this.CatsService.findAllCatsColumns();
+
+    return allCatsColumnns;
   }
 
 

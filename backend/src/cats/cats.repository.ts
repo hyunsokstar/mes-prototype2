@@ -13,8 +13,12 @@ export class CatsRepository {
 
     constructor(
         @InjectModel(Cat.name) private readonly catModel: Model<Cat>,
-        @InjectModel(CatsColumns.name) private readonly catsColumns: Model<CatsColumns>,
+        @InjectModel(CatsColumns.name) private readonly catsColumnsModel: Model<CatsColumns>,
     ) { }
+
+    async findAllCatsColumns() {
+        return await this.catsColumnsModel.find().sort ({key:1});
+    }
 
     async saveColumnDatas(data: any) {
         console.log("data at cat repository for saveColumns: ", data);
@@ -22,7 +26,7 @@ export class CatsRepository {
 
     async existsByKey(key: any): Promise<boolean> {
         // throw new Error('Method not implemented.');
-        const result = await this.catsColumns.exists({ key });
+        const result = await this.catsColumnsModel.exists({ key });
         if (result) {
             return true
         } else return false
@@ -80,7 +84,7 @@ export class CatsRepository {
 
     async createColumns(cat: any): Promise<CatsColumns> {
         console.log("cat :::::", cat);
-        return await this.catsColumns.create(cat);
+        return await this.catsColumnsModel.create(cat);
     }
 
     async update(filter, cat: CatRequestDto): Promise<Cat> {
@@ -88,7 +92,7 @@ export class CatsRepository {
     }
 
     async updateCatsColumns(filter, cat: any): Promise<CatsColumns> {
-        return await this.catsColumns.findOneAndUpdate(filter, cat);
+        return await this.catsColumnsModel.findOneAndUpdate(filter, cat);
     }
 
     async findCatByIdWithoutPassword(

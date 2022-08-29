@@ -11,6 +11,13 @@ import { CatsRepository } from '../cats.repository';
 export class CatsService {
   constructor(private readonly catsRepository: CatsRepository) { }
 
+  // 1122
+  async findAllCatsColumns() {
+    const allCatsColumns = await this.catsRepository.findAllCatsColumns();
+
+    return allCatsColumns
+  }
+
   async saveMultiUsers(data: any) {
     const { users } = data;
 
@@ -69,15 +76,16 @@ export class CatsService {
       if (isKeyExist) { // 이미 key 가 존재 <=>  업데이트
 
         const filter = { key: column.key }
-        const catColumn = await this.catsRepository.updateCatsColumns(filter, { key: column.key, name: column.name, width: column.width })
+        const catColumn = await this.catsRepository.updateCatsColumns(filter, { key: column.key, name: column.name, width: column.width, editor: column.editor })
 
       } else { // 없을 경우 <=> save
         const result = await this.catsRepository.createColumns
-        ({
-          key: column.key,
-          name: column.name,
-          width: column.width,
-        });
+          ({
+            key: column.key,
+            name: column.name,
+            width: column.width,
+            editor: column.editor
+          });
       }
 
     })
