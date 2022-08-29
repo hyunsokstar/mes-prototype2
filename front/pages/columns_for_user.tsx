@@ -64,8 +64,8 @@ const columns_for_user = (props: Props) => {
           }
         })
 
-        // setColumns(response.data.data);
-        setRows(new_columns);
+        setColumns(new_columns);
+        setRows(sample_rows);
       }
 
     } catch (error) {
@@ -86,7 +86,8 @@ const columns_for_user = (props: Props) => {
 
   return (
     <div style={styles}>
-      <DataGrid columns={sample_columns} rows={rows} style={{ width: "100%" }} onRowsChange = {(data,idx)=> {onRowsChangeHandler(data,idx[0])}} />
+      {/* <DataGrid columns={sample_columns} rows={rows} style={{ width: "100%" }} onRowsChange = {(data,idx)=> {onRowsChangeHandler(data,idx)}} /> */}
+      <DataGrid columns={columns} rows={rows} style={{ width: "100%" }} onRowsChange = {(data,idx)=> {onRowsChangeHandler(data,idx)}} />
     </div>
   )
 }
