@@ -36,7 +36,7 @@ function UserTableForFileUpload({ searchResult }: IProps) {
 
   useEffect(() => {
     console.log("searchResult : ", searchResult);
-    
+
     const data_for_table = customize_data_for_table(searchResult);
     console.log("data_for_table : ", data_for_table);
 
@@ -125,13 +125,10 @@ function UserTableForFileUpload({ searchResult }: IProps) {
   // 저장 버튼 클릭 체크된 행 정보를 백엔드로 보내서 저장 처리 
   const saveUser = async () => {
     console.log("회원 저장 버튼 클릭 !!");
-
     let missed_field: string | any[] = [];
 
     basicRow.map((row) => {
       // console.log("row : ", row);
-
-
       if (row.password !== row.passwordCheck) {
         alert("비밀번호와 비밀번호 확인이 일치 하지 않습니다");
         return

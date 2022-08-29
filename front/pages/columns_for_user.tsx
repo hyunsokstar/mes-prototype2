@@ -3,29 +3,32 @@ import DataGrid from 'react-data-grid'
 import axios from "axios";
 import api from "../utils/api"
 import TextEditor from '../components/util/TextEditor'
+import { SelectColumn } from "react-data-grid";
+
 
 
 // import ExcelTable from "../components/Excel/ExcelTable"
 
 const sample_columns = [
-  { key: 'key', name: 'key'  ,editor: TextEditor},
-  { key: 'name', name: 'name' ,editor: TextEditor},
-  { key: 'width', name: 'width' ,editor: TextEditor},
+  { key: 'key', name: 'key', editor: TextEditor },
+  { key: 'name', name: 'name', editor: TextEditor },
+  { key: 'width', name: 'width', editor: TextEditor },
 ];
 
 const sample_rows = [
   // { key: "email", name: "email", width: 200 },
-  { key: "name", name: "name", width: 200},
-  { key: "password", name: "password", width: 200 },
-  { key: "passwordCheck", name: "passwordCheck", width: 200 },
-  { key: "age", name: "age", width: 200 },
-  { key: "gender", name: "gender", width: 200 }
+  { _id: 1, key: "name", name: "name", width: 200 },
+  { _id: 2, key: "password", name: "password", width: 200 },
+  { _id: 3, key: "passwordCheck", name: "passwordCheck", width: 200 },
+  { _id: 4, key: "age", name: "age", width: 200 },
+  { _id: 5, key: "gender", name: "gender", width: 200 }
 ];
 
 type Props = {}
 
 const styles = {
   display: 'flex',
+  flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
   height: '100vh',
@@ -38,7 +41,9 @@ const styles = {
 const columns_for_user = (props: Props) => {
 
   const [columns, setColumns] = useState([])
-  const [rows, setRows ] = useState([]);
+  const [rows, setRows] = useState([]);
+  const [selectList, setSelectList] = useState<Set<any>>(new Set());
+
 
   useEffect(() => {
     getAllColumns();
@@ -55,8 +60,8 @@ const columns_for_user = (props: Props) => {
       if (response.data.success) {
 
 
-        const new_columns = response.data.data.map((column: any)=> {
-          if(column.editor){
+        const new_columns = response.data.data.map((column: any) => {
+          if (column.editor) {
             return {
               ...column,
               editor: column.editor === "TextEditor" ? TextEditor : ""
@@ -74,20 +79,53 @@ const columns_for_user = (props: Props) => {
     }
   }
 
-  const onRowsChangeHandler = (data:any,idx:any)=> {
-    console.log("hi");
+  const onRowsChangeHandler = (data: any, idx: any) => {
+    console.log("data : ", data);
+
+    let tmp: Set<any> = selectList;
+    data.map((v: any, i: any) => {
+      if (v.isChange) {
+        tmp.add(v._id)
+        v.isChange = false
+      }
+    });
+    setSelectList(tmp);
     setRows(data);
+
   }
 
   // {(data, idx) => {
   //   // setSelectRow && setSelectRow(idx.indexes[0])
   //   setRow(data, idx.indexes[0])
-// }}
+  // }}
+  // {[SelectColumn, ...column]}
 
   return (
     <div style={styles}>
-      {/* <DataGrid columns={sample_columns} rows={rows} style={{ width: "100%" }} onRowsChange = {(data,idx)=> {onRowsChangeHandler(data,idx)}} /> */}
-      <DataGrid columns={columns} rows={rows} style={{ width: "100%" }} onRowsChange = {(data,idx)=> {onRowsChangeHandler(data,idx)}} />
+
+      <div>
+        <button onClick="">행 추가</button>
+        <button onClick="">저장 하기</button>
+        <button onClick="">행 삭제</button>
+      </div>
+
+      <br /><br />
+
+      <div>
+
+        <DataGrid
+          columns={[SelectColumn, ...columns]}
+          rows={rows} style={{ width: "100%" }}
+          onRowsChange={(data, idx) => { onRowsChangeHandler(data, idx) }}
+          rowKeyGetter={(row) => row._id || ""}
+          selectedRows={selectList}
+          onSelectedRowsChange={(row) => {
+            console.log("row : ", row);
+            setSelectList(row)
+          }}
+        />
+      </div>
+
     </div>
   )
 }
