@@ -76,7 +76,7 @@ const columns_for_user = (props: Props) => {
 
   const onRowsChangeHandler = (data:any,idx:any)=> {
     console.log("hi");
-    
+    setRows(data);
   }
 
   // {(data, idx) => {
