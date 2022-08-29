@@ -9,44 +9,49 @@ const options: SchemaOptions = {
 };
 
 @Schema(options)
-export class ColumnNames extends Document {
+export class CatsColumns extends Document {
 
   @ApiProperty({
-    example: "users_table",
-    description: "subject"
-  })
-  @Prop({
-    required: true,
-    unique: true,
-  })
-  @IsNotEmpty()
-  subject: string;
-
-  @ApiProperty({
-    example: "name",
-    description: "column_name"
+    example: "key",
+    description: "column key"
   })
   @Prop({
     required: true,
   })
   @IsString()
   @IsNotEmpty()
-  column_name: string;
+  key: string;
+
+  @ApiProperty({
+    example: "name",
+    description: "column name"
+  })
+  @Prop({
+    required: true,
+  })
+  @IsString()
+  @IsNotEmpty()
+  name: string;
+
+  @Prop()
+  width: number;
 
   readonly readOnlyData: {
     id: string;
-    subject: string;
-    column_name: string,
+    key: string;
+    name: string;
+    width: number;
   };
 
 }
 
-export const ColumnNamesSchema = SchemaFactory.createForClass(ColumnNames);
+export const CatColumnsSchema = SchemaFactory.createForClass(CatsColumns);
 
-ColumnNamesSchema.virtual('readOnlyData').get(function (this: ColumnNames) {
+CatColumnsSchema.virtual('readOnlyData').get(function (this: CatsColumns) {
   return {
     id: this.id,
-    subject: this.subject,
-    column_name: this.column_name,
+    key: this.key,
+    name: this.name,
+    width: this.width
   }
 })

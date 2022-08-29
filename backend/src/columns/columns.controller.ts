@@ -1,6 +1,7 @@
 import { ColumnsService } from './columns.service';
 import { Controller, Get } from '@nestjs/common';
 
+
 @Controller('columns')
 export class ColumnsController {
     constructor(
@@ -10,7 +11,6 @@ export class ColumnsController {
     @Get("")
     getAllCats() {
     // const allCats = this.ColumnsService.findAllCats("name_test");
-  
       return "test";
     }
 

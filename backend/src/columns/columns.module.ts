@@ -1,6 +1,6 @@
+import { ColumnsRepository } from './columns.repository';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-
 import { ColumnsController } from './columns.controller';
 import { ColumnsService } from './columns.service';
 import { ColumnNames, ColumnNamesSchema } from './columns.schema';
@@ -11,8 +11,7 @@ import { ColumnNames, ColumnNamesSchema } from './columns.schema';
     MongooseModule.forFeature([{ name: ColumnNames.name, schema: ColumnNamesSchema }])
   ],
   controllers: [ColumnsController],
-  providers: [ColumnsService]
-  // exports: [ColumnsService ],
+  providers: [ColumnsService, ColumnsRepository]
 
 })
 export class ColumnsModule { }

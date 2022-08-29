@@ -20,11 +20,8 @@ import { LoginRequestDto } from 'src/auth/dto/login.request.dto';
 import { Request } from "express"
 import { CurrentUser } from 'src/common/decorators/user.decorator';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-
-
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from 'src/common/utils/multer.options';
-
 import { Cat } from '../cats.schema';
 
 
@@ -69,7 +66,6 @@ export class CatsController {
   @Post("saveMembers")
   async saveMultiUsers(@Body() data) {
     console.log("유저 테이블 정보 저장 check !!");
-    // console.log("body data : ", data);
 
     return this.CatsService.saveMultiUsers(data);
   }
@@ -110,13 +106,6 @@ export class CatsController {
     return 'logout';
   }
 
-  // @ApiOperation({ summary: "프로필 이미지 업로드" })
-  // @UseInterceptors(FileInterceptor("file"))
-  // @Post('upload')
-  // uploadCatImg() {
-  //   return 'uploadImg';
-  // }
-
   @ApiOperation({ summary: "이미지 대량 업로드" })
   @UseInterceptors(FilesInterceptor("image", 10, multerOptions('cats')))
   // @UseGuards(JwtAuthGuard)
@@ -124,12 +113,11 @@ export class CatsController {
   async uploadCatImg(
     @UploadedFiles() files: Array<Express.Multer.File>,
     @Body() data
-    // @CurrentUser() cat: Cat,
   ) {
     console.log(files);
     console.log("data : ", data);
     console.log("data : ", data.rowId);
-    
+
     await this.CatsService.uploadImg(data.rowId, files);
 
     return "파일 업로드 성공";
@@ -147,11 +135,20 @@ export class CatsController {
 
     const searchOption = data.searchOption;
     const searchKeyword = data.searchKeyword;
-    
+
     const search_result = await this.CatsService.searchUsers(searchOption, searchKeyword);
 
     return search_result;
 
   }
+
+  @Post("save_columns")
+  async saveColumns(@Body() data) {
+    console.log("컬럼 데이터 저장 !!", data);
+    const search_result = await this.CatsService.saveColumnDatas(data);
+
+    return "save columns"
+  }
+
 
 }

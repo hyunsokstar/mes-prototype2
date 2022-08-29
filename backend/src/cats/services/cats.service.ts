@@ -10,12 +10,83 @@ import { CatsRepository } from '../cats.repository';
 @Injectable()
 export class CatsService {
   constructor(private readonly catsRepository: CatsRepository) { }
-  
-  async searchUsers(searchOption: string, searchKeyword:string) {
 
-    return await this.catsRepository.searchUsers(searchOption , searchKeyword)
+  async saveMultiUsers(data: any) {
+    const { users } = data;
+
+    users.map(async (user, index) => {
+      let isCatExist;
+
+      if (mongoose.isValidObjectId(user.id)) {
+        isCatExist = await this.catsRepository.existsById(user.id);
+
+      } else {
+        isCatExist = false
+      }
+      console.log("isCatExist : ", isCatExist);
+
+      if (isCatExist) {
+        console.log("회원 정보가 이미 존재", index);
+        const hashedPassword = await bcrypt.hash(user.password, 10);
+
+        const filter = { _id: user.id }
+        const cat = await this.catsRepository.update(filter, { email: user.email, name: user.name, password: hashedPassword, height: user.height, gender: user.gender })
+
+      } else {
+        console.log("회원 정보 생성 !", index);
+
+        const hashedPassword = await bcrypt.hash(user.password, 10);
+
+
+        const cat = await this.catsRepository.create({
+          email: user.email,
+          name: user.name,
+          password: hashedPassword,
+          height: user.height,
+          gender: user.gender,
+        });
+
+        // console.log("cat save result :: ", cat);
+
+
+      }
+    })
+
+    return "회원 정보 저장 성공 !!"
+
   }
-  
+
+  async saveColumnDatas(data: any) {
+
+    // const { columns } = data;
+    console.log("columns at service for saveColumnsDatas: ", data);
+
+    data.map(async (column) => {
+
+      const isKeyExist = await this.catsRepository.existsByKey(data[0].key);
+      console.log("key 존재 여부 : ", isKeyExist);
+
+      if (isKeyExist) { // 이미 key 가 존재 <=>  업데이트
+
+        const filter = { key: column.key }
+        const catColumn = await this.catsRepository.updateCatsColumns(filter, { key: column.key, name: column.name, width: column.width })
+
+      } else { // 없을 경우 <=> save
+        const result = await this.catsRepository.createColumns
+        ({
+          key: column.key,
+          name: column.name,
+          width: column.width,
+        });
+      }
+
+    })
+
+  }
+
+  async searchUsers(searchOption: string, searchKeyword: string) {
+    return await this.catsRepository.searchUsers(searchOption, searchKeyword)
+  }
 
   hiCatService() {
     return "hi cat ser !!"
@@ -56,59 +127,6 @@ export class CatsService {
 
 
     return "회원 정보 삭제 성공";
-
-  }
-
-  async saveMultiUsers(data: any) {
-    const { users } = data;
-    // console.log("users check : ", users);
-
-    users.map(async (user, index) => {
-      // const isCatExist = await this.catsRepository.existsByEmail(user.email);
-
-      let isCatExist;
-
-      if (mongoose.isValidObjectId(user.id)) {
-        isCatExist = await this.catsRepository.existsById(user.id);
-
-      } else {
-        isCatExist = false
-      }
-
-      // console.log("user : ", user)
-      console.log("isCatExist : ", isCatExist);
-
-      if (isCatExist) {
-        // console.log("isCatExist : ", isCatExist);
-        // console.log("user.email  : ", user.email);
-        console.log("회원 정보가 이미 존재", index);
-        const hashedPassword = await bcrypt.hash(user.password, 10);
-
-
-        const filter = { _id: user.id }
-        const cat = await this.catsRepository.update(filter, { email: user.email, name: user.name, password: hashedPassword, height: user.height, gender: user.gender })
-
-      } else {
-        console.log("회원 정보 생성 !", index);
-
-        const hashedPassword = await bcrypt.hash(user.password, 10);
-
-
-        const cat = await this.catsRepository.create({
-          email: user.email,
-          name: user.name,
-          password: hashedPassword,
-          height: user.height,
-          gender: user.gender,
-        });
-
-        // console.log("cat save result :: ", cat);
-
-
-      }
-    })
-
-    return "회원 정보 저장 성공 !!"
 
   }
 
