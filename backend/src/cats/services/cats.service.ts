@@ -1,3 +1,4 @@
+import { log } from 'console';
 import { HttpException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Cat } from '../cats.schema';
@@ -65,15 +66,17 @@ export class CatsService {
 
   async saveColumnDatas(data: any) {
 
-    // const { columns } = data;
+    const { columns } = data;
     console.log("columns at service for saveColumnsDatas: ", data);
-
     data.map(async (column) => {
 
       const isKeyExist = await this.catsRepository.existsByKey(data[0].key);
       console.log("key 존재 여부 : ", isKeyExist);
 
       if (isKeyExist) { // 이미 key 가 존재 <=>  업데이트
+
+        console.log("update 확인 ", column);
+        
 
         const filter = { key: column.key }
         const catColumn = await this.catsRepository.updateCatsColumns(filter, { key: column.key, name: column.name, width: column.width, editor: column.editor })

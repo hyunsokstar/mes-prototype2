@@ -41,7 +41,7 @@ const styles = {
 const columns_for_user = (props: Props) => {
 
   const [columns, setColumns] = useState([])
-  const [rows, setRows] = useState([]);
+  const [basicRows, setBasicRows] = useState([]);
   const [selectList, setSelectList] = useState<Set<any>>(new Set());
 
 
@@ -70,7 +70,7 @@ const columns_for_user = (props: Props) => {
         })
 
         setColumns(new_columns);
-        setRows(sample_rows);
+        setBasicRows(sample_rows);
       }
 
     } catch (error) {
@@ -80,7 +80,7 @@ const columns_for_user = (props: Props) => {
   }
 
   const onRowsChangeHandler = (data: any, idx: any) => {
-    console.log("data : ", data);
+    console.log("data for row change handler : ", data);
 
     let tmp: Set<any> = selectList;
     data.map((v: any, i: any) => {
@@ -90,23 +90,42 @@ const columns_for_user = (props: Props) => {
       }
     });
     setSelectList(tmp);
-    setRows(data);
+    setBasicRows(data);
 
   }
 
-  // {(data, idx) => {
-  //   // setSelectRow && setSelectRow(idx.indexes[0])
-  //   setRow(data, idx.indexes[0])
-  // }}
-  // {[SelectColumn, ...column]}
+  const saveColumns = async () => {
+    console.log("컬럼 저장");
+
+    const data_for_save = basicRows;
+
+    try {
+      console.log("data_for_save : ", data_for_save);
+      const response = await axios.post(
+        `${api.cats}/save_columns`,
+        // { users: data_for_save },
+        data_for_save,
+        { withCredentials: true }
+      );
+      if (response.data) {
+        console.log("response.data : ", response.data);
+      }
+
+      alert(response.data.data);
+
+    } catch (error: any) {
+      console.log("error : ", error);
+    }
+
+  }
 
   return (
     <div style={styles}>
 
       <div>
-        <button onClick="">행 추가</button>
-        <button onClick="">저장 하기</button>
-        <button onClick="">행 삭제</button>
+        <button >행 추가</button>
+        <button onClick={() => saveColumns()}>저장 하기</button>
+        <button >행 삭제</button>
       </div>
 
       <br /><br />
@@ -115,13 +134,13 @@ const columns_for_user = (props: Props) => {
 
         <DataGrid
           columns={[SelectColumn, ...columns]}
-          rows={rows} style={{ width: "100%" }}
+          rows={basicRows} style={{ width: "100%" }}
           onRowsChange={(data, idx) => { onRowsChangeHandler(data, idx) }}
           rowKeyGetter={(row) => row._id || ""}
           selectedRows={selectList}
           onSelectedRowsChange={(row) => {
             console.log("row : ", row);
-            setSelectList(row)
+            setSelectList(row);
           }}
         />
       </div>
