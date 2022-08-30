@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import DataGrid from 'react-data-grid';
 import axios from "axios";
 import api from "../utils/api"
+import TextEditor from '../components/util/TextEditor'
 
 
 // const columns = [
@@ -10,8 +11,8 @@ import api from "../utils/api"
 // ];
 
 const rows = [
-  { id: 0, email: 'tere@daum.net' , name: "hyun" , gender: "man"},
-  { id: 1, email: 'demo@naver.com' , name: "demo", gender: "girl" }
+  { id: 0, email: 'tere@daum.net', name: "hyun", gender: "man", hobby: "game", position: "dev", height: "174", age: 30, company: "hyundae" },
+  { id: 1, email: 'demo@naver.com', name: "demo", gender: "girl", hobby: "game", position: "dev", height: "174", age: 30, company: "hyundae" }
 ];
 
 const styles = {
@@ -48,18 +49,18 @@ function users({ }: Props) {
 
     try {
       const response = await axios.get(
-        `${api.cats}/all_cats_columns/${page}/4`,
+        `${api.cats}/all_cats_columns/${page}/8`,
         // `${api.cats}/all_cats_columns/${page}/2`,
         { withCredentials: true }
       );
-      console.log("resposne : ", response);
+      console.log("resposne : ", response.data.data.columns_list);
       if (response.data.success) {
 
         const new_columns = response.data.data.columns_list.map((column: any) => {
           if (column.editor) {
             return {
               ...column,
-              // editor: column.editor === "TextEditor" ? TextEditor : ""
+              editor: column.editor === "TextEditor" ? TextEditor : ""
             }
           }
         })
