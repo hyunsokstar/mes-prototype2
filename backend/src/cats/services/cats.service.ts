@@ -19,6 +19,13 @@ export class CatsService {
     return allCatsColumns
   }
 
+  async deleteColumns(data: any) {
+    // throw new Error('Method not implemented.');
+    const ids_for_delete = data.ids_for_delete;
+    const result = await this.catsRepository.deleteColumnsByIdsArray(ids_for_delete);
+
+  }
+
   async saveMultiUsers(data: any) {
     const { users } = data;
 
@@ -65,7 +72,6 @@ export class CatsService {
   }
 
   async saveColumnDatas(data: any) {
-
     const { columns } = data;
     console.log("columns at service for saveColumnsDatas: ", data);
     data.map(async (column) => {
@@ -76,7 +82,7 @@ export class CatsService {
       if (isKeyExist) { // 이미 key 가 존재 <=>  업데이트
 
         console.log("update 확인 ", column);
-        
+
 
         const filter = { key: column.key }
         const catColumn = await this.catsRepository.updateCatsColumns(filter, { key: column.key, name: column.name, width: column.width, editor: column.editor })

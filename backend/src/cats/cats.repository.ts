@@ -16,8 +16,22 @@ export class CatsRepository {
         @InjectModel(CatsColumns.name) private readonly catsColumnsModel: Model<CatsColumns>,
     ) { }
 
+    async deleteColumnsByIdsArray(ids_for_delete: any) {
+        
+        console.log("ids_for_delete : ", ids_for_delete);
+        const result = await this.catsColumnsModel.deleteMany(
+            {
+                _id: {
+                    $in: ids_for_delete
+                }
+            },
+        );
+        return result;
+
+    }
+
     async findAllCatsColumns() {
-        return await this.catsColumnsModel.find().sort ({key:1});
+        return await this.catsColumnsModel.find().sort({ key: 1 });
     }
 
     async saveColumnDatas(data: any) {

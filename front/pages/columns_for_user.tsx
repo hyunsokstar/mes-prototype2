@@ -126,12 +126,56 @@ const columns_for_user = (props: Props) => {
 
     setBasicRows([
       {
-        id: `${random_id}`,
+        _id: `${random_id}`,
         email: null,
         name: null,
       },
       ...basicRows,
     ]);
+  }
+
+  const deleteUserForCheck = async () => {
+    console.log("삭제 버튼 클릭");
+    // console.log("basicRows : ", basicRows);
+
+    try {
+
+      const rows_for_delete = basicRows.filter((row: any) => {
+        console.log("row : ", row);
+
+        if (selectList.has(row._id)) {
+          return row._id
+        }
+      })
+      console.log("rows_for_delete : ", rows_for_delete);
+
+      const ids_for_delete = rows_for_delete.map((row: any) => {
+        return row._id
+      })
+
+      console.log("ids_for_delete : ", ids_for_delete); // ['62f8c8c77297cfa7f1e05154', '62f8f230ed2082e4d5cb287d']
+
+      const response = await axios.post(
+        `${api.cats}/deleteColumns`,
+        { ids_for_delete: ids_for_delete },
+        { withCredentials: true }
+      );
+
+      if (response.data.success) {
+        console.log("response.data : ", response.data);
+
+        const basic_row_after_delete = basicRows.filter((row: any) => {
+          if (!ids_for_delete.includes(row._id)) {
+            return row
+          }
+        })
+        alert("행 삭제 성공 !");
+        setBasicRows(basic_row_after_delete);
+      }
+
+    } catch (error) {
+
+    }
 
 
   }
@@ -139,10 +183,10 @@ const columns_for_user = (props: Props) => {
   return (
     <div style={styles}>
 
-      <div>
+      <div style={{ display: "flex", justifyContent: "flex-end", marginRight: "10px", gap: "10px" }}>
         <button onClick={() => addRowForExcelTable()}>행 추가</button>
         <button onClick={() => saveColumns()}>저장 하기</button>
-        <button >행 삭제</button>
+        <button onClick={() => deleteUserForCheck()}>행 삭제</button>
       </div>
 
       <br /><br />

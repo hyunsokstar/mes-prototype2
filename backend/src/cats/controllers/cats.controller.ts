@@ -78,6 +78,14 @@ export class CatsController {
     return this.CatsService.deleteMultiUsers(data);
   }
 
+  @Post("deleteColumns")
+  async deleteColumns(@Body() data) {
+    console.log("유저 테이블 정보 저장 check !!");
+    // console.log("body data : ", data);
+
+    return this.CatsService.deleteColumns(data);
+  }
+
   @ApiResponse({
     status: 500,
     description: 'server Errror'
@@ -143,7 +151,6 @@ export class CatsController {
   }
 
   // crud for columns
-
   @Post("save_columns")
   async saveColumns(@Body() data) {
     console.log("컬럼 데이터 저장 !!", data);
