@@ -6,23 +6,22 @@ import TextEditor from '../components/util/TextEditor'
 import { SelectColumn } from "react-data-grid";
 
 
-
 // import ExcelTable from "../components/Excel/ExcelTable"
-
 const sample_columns = [
   { key: 'key', name: 'key', editor: TextEditor },
   { key: 'name', name: 'name', editor: TextEditor },
   { key: 'width', name: 'width', editor: TextEditor },
+  { key: 'editor', name: 'editor', editor: TextEditor },
 ];
 
-const sample_rows = [
-  // { key: "email", name: "email", width: 200 },
-  { _id: 1, key: "name", name: "name", width: 200 },
-  { _id: 2, key: "password", name: "password", width: 200 },
-  { _id: 3, key: "passwordCheck", name: "passwordCheck", width: 200 },
-  { _id: 4, key: "age", name: "age", width: 200 },
-  { _id: 5, key: "gender", name: "gender", width: 200 }
-];
+// const sample_rows = [
+//   // { key: "email", name: "email", width: 200 },
+//   { _id: 1, key: "name", name: "name", width: 200 },
+//   { _id: 2, key: "password", name: "password", width: 200 },
+//   { _id: 3, key: "passwordCheck", name: "passwordCheck", width: 200 },
+//   { _id: 4, key: "age", name: "age", width: 200 },
+//   { _id: 5, key: "gender", name: "gender", width: 200 }
+// ];
 
 type Props = {}
 
@@ -64,13 +63,13 @@ const columns_for_user = (props: Props) => {
           if (column.editor) {
             return {
               ...column,
-              editor: column.editor === "TextEditor" ? TextEditor : ""
+              // editor: column.editor === "TextEditor" ? TextEditor : ""
             }
           }
         })
 
-        setColumns(new_columns);
-        setBasicRows(sample_rows);
+        // setColumns(new_columns);
+        setBasicRows(new_columns);
       }
 
     } catch (error) {
@@ -133,7 +132,7 @@ const columns_for_user = (props: Props) => {
       <div>
 
         <DataGrid
-          columns={[SelectColumn, ...columns]}
+          columns={[SelectColumn, ...sample_columns]}
           rows={basicRows} style={{ width: "100%" }}
           onRowsChange={(data, idx) => { onRowsChangeHandler(data, idx) }}
           rowKeyGetter={(row) => row._id || ""}
