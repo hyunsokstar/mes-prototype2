@@ -8,10 +8,10 @@ import { SelectColumn } from "react-data-grid";
 
 // import ExcelTable from "../components/Excel/ExcelTable"
 const sample_columns = [
-  { key: 'key', name: 'key', editor: TextEditor },
-  { key: 'name', name: 'name', editor: TextEditor },
-  { key: 'width', name: 'width', editor: TextEditor },
-  { key: 'editor', name: 'editor', editor: TextEditor },
+  { key: 'key', name: 'key', editor: TextEditor, width: 200},
+  { key: 'name', name: 'name', editor: TextEditor, width: 200},
+  { key: 'width', name: 'width', editor: TextEditor, width: 200 },
+  { key: 'editor', name: 'editor', editor: TextEditor, width: 200 },
 ];
 
 // const sample_rows = [
