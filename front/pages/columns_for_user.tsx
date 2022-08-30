@@ -39,6 +39,7 @@ const styles = {
 };
 
 
+
 const columns_for_user = (props: Props) => {
 
   const [columns, setColumns] = useState([])
@@ -59,7 +60,7 @@ const columns_for_user = (props: Props) => {
 
     try {
       const response = await axios.get(
-        `${api.cats}/all_cats_columns/${page}/2`,
+        `${api.cats}/all_cats_columns/${page}/8`,
         // `${api.cats}/all_cats_columns/${page}/2`,
         { withCredentials: true }
       );
@@ -203,6 +204,9 @@ const columns_for_user = (props: Props) => {
       <br /><br />
 
       <div>
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          총 {pageInfo && pageInfo.total} 페이지, 현재 : {pageInfo && pageInfo.page}
+        </div>
 
         <DataGrid
           columns={[SelectColumn, ...sample_columns]}
@@ -221,10 +225,12 @@ const columns_for_user = (props: Props) => {
       <br />
 
       <Pagination
+        // color="primary"
         count={pageInfo.total}
         page={pageInfo.page}
+        size="large"
         defaultPage={1}
-        variant="outlined"
+        // variant="outlined"
         shape="rounded"
         onChange={(e, page) => {
           setPage(page)

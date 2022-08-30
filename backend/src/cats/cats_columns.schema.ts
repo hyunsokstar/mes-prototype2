@@ -53,7 +53,7 @@ export class CatsColumns extends Document {
 
   @ApiProperty({
     example: "order",
-    description: "컬럼 순서"
+    description: "컬럼"
   })
   @Prop()
   order: number;
