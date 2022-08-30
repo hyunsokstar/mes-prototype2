@@ -17,7 +17,7 @@ export class CatsRepository {
     ) { }
 
     async deleteColumnsByIdsArray(ids_for_delete: any) {
-        
+
         console.log("ids_for_delete : ", ids_for_delete);
         const result = await this.catsColumnsModel.deleteMany(
             {
@@ -34,7 +34,17 @@ export class CatsRepository {
     // 1page 0 * 2 1 * 2
 
     async findAllCatsColumns(pageNum, limit) {
-        return await this.catsColumnsModel.find().skip((pageNum-1)*limit).limit(limit).sort({ order: 1 });
+
+        const total_page = await this.catsColumnsModel.find().count() / limit
+        console.log("total_page : ", total_page);
+
+        const columns_list = await this.catsColumnsModel.find().skip((pageNum - 1) * limit).limit(limit).sort({ order: 1 });
+
+        return {
+            current_page: pageNum,
+            total_page,
+            columns_list
+        }
     }
 
     async saveColumnDatas(data: any) {

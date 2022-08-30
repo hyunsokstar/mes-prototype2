@@ -4,6 +4,7 @@ import axios from "axios";
 import api from "../utils/api"
 import TextEditor from '../components/util/TextEditor'
 import { SelectColumn } from "react-data-grid";
+import Pagination from '@material-ui/lab/Pagination'
 
 
 // import ExcelTable from "../components/Excel/ExcelTable"
@@ -50,7 +51,7 @@ const columns_for_user = (props: Props) => {
 
   useEffect(() => {
     getAllColumns(pageInfo.page);
-  }, [])
+  }, [pageInfo.page])
 
 
   const getAllColumns = async (page: number = 1) => {
@@ -65,7 +66,7 @@ const columns_for_user = (props: Props) => {
       console.log("resposne : ", response);
       if (response.data.success) {
 
-        const new_columns = response.data.data.map((column: any) => {
+        const new_columns = response.data.data.columns_list.map((column: any) => {
           if (column.editor) {
             return {
               ...column,
@@ -74,7 +75,7 @@ const columns_for_user = (props: Props) => {
           }
         })
 
-        // setColumns(new_columns);
+        setPageInfo({ page: response.data.data.current_page, total: response.data.data.total_page })
         setBasicRows(new_columns);
       }
 
@@ -186,6 +187,10 @@ const columns_for_user = (props: Props) => {
 
   }
 
+  const setPage = (page: any) => {
+    setPageInfo({ ...pageInfo, page: page });
+  }
+
   return (
     <div style={styles}>
 
@@ -212,6 +217,18 @@ const columns_for_user = (props: Props) => {
 
         />
       </div>
+
+      <Pagination
+        count={pageInfo.total}
+        page={pageInfo.page}
+        defaultPage={1}
+        variant="outlined"
+        shape="rounded"
+        onChange={(e, page) => {
+          setPage(page)
+        }}
+      />
+
 
     </div>
   )
