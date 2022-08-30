@@ -12,11 +12,11 @@ import { CatsRepository } from '../cats.repository';
 export class CatsService {
   constructor(private readonly catsRepository: CatsRepository) { }
 
-  // 1122
-  async findAllCatsColumns() {
-    const allCatsColumns = await this.catsRepository.findAllCatsColumns();
+  async findAllCatsColumns(pageNum: number, limit: number) {
 
+    const allCatsColumns = await this.catsRepository.findAllCatsColumns(pageNum, limit);
     return allCatsColumns
+
   }
 
   async deleteColumns(data: any) {
@@ -83,9 +83,15 @@ export class CatsService {
 
         console.log("update 확인 ", column);
 
-
         const filter = { key: column.key }
-        const catColumn = await this.catsRepository.updateCatsColumns(filter, { key: column.key, name: column.name, width: column.width, editor: column.editor })
+        const catColumn = await this.catsRepository.updateCatsColumns(filter,
+          {
+            key: column.key,
+            name: column.name,
+            width: column.width,
+            editor: column.editor,
+            order: column.order
+          })
 
       } else { // 없을 경우 <=> save
         const result = await this.catsRepository.createColumns
@@ -93,7 +99,8 @@ export class CatsService {
             key: column.key,
             name: column.name,
             width: column.width,
-            editor: column.editor
+            editor: column.editor,
+            order: column.order
           });
       }
 

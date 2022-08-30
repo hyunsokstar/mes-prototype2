@@ -51,6 +51,12 @@ export class CatsColumns extends Document {
   @IsNotEmpty()
   editor: string;
 
+  @ApiProperty({
+    example: "order",
+    description: "컬럼 순서"
+  })
+  @Prop()
+  order: number;
 
   readonly readOnlyData: {
     id: string;

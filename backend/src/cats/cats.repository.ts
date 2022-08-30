@@ -30,8 +30,11 @@ export class CatsRepository {
 
     }
 
-    async findAllCatsColumns() {
-        return await this.catsColumnsModel.find().sort({ key: 1 });
+
+    // 1page 0 * 2 1 * 2
+
+    async findAllCatsColumns(pageNum, limit) {
+        return await this.catsColumnsModel.find().skip((pageNum-1)*limit).limit(limit).sort({ order: 1 });
     }
 
     async saveColumnDatas(data: any) {

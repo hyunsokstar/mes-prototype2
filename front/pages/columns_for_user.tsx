@@ -12,6 +12,7 @@ const sample_columns = [
   { key: 'name', name: 'name', editor: TextEditor, width: 200 },
   { key: 'width', name: 'width', editor: TextEditor, width: 200 },
   { key: 'editor', name: 'editor', editor: TextEditor, width: 200 },
+  { key: 'order', name: 'order', editor: TextEditor, width: 200 },
 ];
 
 // const sample_rows = [
@@ -42,22 +43,27 @@ const columns_for_user = (props: Props) => {
   const [columns, setColumns] = useState([])
   const [basicRows, setBasicRows] = useState([]);
   const [selectList, setSelectList] = useState<Set<any>>(new Set());
-
+  const [pageInfo, setPageInfo] = useState<{ page: number, total: number }>({
+    page: 1,
+    total: 1
+  })
 
   useEffect(() => {
-    getAllColumns();
+    getAllColumns(pageInfo.page);
   }, [])
 
 
-  const getAllColumns = async () => {
+  const getAllColumns = async (page: number = 1) => {
+
+
     try {
       const response = await axios.get(
-        `${api.cats}/all_cats_columns`,
+        `${api.cats}/all_cats_columns/${page}/2`,
+        // `${api.cats}/all_cats_columns/${page}/2`,
         { withCredentials: true }
       );
       console.log("resposne : ", response);
       if (response.data.success) {
-
 
         const new_columns = response.data.data.map((column: any) => {
           if (column.editor) {

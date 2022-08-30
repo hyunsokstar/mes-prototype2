@@ -9,6 +9,7 @@ import {
   UseGuards,
   Req,
   UploadedFiles,
+  Bind,
 } from '@nestjs/common';
 import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
 import { SuccessInterceptor } from '../../common/interceptors/success.interceptor';
@@ -159,12 +160,13 @@ export class CatsController {
     return "save columns"
   }
 
-  @Get("all_cats_columns")
-  getAllColumnsForCats(@CurrentUser() cat) {
-    const allCatsColumnns = this.CatsService.findAllCatsColumns();
-
+  @Get("all_cats_columns/:pageNum/:limit")
+  @Bind(Param())
+  getAllColumnsForCats(params) {
+    console.log("params : ", params.pageNum, params.limit);
+    // const allCatsColumnns = this.CatsService.findAllCatsColumns();
+    const allCatsColumnns = this.CatsService.findAllCatsColumns(params.pageNum, params.limit);
     return allCatsColumnns;
   }
-
 
 }
