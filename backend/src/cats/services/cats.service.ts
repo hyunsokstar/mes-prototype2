@@ -70,7 +70,7 @@ export class CatsService {
     console.log("columns at service for saveColumnsDatas: ", data);
     data.map(async (column) => {
 
-      const isKeyExist = await this.catsRepository.existsByKey(data[0].key);
+      const isKeyExist = await this.catsRepository.existsByKey(column.key);
       console.log("key 존재 여부 : ", isKeyExist);
 
       if (isKeyExist) { // 이미 key 가 존재 <=>  업데이트

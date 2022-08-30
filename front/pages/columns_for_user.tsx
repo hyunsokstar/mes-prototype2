@@ -8,8 +8,8 @@ import { SelectColumn } from "react-data-grid";
 
 // import ExcelTable from "../components/Excel/ExcelTable"
 const sample_columns = [
-  { key: 'key', name: 'key', editor: TextEditor, width: 200},
-  { key: 'name', name: 'name', editor: TextEditor, width: 200},
+  { key: 'key', name: 'key', editor: TextEditor, width: 200 },
+  { key: 'name', name: 'name', editor: TextEditor, width: 200 },
   { key: 'width', name: 'width', editor: TextEditor, width: 200 },
   { key: 'editor', name: 'editor', editor: TextEditor, width: 200 },
 ];
@@ -118,11 +118,29 @@ const columns_for_user = (props: Props) => {
 
   }
 
+  const addRowForExcelTable = () => {
+    // console.log("행 추가!");
+
+    console.log("행 추가 : ");
+    const random_id = Math.random() * 1000;
+
+    setBasicRows([
+      {
+        id: `${random_id}`,
+        email: null,
+        name: null,
+      },
+      ...basicRows,
+    ]);
+
+
+  }
+
   return (
     <div style={styles}>
 
       <div>
-        <button >행 추가</button>
+        <button onClick={() => addRowForExcelTable()}>행 추가</button>
         <button onClick={() => saveColumns()}>저장 하기</button>
         <button >행 삭제</button>
       </div>
@@ -141,6 +159,7 @@ const columns_for_user = (props: Props) => {
             console.log("row : ", row);
             setSelectList(row);
           }}
+
         />
       </div>
 
