@@ -35,7 +35,7 @@ const styles = {
   height: '100vh',
   width: "80%",
   margin: "auto",
-  border: "1px solid green"
+  // border: "1px solid green"
 };
 
 
@@ -217,6 +217,8 @@ const columns_for_user = (props: Props) => {
 
         />
       </div>
+
+      <br />
 
       <Pagination
         count={pageInfo.total}
