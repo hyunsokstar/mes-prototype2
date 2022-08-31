@@ -22,16 +22,13 @@ const styles = {
   justifyContent: 'center',
   height: '100vh',
   width: "80%",
-  margin: "auto",
-  // border: "1px solid green"
+  margin: "auto"
 };
-
 
 type Props = {}
 
 
 function users({ }: Props) {
-
   const [columns, setColumns] = useState([])
   const [basicRows, setBasicRows] = useState([]);
   const [selectList, setSelectList] = useState<Set<any>>(new Set());
@@ -49,15 +46,17 @@ function users({ }: Props) {
 
     try {
       const response = await axios.get(
-        `${api.cats}/all_cats_columns/${page}/8`,
+        // `${api.cats}/all_cats_columns/${page}/8`,
+        `${api.cats}/cats_columns/users_table/${page}/8`,
         // `${api.cats}/all_cats_columns/${page}/2`,
         { withCredentials: true }
       );
       console.log("resposne : ", response.data.data.columns_list);
       if (response.data.success) {
 
-        const new_columns = response.data.data.columns_list.map((column: any) => {
-          if (column.editor) {
+        const new_columns = response.data.data.columns_list.filter((column: any) => {
+          if (column.editor && column.hidden !== "true") {
+          // if (column.editor) {
             return {
               ...column,
               editor: column.editor === "TextEditor" ? TextEditor : ""
@@ -78,6 +77,9 @@ function users({ }: Props) {
 
   return (
     <div style={styles}>
+      <div>
+        <h2>Users Table</h2>
+      </div>
       <DataGrid columns={columns} rows={rows} style={{ width: "100%" }} />
     </div>
   )
@@ -85,8 +87,3 @@ function users({ }: Props) {
 
 export default users
 
-
-
-// function App() {
-//   return <DataGrid columns={columns} rows={rows} />;
-// }

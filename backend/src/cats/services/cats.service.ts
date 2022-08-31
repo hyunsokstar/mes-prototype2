@@ -12,9 +12,9 @@ import { CatsRepository } from '../cats.repository';
 export class CatsService {
   constructor(private readonly catsRepository: CatsRepository) { }
 
-  async findAllCatsColumns(pageNum: number, limit: number) {
+  async findAllCatsColumns(table_name:string, pageNum: number, limit: number) {
 
-    const allCatsColumns = await this.catsRepository.findAllCatsColumns(pageNum, limit);
+    const allCatsColumns = await this.catsRepository.findAllCatsColumns(table_name, pageNum, limit);
     return allCatsColumns
 
   }
@@ -91,7 +91,9 @@ export class CatsService {
             name: column.name,
             width: column.width,
             editor: column.editor,
-            order: column.order
+            order: column.order,
+            hidden: column.hidden
+
           })
 
       } else { // 없을 경우 <=> save
@@ -102,7 +104,8 @@ export class CatsService {
             name: column.name,
             width: column.width,
             editor: column.editor,
-            order: column.order
+            order: column.order,
+            hidden: column.hidden
           });
       }
 

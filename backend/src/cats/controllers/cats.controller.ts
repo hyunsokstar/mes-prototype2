@@ -160,11 +160,11 @@ export class CatsController {
     return "save columns"
   }
 
-  @Get("all_cats_columns/:pageNum/:limit")
+  @Get("cats_columns/:table_name/:pageNum/:limit")
   @Bind(Param())
   getAllColumnsForCats(params) {
-    console.log("params : ", params.pageNum, params.limit);
-    const allCatsColumnns = this.CatsService.findAllCatsColumns(params.pageNum, params.limit);
+    console.log("params : ",params.table_name, params.pageNum, params.limit);
+    const allCatsColumnns = this.CatsService.findAllCatsColumns(params.table_name,params.pageNum, params.limit);
 
     return allCatsColumnns;
   }

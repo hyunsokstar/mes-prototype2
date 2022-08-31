@@ -69,6 +69,17 @@ export class CatsColumns extends Document {
   @Prop()
   order: number;
 
+  @ApiProperty({
+    example: "true",
+    description: "노출 여부"
+  })
+  @Prop({
+    required: true,
+  })
+  @IsString()
+  @IsNotEmpty()
+  hidden: string;
+
   readonly readOnlyData: {
     id: string;
     key: string;
