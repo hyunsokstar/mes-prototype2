@@ -41,7 +41,6 @@ const styles = {
 
 
 const MemberTable = (props: Props) => {
-
   const [columns, setColumns] = useState([])
   const [basicRows, setBasicRows] = useState([]);
   const [selectList, setSelectList] = useState<Set<any>>(new Set());

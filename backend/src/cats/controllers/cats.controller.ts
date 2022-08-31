@@ -164,10 +164,7 @@ export class CatsController {
   @Bind(Param())
   getAllColumnsForCats(params) {
     console.log("params : ", params.pageNum, params.limit);
-    // const allCatsColumnns = this.CatsService.findAllCatsColumns();
     const allCatsColumnns = this.CatsService.findAllCatsColumns(params.pageNum, params.limit);
-
-    
 
     return allCatsColumnns;
   }

@@ -86,6 +86,7 @@ export class CatsService {
         const filter = { key: column.key }
         const catColumn = await this.catsRepository.updateCatsColumns(filter,
           {
+            table_name: column.table_name,
             key: column.key,
             name: column.name,
             width: column.width,
@@ -96,6 +97,7 @@ export class CatsService {
       } else { // 없을 경우 <=> save
         const result = await this.catsRepository.createColumns
           ({
+            table_name: column.table_name,
             key: column.key,
             name: column.name,
             width: column.width,

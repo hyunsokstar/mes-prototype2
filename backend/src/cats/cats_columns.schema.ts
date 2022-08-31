@@ -12,6 +12,17 @@ const options: SchemaOptions = {
 export class CatsColumns extends Document {
 
   @ApiProperty({
+    example: "users_table",
+    description: "테이블 이름"
+  })
+  @Prop({
+    required: true,
+  })
+  @IsString()
+  @IsNotEmpty()
+  table_name: string;
+
+  @ApiProperty({
     example: "key",
     description: "column key"
   })
