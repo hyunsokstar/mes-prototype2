@@ -64,7 +64,7 @@ const AppLayout = ({ children }: LayoutProps) => {
 
     return (
         <div >
-            <div>
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
                 {isLoggedIn ? (
                     <div>{user.name} 님 안녕하세요 <button onClick={() => logOut()}>로그 아웃</button> </div>
                 )
