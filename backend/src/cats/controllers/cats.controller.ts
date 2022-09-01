@@ -169,10 +169,10 @@ export class CatsController {
     return allCatsColumnns;
   }
 
-  @Post("modify_column_width")
+  @Post("modify_column_width_by_table_name_and_key")
   async modify_column_width(@Body() data) {
     console.log("data for modify_column_width !!", data);
-    // const search_result = await this.CatsService.saveColumnDatas(data);
+    const result = await this.CatsService.updateColumWidthForTableAndKey(data);
 
     return "modify_column_width 성공"
   }

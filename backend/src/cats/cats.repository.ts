@@ -11,10 +11,19 @@ import { CatCurrentDto } from './dto/cats.current.dto';
 @Injectable()
 export class CatsRepository {
 
+
     constructor(
         @InjectModel(Cat.name) private readonly catModel: Model<Cat>,
         @InjectModel(CatsColumns.name) private readonly catsColumnsModel: Model<CatsColumns>,
     ) { }
+
+    async updateColumWidthForTableAndKey(data: any) {
+        // throw new Error('Method not implemented.');
+        console.log("data : ", data);
+        const result = await this.catsColumnsModel.findOneAndUpdate({table_name:data.table_name, key: data.key}, {width: data.width})
+        console.log("result : ", result);
+        
+      }
 
     async deleteColumnsByIdsArray(ids_for_delete: any) {
 

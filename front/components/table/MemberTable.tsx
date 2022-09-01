@@ -198,13 +198,13 @@ const MemberTable = (props: Props) => {
     setPageInfo({ ...pageInfo, page: page });
   }
 
-  const modify_column_width = useCallback(async (data: object) => {
+  const modify_column_width_by_table_name_and_key = useCallback(async (data: object) => {
     Notiflix.Loading.circle()
 
     try {
       console.log("data_for_save : ", data);
       const response = await axios.post(
-        `${api.cats}/modify_column_width`,
+        `${api.cats}/modify_column_width_by_table_name_and_key`,
         // { users: data_for_save },
         data,
         { withCredentials: true }
@@ -229,12 +229,13 @@ const MemberTable = (props: Props) => {
     // Notiflix.Loading.circle()
 
     const data = {
-      key: sample_columns[index].key,
+      table_name: "users_table",
+      key: sample_columns[index-1].key,
       width: width.toFixed(2)
     }
 
     console.log("data : ", data);
-    modify_column_width(data);
+    modify_column_width_by_table_name_and_key(data);
 
 
 

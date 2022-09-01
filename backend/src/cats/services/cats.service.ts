@@ -12,6 +12,11 @@ import { CatsRepository } from '../cats.repository';
 export class CatsService {
   constructor(private readonly catsRepository: CatsRepository) { }
 
+  async updateColumWidthForTableAndKey(data: any) {
+    // throw new Error('Method not implemented.');
+    await this.catsRepository.updateColumWidthForTableAndKey(data);
+  }
+
   async findAllCatsColumns(table_name:string, pageNum: number, limit: number) {
 
     const allCatsColumns = await this.catsRepository.findAllCatsColumns(table_name, pageNum, limit);
