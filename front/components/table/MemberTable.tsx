@@ -211,9 +211,9 @@ const MemberTable = (props: Props) => {
       );
       if (response.data.success) {
         Notiflix.Loading.remove()
+        console.log("response.data : ", response.data);
         console.log("컬럼 넓이 api 요청 !!");
         return
-        // console.log("response.data : ", response.data);
       }
       // alert(response.data.data);
 
