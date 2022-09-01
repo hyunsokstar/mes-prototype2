@@ -9,11 +9,11 @@ import Pagination from '@material-ui/lab/Pagination'
 
 // import ExcelTable from "../components/Excel/ExcelTable"
 const sample_columns = [
-  { key: 'key', name: 'key', editor: TextEditor, width: 200 },
-  { key: 'name', name: 'name', editor: TextEditor, width: 200 },
-  { key: 'width', name: 'width', editor: TextEditor, width: 200 },
-  { key: 'editor', name: 'editor', editor: TextEditor, width: 200 },
-  { key: 'order', name: 'order', editor: TextEditor, width: 200 },
+  { key: 'key', name: 'key', editor: TextEditor, width: 200, resizable: true },
+  { key: 'name', name: 'name', editor: TextEditor, width: 200, resizable: true },
+  { key: 'width', name: 'width', editor: TextEditor, width: 200, resizable: true },
+  { key: 'editor', name: 'editor', editor: TextEditor, width: 200, resizable: true },
+  { key: 'order', name: 'order', editor: TextEditor, width: 200, resizable: true },
 ];
 
 // const sample_rows = [
@@ -56,10 +56,9 @@ const MemberTable = (props: Props) => {
 
   const getAllColumns = async (page: number = 1) => {
 
-
     try {
       const response = await axios.get(
-        `${api.cats}/all_cats_columns/${page}/8`,
+        `${api.cats}/cats_columns/users_table/${page}/8`,
         // `${api.cats}/all_cats_columns/${page}/2`,
         { withCredentials: true }
       );
@@ -217,14 +216,17 @@ const MemberTable = (props: Props) => {
             console.log("row : ", row);
             setSelectList(row);
           }}
+          onColumnResize={(v, i) => {
+            console.log("v, i : ", v, i);
+            
+          }}
 
-        />
+            />
       </div>
 
       <br />
 
       <Pagination
-        // color="primary"
         count={pageInfo.total}
         page={pageInfo.page}
         size="large"

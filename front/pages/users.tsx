@@ -43,7 +43,6 @@ function users({ }: Props) {
 
   const getAllColumns = async (page: number = 1) => {
 
-
     try {
       const response = await axios.get(
         // `${api.cats}/all_cats_columns/${page}/8`,
