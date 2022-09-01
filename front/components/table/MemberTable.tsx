@@ -5,6 +5,9 @@ import api from "../../utils/api"
 import TextEditor from '../../components/util/TextEditor'
 import { SelectColumn } from "react-data-grid";
 import Pagination from '@material-ui/lab/Pagination'
+import Notiflix from "notiflix";
+import { useCallback } from 'react';
+import { throttle } from "lodash";
 
 
 // import ExcelTable from "../components/Excel/ExcelTable"
@@ -48,6 +51,11 @@ const MemberTable = (props: Props) => {
     page: 1,
     total: 1
   })
+  const [columnWidthInfo, setColumnWidthInfo] = useState<{ key: string, width: number }>({
+    key: "name",
+    width: 200
+  })
+
 
   useEffect(() => {
     getAllColumns(pageInfo.page);
@@ -190,57 +198,69 @@ const MemberTable = (props: Props) => {
     setPageInfo({ ...pageInfo, page: page });
   }
 
-  return (
-    <div style={styles}>
+  const updateColumnWidthByKey = (index: number, width: number) => {
+    Notiflix.Loading.circle()
 
-      <div style={{ display: "flex", justifyContent: "flex-end", marginRight: "10px", gap: "10px" }}>
-        <button onClick={() => addRowForExcelTable()}>행 추가</button>
-        <button onClick={() => saveColumns()}>저장 하기</button>
-        <button onClick={() => deleteUserForCheck()}>행 삭제</button>
-      </div>
+    const data = {
+      key: sample_columns[index].key,
+      width: width.toFixed(2)
+    }
 
-      <br /><br />
+    console.log("data : ", data);
+    
 
-      <div>
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          총 {pageInfo && pageInfo.total} 페이지, 현재 : {pageInfo && pageInfo.page}
-        </div>
+    Notiflix.Loading.remove()
+  }
 
-        <DataGrid
-          columns={[SelectColumn, ...sample_columns]}
-          rows={basicRows} style={{ width: "100%" }}
-          onRowsChange={(data, idx) => { onRowsChangeHandler(data, idx) }}
-          rowKeyGetter={(row) => row._id || ""}
-          selectedRows={selectList}
-          onSelectedRowsChange={(row) => {
-            console.log("row : ", row);
-            setSelectList(row);
-          }}
-          onColumnResize={(v, i) => {
-            console.log("v, i : ", v, i);
-            
-          }}
+return (
+  <div style={styles}>
 
-            />
-      </div>
-
-      <br />
-
-      <Pagination
-        count={pageInfo.total}
-        page={pageInfo.page}
-        size="large"
-        defaultPage={1}
-        // variant="outlined"
-        shape="rounded"
-        onChange={(e, page) => {
-          setPage(page)
-        }}
-      />
-
-
+    <div style={{ display: "flex", justifyContent: "flex-end", marginRight: "10px", gap: "10px" }}>
+      <button onClick={() => addRowForExcelTable()}>행 추가</button>
+      <button onClick={() => saveColumns()}>저장 하기</button>
+      <button onClick={() => deleteUserForCheck()}>행 삭제</button>
     </div>
-  )
+
+    <br /><br />
+
+    <div>
+      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        총 {pageInfo && pageInfo.total} 페이지, 현재 : {pageInfo && pageInfo.page}
+      </div>
+
+      <DataGrid
+        columns={[SelectColumn, ...sample_columns]}
+        rows={basicRows} style={{ width: "100%" }}
+        onRowsChange={(data, idx) => { onRowsChangeHandler(data, idx) }}
+        rowKeyGetter={(row) => row._id || ""}
+        selectedRows={selectList}
+        onSelectedRowsChange={(row) => {
+          console.log("row : ", row);
+          setSelectList(row);
+        }}
+        onColumnResize={
+          throttle((index, width) => updateColumnWidthByKey(index, width), 2000)
+        }
+      />
+    </div>
+
+    <br />
+
+    <Pagination
+      count={pageInfo.total}
+      page={pageInfo.page}
+      size="large"
+      defaultPage={1}
+      // variant="outlined"
+      shape="rounded"
+      onChange={(e, page) => {
+        setPage(page)
+      }}
+    />
+
+
+  </div>
+)
 }
 
 export default MemberTable

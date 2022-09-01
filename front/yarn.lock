@@ -1932,7 +1932,7 @@
   "resolved" "https://registry.npmjs.org/lodash.merge/-/lodash.merge-4.6.2.tgz"
   "version" "4.6.2"
 
-"lodash@^4.17.11":
+"lodash@^4.17.11", "lodash@^4.17.21":
   "integrity" "sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg=="
   "resolved" "https://registry.npmjs.org/lodash/-/lodash-4.17.21.tgz"
   "version" "4.17.21"
@@ -2043,6 +2043,11 @@
     "@next/swc-win32-arm64-msvc" "12.2.2"
     "@next/swc-win32-ia32-msvc" "12.2.2"
     "@next/swc-win32-x64-msvc" "12.2.2"
+
+"notiflix@^3.2.5":
+  "integrity" "sha512-eMoMlT6gRl6RmO7N23j4APhxSYpYyNRV4T6qF11f3Yh3GMd/GKOdEZ+q/q1crUsZBg0f9EEfTXxLE3A/T3Cu9Q=="
+  "resolved" "https://registry.npmjs.org/notiflix/-/notiflix-3.2.5.tgz"
+  "version" "3.2.5"
 
 "object-assign@^4.1.1":
   "integrity" "sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg=="
