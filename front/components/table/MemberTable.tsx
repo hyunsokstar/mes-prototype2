@@ -198,8 +198,35 @@ const MemberTable = (props: Props) => {
     setPageInfo({ ...pageInfo, page: page });
   }
 
-  const updateColumnWidthByKey = (index: number, width: number) => {
+  const modify_column_width = useCallback(async (data: object) => {
     Notiflix.Loading.circle()
+
+    try {
+      console.log("data_for_save : ", data);
+      const response = await axios.post(
+        `${api.cats}/modify_column_width`,
+        // { users: data_for_save },
+        data,
+        { withCredentials: true }
+      );
+      if (response.data.success) {
+        Notiflix.Loading.remove()
+        console.log("컬럼 넓이 api 요청 !!");
+        return
+        // console.log("response.data : ", response.data);
+      }
+      // alert(response.data.data);
+
+    } catch (error: any) {
+      console.log("error : ", error);
+    }
+
+
+  }, [])
+
+  const updateColumnWidthByKey = useCallback((index: number, width: number) => {
+
+    // Notiflix.Loading.circle()
 
     const data = {
       key: sample_columns[index].key,
@@ -207,60 +234,62 @@ const MemberTable = (props: Props) => {
     }
 
     console.log("data : ", data);
-    
+    modify_column_width(data);
 
-    Notiflix.Loading.remove()
-  }
 
-return (
-  <div style={styles}>
 
-    <div style={{ display: "flex", justifyContent: "flex-end", marginRight: "10px", gap: "10px" }}>
-      <button onClick={() => addRowForExcelTable()}>행 추가</button>
-      <button onClick={() => saveColumns()}>저장 하기</button>
-      <button onClick={() => deleteUserForCheck()}>행 삭제</button>
-    </div>
+    // Notiflix.Loading.remove()
+  }, [])
 
-    <br /><br />
+  return (
+    <div style={styles}>
 
-    <div>
-      <div style={{ display: "flex", justifyContent: "flex-end" }}>
-        총 {pageInfo && pageInfo.total} 페이지, 현재 : {pageInfo && pageInfo.page}
+      <div style={{ display: "flex", justifyContent: "flex-end", marginRight: "10px", gap: "10px" }}>
+        <button onClick={() => addRowForExcelTable()}>행 추가</button>
+        <button onClick={() => saveColumns()}>저장 하기</button>
+        <button onClick={() => deleteUserForCheck()}>행 삭제</button>
       </div>
 
-      <DataGrid
-        columns={[SelectColumn, ...sample_columns]}
-        rows={basicRows} style={{ width: "100%" }}
-        onRowsChange={(data, idx) => { onRowsChangeHandler(data, idx) }}
-        rowKeyGetter={(row) => row._id || ""}
-        selectedRows={selectList}
-        onSelectedRowsChange={(row) => {
-          console.log("row : ", row);
-          setSelectList(row);
+      <br /><br />
+
+      <div>
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          총 {pageInfo && pageInfo.total} 페이지, 현재 : {pageInfo && pageInfo.page}
+        </div>
+
+        <DataGrid
+          columns={[SelectColumn, ...sample_columns]}
+          rows={basicRows} style={{ width: "100%" }}
+          onRowsChange={(data, idx) => { onRowsChangeHandler(data, idx) }}
+          rowKeyGetter={(row) => row._id || ""}
+          selectedRows={selectList}
+          onSelectedRowsChange={(row) => {
+            console.log("row : ", row);
+            setSelectList(row);
+          }}
+          onColumnResize={
+            throttle((index: number, width: number) => updateColumnWidthByKey(index, width), 2000, { 'leading': false })
+          }
+        />
+      </div>
+
+      <br />
+
+      <Pagination
+        count={pageInfo.total}
+        page={pageInfo.page}
+        size="large"
+        defaultPage={1}
+        // variant="outlined"
+        shape="rounded"
+        onChange={(e, page) => {
+          setPage(page)
         }}
-        onColumnResize={
-          throttle((index, width) => updateColumnWidthByKey(index, width), 2000)
-        }
       />
+
+
     </div>
-
-    <br />
-
-    <Pagination
-      count={pageInfo.total}
-      page={pageInfo.page}
-      size="large"
-      defaultPage={1}
-      // variant="outlined"
-      shape="rounded"
-      onChange={(e, page) => {
-        setPage(page)
-      }}
-    />
-
-
-  </div>
-)
+  )
 }
 
 export default MemberTable
