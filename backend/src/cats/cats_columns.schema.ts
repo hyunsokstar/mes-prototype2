@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { IsEmail, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsEmail, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { Document, SchemaOptions } from 'mongoose';
 import { ApiProperty } from "@nestjs/swagger";
 
@@ -79,6 +79,10 @@ export class CatsColumns extends Document {
   @IsString()
   @IsNotEmpty()
   hidden: string;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  resizable: boolean;
 
   readonly readOnlyData: {
     id: string;

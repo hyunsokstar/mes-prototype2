@@ -22,7 +22,6 @@ export class CatsRepository {
         console.log("data : ", data);
         const result = await this.catsColumnsModel.findOneAndUpdate({table_name:data.table_name, key: data.key}, {width: data.width})
         console.log("result : ", result);
-        
       }
 
     async deleteColumnsByIdsArray(ids_for_delete: any) {

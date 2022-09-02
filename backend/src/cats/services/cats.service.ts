@@ -17,7 +17,7 @@ export class CatsService {
     await this.catsRepository.updateColumWidthForTableAndKey(data);
   }
 
-  async findAllCatsColumns(table_name:string, pageNum: number, limit: number) {
+  async findAllCatsColumns(table_name: string, pageNum: number, limit: number) {
 
     const allCatsColumns = await this.catsRepository.findAllCatsColumns(table_name, pageNum, limit);
     return allCatsColumns
@@ -82,7 +82,7 @@ export class CatsService {
     data.map(async (column) => {
 
       const isKeyExist = await this.catsRepository.existsByKey(column.key);
-      console.log("key 존재 여부 : ", isKeyExist);
+      // console.log("key 존재 여부 : ", isKeyExist);
 
       if (isKeyExist) { // 이미 key 가 존재 <=>  업데이트
 
@@ -97,11 +97,14 @@ export class CatsService {
             width: column.width,
             editor: column.editor,
             order: column.order,
-            hidden: column.hidden
+            hidden: column.hidden,
+            resizable: column.resizable
 
           })
 
       } else { // 없을 경우 <=> save
+        console.log("save 확인 ", column);
+
         const result = await this.catsRepository.createColumns
           ({
             table_name: column.table_name,
@@ -110,7 +113,8 @@ export class CatsService {
             width: column.width,
             editor: column.editor,
             order: column.order,
-            hidden: column.hidden
+            hidden: column.hidden,
+            resizable: column.resizable
           });
       }
 
