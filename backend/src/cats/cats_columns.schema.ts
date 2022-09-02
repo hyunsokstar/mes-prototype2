@@ -80,9 +80,12 @@ export class CatsColumns extends Document {
   @IsNotEmpty()
   hidden: string;
 
-  @IsBoolean()
+  @Prop({
+    required: true,
+  })
+  @IsString()
   @IsNotEmpty()
-  resizable: boolean;
+  resizable: string;
 
   readonly readOnlyData: {
     id: string;

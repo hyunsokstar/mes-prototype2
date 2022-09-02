@@ -11,8 +11,8 @@ import TextEditor from '../components/util/TextEditor'
 // ];
 
 const rows = [
-  { id: 0, email: 'tere@daum.net', name: "hyun", gender: "man", hobby: "game", position: "dev", height: "174", age: 30, company: "hyundae" },
-  { id: 1, email: 'demo@naver.com', name: "demo", gender: "girl", hobby: "game", position: "dev", height: "174", age: 30, company: "hyundae" }
+  { id: 0, email: 'tere@daum.net', name: "hyun", gender: "man", hobby: "game", position: "dev", height: "174", age: 30, company: "hyundae", resizable: "true" },
+  { id: 1, email: 'demo@naver.com', name: "demo", gender: "girl", hobby: "game", position: "dev", height: "174", age: 30, company: "hyundae", resizable: "true" }
 ];
 
 const styles = {
@@ -46,23 +46,24 @@ function users({ }: Props) {
     try {
       const response = await axios.get(
         // `${api.cats}/all_cats_columns/${page}/8`,
-        `${api.cats}/cats_columns/users_table/${page}/8`,
+        `${api.cats}/cats_columns/users_table/${page}/9`,
         // `${api.cats}/all_cats_columns/${page}/2`,
         { withCredentials: true }
       );
       console.log("resposne : ", response.data.data.columns_list);
       if (response.data.success) {
 
-        const new_columns = response.data.data.columns_list.filter((column: any) => {
+        const new_columns = response.data.data.columns_list.map((column: any) => {
           if (column.editor && column.hidden !== "true") {
-          // if (column.editor) {
+            console.log("hi", column);
             return {
               ...column,
               editor: column.editor === "TextEditor" ? TextEditor : ""
             }
           }
-        })
+        }).filter(v => v)
 
+        console.log(new_columns);
         // setPageInfo({ page: response.data.data.current_page, total: response.data.data.total_page })
 
         setColumns(new_columns);
@@ -74,12 +75,29 @@ function users({ }: Props) {
     }
   }
 
+  const onRowsChangeHandler = (data: any, idx: any) => {
+    console.log("data for row change handler : ", data);
+
+    // let tmp: Set<any> = selectList;
+    // data.map((v: any, i: any) => {
+    //   if (v.isChange) {
+    //     tmp.add(v._id)
+    //     v.isChange = false
+    //   }
+    // });
+    // setSelectList(tmp);
+    // setBasicRows(data);
+
+  }
+
   return (
     <div style={styles}>
       <div>
         <h2>Users Table</h2>
       </div>
-      <DataGrid columns={columns} rows={rows} style={{ width: "100%" }} />
+      <DataGrid columns={columns} rows={rows} style={{ width: "100%" }}
+        onRowsChange={(data, idx) => { onRowsChangeHandler(data, idx) }}
+      />
     </div>
   )
 }

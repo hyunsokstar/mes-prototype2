@@ -17,6 +17,7 @@ const sample_columns = [
   { key: 'width', name: 'width', editor: TextEditor, width: 200, resizable: true },
   { key: 'editor', name: 'editor', editor: TextEditor, width: 200, resizable: true },
   { key: 'order', name: 'order', editor: TextEditor, width: 200, resizable: true },
+  { key: 'resizable', name: 'resizable', editor: TextEditor, width: 200, resizable: true },
 ];
 
 // const sample_rows = [

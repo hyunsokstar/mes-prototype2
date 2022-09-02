@@ -26,6 +26,7 @@ const TextEditor = ({ row, column, onRowChange, onClose }: any) => {
                         isChange: true
                     })
                 }}
+
             />
         </div>
     )

@@ -44,9 +44,12 @@ export class CatsRepository {
     async findAllCatsColumns(table_name, pageNum, limit) {
 
         const total_page = await this.catsColumnsModel.find().count() / limit
-        console.log("total_page : ", total_page);
+        // console.log("total_page : ", total_page);
 
         const columns_list = await this.catsColumnsModel.find({table_name: table_name}).skip((pageNum - 1) * limit).limit(limit).sort({ order: 1 });
+
+        console.log("column_list : ", columns_list);
+        
 
         return {
             current_page: pageNum,
