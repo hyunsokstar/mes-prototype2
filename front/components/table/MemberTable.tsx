@@ -10,8 +10,8 @@ import { useCallback } from 'react';
 import { throttle } from "lodash";
 
 
-// import ExcelTable from "../components/Excel/ExcelTable"
 const sample_columns = [
+  { key: 'table_name', name: 'table_name', editor: TextEditor, width: 200, resizable: true },
   { key: 'key', name: 'key', editor: TextEditor, width: 200, resizable: true },
   { key: 'name', name: 'name', editor: TextEditor, width: 200, resizable: true },
   { key: 'width', name: 'width', editor: TextEditor, width: 200, resizable: true },

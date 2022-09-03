@@ -89,6 +89,7 @@ export class CatsService {
         console.log("update 확인 ", column);
 
         const filter = { key: column.key }
+        
         const catColumn = await this.catsRepository.updateCatsColumns(filter,
           {
             table_name: column.table_name,
