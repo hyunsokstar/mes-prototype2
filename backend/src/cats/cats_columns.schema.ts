@@ -70,7 +70,7 @@ export class CatsColumns extends Document {
   order: number;
 
   @ApiProperty({
-    example: "true",
+    example: "true",  
     description: "노출 여부"
   })
   @Prop({
