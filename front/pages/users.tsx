@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import DataGrid from 'react-data-grid';
 import axios from "axios";
 import api from "../utils/api"
 import TextEditor from '../components/util/TextEditor'
+import { throttle } from "lodash";
+import Notiflix from "notiflix";
+
 
 const rows = [
   { id: 0, email: 'tere@daum.net', name: "hyun", gender: "man", hobby: "game", position: "dev", height: "174", age: 30, company: "hyundae" },
@@ -23,7 +26,7 @@ type Props = {}
 
 
 function users({ }: Props) {
-  const [columns, setColumns] = useState([])
+  const [columns, setColumns] = useState<any>([])
   const [basicRows, setBasicRows] = useState([]);
   const [selectList, setSelectList] = useState<Set<any>>(new Set());
   const [pageInfo, setPageInfo] = useState<{ page: number, total: number }>({
@@ -33,7 +36,7 @@ function users({ }: Props) {
 
   useEffect(() => {
     getAllColumns(pageInfo.page);
-  }, [pageInfo.page])
+  }, [pageInfo])
 
   const getAllColumns = async (page: number = 1) => {
 
@@ -85,17 +88,69 @@ function users({ }: Props) {
 
   }
 
+  const modify_column_width_by_table_name_and_key = useCallback(async (data: object) => {
+    Notiflix.Loading.circle()
+
+    try {
+      console.log("data_for_save : ", data);
+      const response = await axios.post(
+        `${api.cats}/modify_column_width_by_table_name_and_key`,
+        // { users: data_for_save },
+        data,
+        { withCredentials: true }
+      );
+      if (response.data.success) {
+        Notiflix.Loading.remove()
+        console.log("response.data : ", response.data);
+        console.log("컬럼 넓이 api 요청 !!");
+        return
+      }
+      // alert(response.data.data);
+
+    } catch (error: any) {
+      console.log("error : ", error);
+    }
+  }, [])
+
+  const updateColumnWidthByKey = useCallback((index: number, width: number, columns: any) => {
+
+    // Notiflix.Loading.circle()
+
+    console.log("columns : ", columns);
+    console.log("index : ", index);
+    
+    
+
+    const data = {
+      table_name: "users_table",
+      key: columns[index].key,
+      width: width.toFixed(2)
+    }
+
+    console.log("data : ", data);
+    modify_column_width_by_table_name_and_key(data);
+
+
+    Notiflix.Loading.remove()
+  }, [])
+
+
   return (
     <div style={styles}>
       <div>
         <h2>Users Table</h2>
       </div>
-      <DataGrid columns={columns} rows={rows} style={{ width: "100%" }}
+      <DataGrid
+        columns={columns}
+        rows={rows}
+        style={{ width: "100%" }}
         onRowsChange={(data, idx) => { onRowsChangeHandler(data, idx) }}
+        onColumnResize={
+          throttle((index: number, width: number) => updateColumnWidthByKey(index, width, columns), 2000, { 'leading': false })
+        }
       />
     </div>
   )
 }
 
 export default users
-

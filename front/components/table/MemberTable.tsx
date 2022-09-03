@@ -239,7 +239,6 @@ const MemberTable = (props: Props) => {
     modify_column_width_by_table_name_and_key(data);
 
 
-
     // Notiflix.Loading.remove()
   }, [])
 
@@ -282,13 +281,11 @@ const MemberTable = (props: Props) => {
         page={pageInfo.page}
         size="large"
         defaultPage={1}
-        // variant="outlined"
         shape="rounded"
         onChange={(e, page) => {
           setPage(page)
         }}
       />
-
 
     </div>
   )

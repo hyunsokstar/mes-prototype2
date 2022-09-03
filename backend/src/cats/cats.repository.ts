@@ -11,7 +11,6 @@ import { CatCurrentDto } from './dto/cats.current.dto';
 @Injectable()
 export class CatsRepository {
 
-
     constructor(
         @InjectModel(Cat.name) private readonly catModel: Model<Cat>,
         @InjectModel(CatsColumns.name) private readonly catsColumnsModel: Model<CatsColumns>,
@@ -20,9 +19,9 @@ export class CatsRepository {
     async updateColumWidthForTableAndKey(data: any) {
         // throw new Error('Method not implemented.');
         console.log("data : ", data);
-        const result = await this.catsColumnsModel.findOneAndUpdate({table_name:data.table_name, key: data.key}, {width: data.width})
+        const result = await this.catsColumnsModel.findOneAndUpdate({ table_name: data.table_name, key: data.key }, { width: data.width })
         console.log("result : ", result);
-      }
+    }
 
     async deleteColumnsByIdsArray(ids_for_delete: any) {
 
@@ -45,11 +44,10 @@ export class CatsRepository {
 
         const total_page = await this.catsColumnsModel.find().count() / limit
         // console.log("total_page : ", total_page);
-
-        const columns_list = await this.catsColumnsModel.find({table_name: table_name}).skip((pageNum - 1) * limit).limit(limit).sort({ order: 1 });
+        const columns_list = await this.catsColumnsModel.find({ table_name: table_name }).skip((pageNum - 1) * limit).limit(limit).sort({ order: 1 });
 
         console.log("column_list : ", columns_list);
-        
+
 
         return {
             current_page: pageNum,
@@ -62,9 +60,9 @@ export class CatsRepository {
         console.log("data at cat repository for saveColumns: ", data);
     }
 
-    async existsByKey(key: any): Promise<boolean> {
+    async existsByKey(_id: any): Promise<boolean> {
         // throw new Error('Method not implemented.');
-        const result = await this.catsColumnsModel.exists({ key });
+        const result = await this.catsColumnsModel.exists({ _id });
         if (result) {
             return true
         } else return false
@@ -127,7 +125,7 @@ export class CatsRepository {
 
     async update(filter, cat: CatRequestDto): Promise<Cat> {
         return await this.catModel.findOneAndUpdate(filter, cat);
-    }
+    } ㄴ
 
     async updateCatsColumns(filter, cat: any): Promise<CatsColumns> {
         return await this.catsColumnsModel.findOneAndUpdate(filter, cat);
