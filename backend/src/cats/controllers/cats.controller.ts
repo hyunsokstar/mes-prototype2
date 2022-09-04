@@ -71,6 +71,16 @@ export class CatsController {
     return this.CatsService.saveMultiUsers(data);
   }
 
+  @Post("saveRowsForUsersTable")
+  async saveRowsForUsersTable(@Body() data) {
+    // console.log("유저 테이블 정보 저장 check !!", data);
+    this.CatsService.saveRowsForUsersTable(data);
+
+    return "유저스 테이블에 row 정보 저장 성공"
+  }
+
+
+
   @Post("deleteMembers")
   async deleteMultiUsers(@Body() data) {
     console.log("유저 테이블 정보 저장 check !!");

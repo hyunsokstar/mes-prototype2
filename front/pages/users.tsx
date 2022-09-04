@@ -36,6 +36,7 @@ function users({ }: Props) {
 
   useEffect(() => {
     getAllColumns(pageInfo.page);
+    
   }, [pageInfo])
 
   const getAllColumns = async (page: number = 1) => {

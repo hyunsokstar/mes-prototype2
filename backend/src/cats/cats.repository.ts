@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Cat } from './cats.schema';
 import { CatsColumns } from './cats_columns.schema';
+import { RowsForUsersTable } from './RowsForUsersTable.schema';
 import { CatRequestDto } from './dto/cats.request.dto';
 import { CatCurrentDto } from './dto/cats.current.dto';
 
@@ -14,6 +15,7 @@ export class CatsRepository {
     constructor(
         @InjectModel(Cat.name) private readonly catModel: Model<Cat>,
         @InjectModel(CatsColumns.name) private readonly catsColumnsModel: Model<CatsColumns>,
+        @InjectModel(RowsForUsersTable.name) private readonly rowsForUsersTable: Model<RowsForUsersTable>,
     ) { }
 
     async updateColumWidthForTableAndKey(data: any) {
@@ -104,6 +106,13 @@ export class CatsRepository {
         } else return false
     }
 
+    async existsByEmailForRowsForUsersTable(email: string): Promise<boolean> {
+        const result = await this.rowsForUsersTable.exists({ email });
+        if (result) {
+            return true
+        } else return false
+    }
+
     async existsById(id: string): Promise<boolean> {
         const result = await this.catModel.exists({ _id: id });
 
@@ -113,9 +122,19 @@ export class CatsRepository {
 
     }
 
+    async existsByIdForRowsForUsersTable(id: string): Promise<boolean> {
+        const result = await this.rowsForUsersTable.exists({ _id: id });
+        if (result) return true
+        else return false
+    }
+
     async create(cat: CatRequestDto): Promise<Cat> {
         console.log("cat :::::", cat);
         return await this.catModel.create(cat);
+    }
+    async createForUsersTable(user: any): Promise<RowsForUsersTable> {
+        console.log("user for RowsForUsersTable at repository :::::", user);
+        return await this.rowsForUsersTable.create(user);
     }
 
     async createColumns(cat: any): Promise<CatsColumns> {
@@ -125,7 +144,11 @@ export class CatsRepository {
 
     async update(filter, cat: CatRequestDto): Promise<Cat> {
         return await this.catModel.findOneAndUpdate(filter, cat);
-    } ㄴ
+    }
+
+    async updateForUsersTable(filter, user: any): Promise<RowsForUsersTable> {
+        return await this.rowsForUsersTable.findOneAndUpdate(filter, user);
+    }
 
     async updateCatsColumns(filter, cat: any): Promise<CatsColumns> {
         return await this.catsColumnsModel.findOneAndUpdate(filter, cat);

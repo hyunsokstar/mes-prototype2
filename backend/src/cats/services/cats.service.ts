@@ -11,6 +11,60 @@ import { CatsRepository } from '../cats.repository';
 @Injectable()
 export class CatsService {
   constructor(private readonly catsRepository: CatsRepository) { }
+  // constructor(private readonly catsRepository: CatsRepository) { }
+
+  async saveRowsForUsersTable(data: any) {
+    const { users } = data;
+    console.log("users : ", users);
+
+    users.map(async (user, index) => {
+      let isUserExist;
+
+      if (user.email) {
+        isUserExist = await this.catsRepository.existsByEmailForRowsForUsersTable(user.email);
+      } else {
+        isUserExist = false
+      }
+
+      console.log("isUserExist : ", isUserExist);
+
+      if (isUserExist) {
+        console.log("회원 정보가 이미 존재 so update", index);
+        // const hashedPassword = await bcrypt.hash(user.password, 10);
+
+        const filter = { email: user.email }
+        const result = await this.catsRepository.updateForUsersTable(
+          filter,
+          {
+            table_name: user.table_name,
+            email: user.email,
+            name: user.name,
+            age: user.age,
+            hobby: user.hobby
+          }
+        )
+
+      } else {
+        console.log("회원 정보 생성 for RowsForUsersTable!", index);
+
+        // const hashedPassword = await bcrypt.hash(user.password, 10);
+
+        const result = await this.catsRepository.createForUsersTable({
+          table_name: user.table_name,
+          email: user.email,
+          name: user.name,
+          // password: hashedPassword,
+          age: user.age,
+          hobby: user.hobby,
+        });
+
+        // console.log("cat save result :: ", cat);
+      }
+
+    });
+
+    // throw new Error('Method not implemented.');
+  }
 
   async updateColumWidthForTableAndKey(data: any) {
     // throw new Error('Method not implemented.');
@@ -67,9 +121,8 @@ export class CatsService {
         });
 
         // console.log("cat save result :: ", cat);
-
-
       }
+
     })
 
     return "회원 정보 저장 성공 !!"
