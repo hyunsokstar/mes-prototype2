@@ -43,19 +43,28 @@ export class CatsRepository {
     // 1page 0 * 2 1 * 2
 
     async findAllCatsColumns(table_name, pageNum, limit) {
+        // const total_count = await this.catsColumnsModel.find({ table_name: table_name }).count()
+        // console.log("total_count, limit : ", total_count, limit);
 
-        const total_page = await this.catsColumnsModel.find().count() / limit
+        const total_page = await this.catsColumnsModel.find({ table_name: table_name }).count() / limit
+        const total_page2 = Math.ceil(total_page);
         // console.log("total_page : ", total_page);
-        const columns_list = await this.catsColumnsModel.find({ table_name: table_name }).skip((pageNum - 1) * limit).limit(limit).sort({ order: 1 });
+        const columns_list =
+            // catsColumnsModel 에 대해 table_name 으로 검색해서 가져와라 
+            await this.catsColumnsModel.find({ table_name: table_name })
+                // 페이지 수에 한페이지당 개수를 곱해서 그 다음부터 가져 와라 
+                .skip((pageNum - 1) * limit).limit(limit)
+                // order 로 정렬 해라 
+                .sort({ order: 1 });
 
-        console.log("column_list : ", columns_list);
-
+        // console.log("column_list : ", columns_list);
 
         return {
             current_page: pageNum,
-            total_page,
+            total_page: total_page2,
             columns_list
         }
+
     }
 
     async saveColumnDatas(data: any) {
@@ -172,6 +181,21 @@ export class CatsRepository {
 
     async getListForUsersTable() {
         return await this.rowsForUsersTable.find().select('-password');
+    }
+
+    async getGridDataByTableName(table_name: string) {
+
+        // const columns_for_grid
+        const columns_for_grid = await this.catsColumnsModel.find({ table_name: table_name }).sort({ order: 1 });
+        const rows_for_grid = await this.rowsForUsersTable.find().select('-password');
+
+        let data_for_grid = {
+            columns_for_grid: columns_for_grid,
+            rows_for_grid: rows_for_grid
+        }
+
+        return data_for_grid;
+
     }
 
 }

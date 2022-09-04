@@ -251,9 +251,20 @@ export class CatsService {
   }
 
   async getListForUsersTable() {
-    const allCats = await this.catsRepository.getListForUsersTable();
+    const allRowsForUsersTable = await this.catsRepository.getListForUsersTable();
 
-    return allCats
+    return allRowsForUsersTable
   }
+
+  // getGridDataByTableName
+  async getGridDataByTableName(table_name:any) {
+    // console.log("table_name at service: ", table_name);
+    
+    const dataForGrid = await this.catsRepository.getGridDataByTableName(table_name);
+    // console.log("dataForGrid : ", dataForGrid);
+    
+    return dataForGrid
+  }
+
 
 }

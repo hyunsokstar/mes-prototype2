@@ -34,8 +34,11 @@ function users({ }: Props) {
     total: 1
   })
 
+  // get grid data
+  // 1122
   useEffect(() => {
     getAllColumns(pageInfo.page);
+    // getGridTableForUsersTable(pageInfo.page);
     
   }, [pageInfo])
 

@@ -65,7 +65,6 @@ export class CatsController {
 
   @Get("getListForUsersTable")
   getListForUsersTable() {
-    // const allCats = this.CatsService.findAllCats();
     const allUsers = this.CatsService.getListForUsersTable();
     console.log("allUsers : ", allUsers);
 
@@ -198,14 +197,22 @@ export class CatsController {
     return "modify_column_width 성공"
   }
 
-  @Get("getDataForUsersTable/:table_name")
-  getDataForUsersTable() {
-    // const allCats = this.CatsService.findAllCats();
-    const allUsers = this.CatsService.getListForUsersTable();
-    console.log("allUsers : ", allUsers);
+  @Get("getGridDataByTableName/:table_name")
+  @Bind(Param())
+  getDataForUsersTable(params) {
 
-    return allUsers;
+    const table_name = params.table_name;
+
+    // const allUsers = this.CatsService.getListForUsersTable();
+    const dataForGrid = this.CatsService.getGridDataByTableName(table_name);
+    console.log("dataForGrid : ", dataForGrid);
+    
+    // console.log("params.table_name : ", params.table_name);
+
+    // return allUsers;    
+    return dataForGrid;
   }
-
+  
+  
 
 }
