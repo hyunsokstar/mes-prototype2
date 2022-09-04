@@ -250,4 +250,10 @@ export class CatsService {
     return allCats
   }
 
+  async getListForUsersTable() {
+    const allCats = await this.catsRepository.getListForUsersTable();
+
+    return allCats
+  }
+
 }

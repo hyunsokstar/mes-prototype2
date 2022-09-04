@@ -167,7 +167,11 @@ export class CatsRepository {
     }
 
     async findAllCats() {
-        return await this.catModel.find().select('-password');;
+        return await this.catModel.find().select('-password');
+    }
+
+    async getListForUsersTable() {
+        return await this.rowsForUsersTable.find().select('-password');
     }
 
 }

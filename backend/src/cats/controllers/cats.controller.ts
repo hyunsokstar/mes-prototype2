@@ -55,13 +55,21 @@ export class CatsController {
     return cat.readOnlyData;
   }
 
-
   @Get("allCats")
   getAllCats() {
     const allCats = this.CatsService.findAllCats();
     console.log("allCats : ", allCats);
 
     return allCats;
+  }  
+
+  @Get("getListForUsersTable")
+  getListForUsersTable() {
+    // const allCats = this.CatsService.findAllCats();
+    const allUsers = this.CatsService.getListForUsersTable();
+    console.log("allUsers : ", allUsers);
+
+    return allUsers;
   }
 
   @Post("saveMembers")
@@ -189,5 +197,15 @@ export class CatsController {
 
     return "modify_column_width 성공"
   }
+
+  @Get("getDataForUsersTable/:table_name")
+  getDataForUsersTable() {
+    // const allCats = this.CatsService.findAllCats();
+    const allUsers = this.CatsService.getListForUsersTable();
+    console.log("allUsers : ", allUsers);
+
+    return allUsers;
+  }
+
 
 }
