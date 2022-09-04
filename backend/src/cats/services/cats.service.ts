@@ -78,6 +78,14 @@ export class CatsService {
 
   }
 
+  async getAllColumnsForUsersTableWithoutPagination(table_name: string) {
+
+    // const allCatsColumns = await this.catsRepository.findAllCatsColumns(table_name, pageNum, limit);
+    const allCatsColumns = await this.catsRepository.findAllColumnsWithoutPagination(table_name);
+    return allCatsColumns
+  }
+
+
   async deleteColumns(data: any) {
     // throw new Error('Method not implemented.');
     const ids_for_delete = data.ids_for_delete;

@@ -8,8 +8,8 @@ import Notiflix from "notiflix";
 
 
 const rows = [
-  { id: 0, email: 'tere@daum.net', name: "hyun", gender: "man", hobby: "game", position: "dev", height: "174", age: 30, company: "hyundae" },
-  { id: 1, email: 'demo@naver.com', name: "demo", gender: "girl", hobby: "game", position: "dev", height: "174", age: 30, company: "hyundae" }
+  { id: 0, email: 'tere@daum.net', name: "hyun", gender: "man", hobby: "game", position: "dev", height: "174", age: 30, company: "hyundae", job: "scientist" },
+  { id: 1, email: 'demo@naver.com', name: "demo", gender: "girl", hobby: "game", position: "dev", height: "174", age: 30, company: "hyundae", job: "developer" }
 ];
 
 const styles = {
@@ -39,7 +39,7 @@ function users({ }: Props) {
   useEffect(() => {
     getAllColumns(pageInfo.page);
     // getGridTableForUsersTable(pageInfo.page);
-    
+
   }, [pageInfo])
 
   const getAllColumns = async (page: number = 1) => {
@@ -47,7 +47,7 @@ function users({ }: Props) {
     try {
       const response = await axios.get(
         // `${api.cats}/all_cats_columns/${page}/8`,
-        `${api.cats}/cats_columns/users_table/${page}/9`,
+        `${api.cats}/cats_columns/users_table`,
         // `${api.cats}/all_cats_columns/${page}/2`,
         { withCredentials: true }
       );
@@ -122,8 +122,8 @@ function users({ }: Props) {
 
     console.log("columns : ", columns);
     console.log("index : ", index);
-    
-    
+
+
 
     const data = {
       table_name: "users_table",

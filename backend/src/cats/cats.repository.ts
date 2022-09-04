@@ -41,7 +41,6 @@ export class CatsRepository {
 
 
     // 1page 0 * 2 1 * 2
-
     async findAllCatsColumns(table_name, pageNum, limit) {
         // const total_count = await this.catsColumnsModel.find({ table_name: table_name }).count()
         // console.log("total_count, limit : ", total_count, limit);
@@ -62,6 +61,19 @@ export class CatsRepository {
         return {
             current_page: pageNum,
             total_page: total_page2,
+            columns_list
+        }
+
+    }
+    async findAllColumnsWithoutPagination(table_name) {
+        // const total_count = await this.catsColumnsModel.find({ table_name: table_name }).count()
+        // console.log("total_count, limit : ", total_count, limit);
+        // console.log("total_page : ", total_page);
+        const columns_list =
+            // catsColumnsModel 에 대해 table_name 으로 검색해서 가져와라 
+            await this.catsColumnsModel.find({ table_name: table_name }).sort({order:1})
+
+        return {
             columns_list
         }
 

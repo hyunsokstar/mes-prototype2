@@ -213,6 +213,17 @@ export class CatsController {
     return dataForGrid;
   }
   
-  
+  @Get("cats_columns/:table_name")
+  @Bind(Param())
+  getAllColumnsForUsersTableWithoutPagination(params) {
+    // console.log("params : ",params.table_name, params.pageNum, params.limit);
+    // const allCatsColumnns = this.CatsService.findAllCatsColumns(params.table_name,params.pageNum, params.limit);
+    const allCatsColumnns = this.CatsService.getAllColumnsForUsersTableWithoutPagination(params.table_name);
+
+    console.log("allCatsColumns : ", allCatsColumnns);
+    
+
+    return allCatsColumnns;
+  }
 
 }
