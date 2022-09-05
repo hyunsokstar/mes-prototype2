@@ -45,6 +45,10 @@ const ImageModalForProfile = ({ url, modalOpen, setIsModalOpen }: IProps) => {
     const [originalHeight, setOriginalHeight] = useState(0);
     const [imageDegree, setImageDegree] = useState(0);
 
+    const [currentImageWidth, setCurrentImageWidth] = useState(0);
+    
+
+
     // console.log("url : ", url);
 
     const mode = (mode: any) => {
@@ -108,8 +112,8 @@ const ImageModalForProfile = ({ url, modalOpen, setIsModalOpen }: IProps) => {
 
         if (option == "enlargement") {
             console.log("enlargement");
-            if (imagePercent < 100) {
-                setImagePercent((prev) => prev + 10)
+            if (imagePercent < 500) {
+                setImagePercent((prev) => prev + 20)
             } else {
                 alert("100이상은 증가할수 없습니다.");
             }
@@ -117,7 +121,7 @@ const ImageModalForProfile = ({ url, modalOpen, setIsModalOpen }: IProps) => {
         if (option == "reduction") {
             console.log("reduction");
 
-            if (imagePercent > 10) {
+            if (imagePercent > 15) {
                 setImagePercent((prev) => prev - 10)
 
             } else {
