@@ -14,17 +14,6 @@ const options: SchemaOptions = {
 export class RowsForUsersTable extends Document {
 
   @ApiProperty({
-    example: "users_table",
-    description: "테이블 이름"
-  })
-  @Prop({
-    required: true,
-  })
-  @IsString()
-  @IsNotEmpty()
-  table_name: string;
-
-  @ApiProperty({
     example: "terecal@daum.net",
     description: "email"
   })
@@ -50,6 +39,10 @@ export class RowsForUsersTable extends Document {
   @Prop()
   age: number;
 
+
+  @Prop({
+    required: true,
+  })
   @ApiProperty({
     example: "tennis",
     description: "hobby"
