@@ -71,7 +71,7 @@ export class CatsRepository {
         // console.log("total_page : ", total_page);
         const columns_list =
             // catsColumnsModel 에 대해 table_name 으로 검색해서 가져와라 
-            await this.catsColumnsModel.find({ table_name: table_name }).sort({order:1})
+            await this.catsColumnsModel.find({ table_name: table_name }).sort({ order: 1 })
 
         return {
             columns_list
@@ -195,11 +195,33 @@ export class CatsRepository {
         return await this.rowsForUsersTable.find().select('-password');
     }
 
+
+    // fix 1122
+    async getListByTableName(table_name: string) {
+        let target_table_name = table_name;  // ex rowsForUsersTable
+
+        if (target_table_name === "rowsForUsersTable") {
+            return await this.rowsForUsersTable.find().select('-password');
+        } else {
+            return await this.rowsForUsersTable.find({ table_name: table_name }).select('-password');
+        }
+    }
+
     async getGridDataByTableName(table_name: string) {
 
-        // const columns_for_grid
-        const columns_for_grid = await this.catsColumnsModel.find({ table_name: table_name }).sort({ order: 1 });
-        const rows_for_grid = await this.rowsForUsersTable.find().select('-password');
+        console.log("table_name : ", table_name);
+        
+
+        let columns_for_grid;
+        let rows_for_grid;
+        
+        if (table_name === "rowsForUsersTable") {
+            columns_for_grid = await this.catsColumnsModel.find({ table_name: table_name }).sort({ order: 1 });
+            rows_for_grid = await this.rowsForUsersTable.find().select('-password');
+        } else {
+            columns_for_grid = await this.catsColumnsModel.find({ table_name: table_name }).sort({ order: 1 });
+            rows_for_grid = this.rowsForUsersTable.find({ table_name: table_name }).select('-password');
+        }
 
         let data_for_grid = {
             columns_for_grid: columns_for_grid,

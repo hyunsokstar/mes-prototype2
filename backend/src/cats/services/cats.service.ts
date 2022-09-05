@@ -263,6 +263,12 @@ export class CatsService {
 
     return allRowsForUsersTable
   }
+  async getListByTableName(table_name: string) {
+    // const allRowsForUsersTable = await this.catsRepository.getListForUsersTable();
+    const allRowsForUsersTable = await this.catsRepository.getListByTableName(table_name);
+
+    return allRowsForUsersTable
+  }
 
   // getGridDataByTableName
   async getGridDataByTableName(table_name:any) {

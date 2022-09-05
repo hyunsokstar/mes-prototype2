@@ -67,7 +67,7 @@ const MemberTable = (props: Props) => {
 
     try {
       const response = await axios.get(
-        `${api.cats}/cats_columns/users_table/${page}/8`,
+        `${api.cats}/cats_columns/rowsForUsersTable/${page}/8`,
         // `${api.cats}/all_cats_columns/${page}/2`,
         { withCredentials: true }
       );

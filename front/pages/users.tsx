@@ -37,26 +37,23 @@ function users({ }: Props) {
   // get grid data
   // 1122
   useEffect(() => {
-    getAllColumns(pageInfo.page);
+    getAllColumns();
+    getAllRowsForUsersTable();
     // getGridTableForUsersTable(pageInfo.page);
 
   }, [pageInfo])
 
-  const getAllColumns = async (page: number = 1) => {
-
+  const getAllRowsForUsersTable = async () => {
     try {
       const response = await axios.get(
-        // `${api.cats}/all_cats_columns/${page}/8`,
-        `${api.cats}/cats_columns/users_table`,
-        // `${api.cats}/all_cats_columns/${page}/2`,
+        `${api.cats}/cats_columns/rowsForUsersTable`,
         { withCredentials: true }
       );
-      // console.log("resposne : ", response.data.data.columns_list);
       if (response.data.success) {
 
         const new_columns = response.data.data.columns_list.map((column: any) => {
           if (column.editor && column.hidden !== "true") {
-            // console.log("hi", column);
+            
             return {
               ...column,
               editor: column.editor === "TextEditor" ? TextEditor : "",
@@ -66,7 +63,38 @@ function users({ }: Props) {
         }).filter((v: any) => v)
 
         console.log("new_columns : ", new_columns);
-        // setPageInfo({ page: response.data.data.current_page, total: response.data.data.total_page })
+
+        setColumns(new_columns);
+      }
+
+    } catch (error) {
+      console.log("error : ", error);
+
+    }
+  }
+
+
+  const getAllColumns = async () => {
+
+    try {
+      const response = await axios.get(
+        `${api.cats}/cats_columns/users_table`,
+        { withCredentials: true }
+      );
+      if (response.data.success) {
+
+        const new_columns = response.data.data.columns_list.map((column: any) => {
+          if (column.editor && column.hidden !== "true") {
+            
+            return {
+              ...column,
+              editor: column.editor === "TextEditor" ? TextEditor : "",
+              resizable: column.resizable === "true" ? true : false
+            }
+          }
+        }).filter((v: any) => v)
+
+        console.log("new_columns : ", new_columns);
 
         setColumns(new_columns);
       }
@@ -80,16 +108,6 @@ function users({ }: Props) {
   const onRowsChangeHandler = (data: any, idx: any) => {
     console.log("data for row change handler : ", data);
 
-    // let tmp: Set<any> = selectList;
-    // data.map((v: any, i: any) => {
-    //   if (v.isChange) {
-    //     tmp.add(v._id)
-    //     v.isChange = false
-    //   }
-    // });
-    // setSelectList(tmp);
-    // setBasicRows(data);
-
   }
 
   const modify_column_width_by_table_name_and_key = useCallback(async (data: object) => {
@@ -99,7 +117,6 @@ function users({ }: Props) {
       console.log("data_for_save : ", data);
       const response = await axios.post(
         `${api.cats}/modify_column_width_by_table_name_and_key`,
-        // { users: data_for_save },
         data,
         { withCredentials: true }
       );
@@ -109,21 +126,14 @@ function users({ }: Props) {
         console.log("컬럼 넓이 api 요청 !!");
         return
       }
-      // alert(response.data.data);
-
     } catch (error: any) {
       console.log("error : ", error);
     }
   }, [])
 
   const updateColumnWidthByKey = useCallback((index: number, width: number, columns: any) => {
-
-    // Notiflix.Loading.circle()
-
     console.log("columns : ", columns);
     console.log("index : ", index);
-
-
 
     const data = {
       table_name: "users_table",

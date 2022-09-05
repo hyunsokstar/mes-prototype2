@@ -71,6 +71,19 @@ export class CatsController {
     return allUsers;
   }
 
+  @Get("getRowsDataByTableName/:table_name")
+  @Bind(Param())
+  getListByTableName(params) {
+
+    const table_name = params.table_name
+
+    // const allUsers = this.CatsService.getListForUsersTable();
+    const allUsers = this.CatsService.getListByTableName(table_name);
+    console.log("allUsers : ", allUsers);
+
+    return allUsers;
+  }
+
   @Post("saveMembers")
   async saveMultiUsers(@Body() data) {
     console.log("유저 테이블 정보 저장 check !!");
