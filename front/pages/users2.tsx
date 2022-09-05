@@ -172,7 +172,7 @@ function users({ }: Props) {
     console.log("index : ", index);
 
     const data = {
-      table_name: "users_table",
+      table_name: "rowsForUsersTable",
       key: columns[index].key,
       width: width.toFixed(2)
     }
