@@ -15,7 +15,7 @@ interface IProps {
 }
 
 interface ImgProps {
-    src?: string,
+    src?: string,60
     originalWidth?: number,
     originalHeight?: number,
     style?: object,
@@ -154,9 +154,8 @@ const ImageModalForProfile = ({ url, modalOpen, setIsModalOpen }: IProps) => {
             // }
 
             setImageDegree((prev) => {
-
                 switch (prev) {
-                    case 360:
+                    case 270:
                         return 0;
                     default:
                         return prev + 90;
@@ -192,7 +191,7 @@ const ImageModalForProfile = ({ url, modalOpen, setIsModalOpen }: IProps) => {
 
             setImageDegree((prev) => {
                 switch (prev) {
-                    case 360:
+                    case 270:
                         return 0;
                     default:
                         return prev - 90;

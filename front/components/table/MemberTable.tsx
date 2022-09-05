@@ -43,7 +43,7 @@ const styles = {
 };
 
 
-
+// fix 1122 for image resizes
 const MemberTable = (props: Props) => {
   const [columns, setColumns] = useState([])
   const [basicRows, setBasicRows] = useState([]);
