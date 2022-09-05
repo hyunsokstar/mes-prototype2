@@ -1,5 +1,5 @@
 import { log } from "console";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Modal from 'react-modal'
 import styled from 'styled-components'
 
@@ -15,6 +15,8 @@ interface IProps {
 }
 
 interface ImgProps {
+    top: 100,
+    ref?: any,
     src?: string, 60
     originalWidth?: number,
     originalHeight?: number,
@@ -44,6 +46,8 @@ const ImageModalForProfile = ({ url, modalOpen, setIsModalOpen }: IProps) => {
     const [originalWidth, setOriginalWidth] = useState(0);
     const [originalHeight, setOriginalHeight] = useState(0);
     const [imageDegree, setImageDegree] = useState(0);
+
+    var imgRef = useRef<any>(null);
 
     const [currentImageWidth, setCurrentImageWidth] = useState(0);
     const [currentImageHeight, setCurrentImageHeight] = useState(0);
@@ -248,6 +252,13 @@ const ImageModalForProfile = ({ url, modalOpen, setIsModalOpen }: IProps) => {
         }
 
     }
+    const hello = () => {
+        if(imgRef.current && imgRef.current.clientHeight){
+            console.log("image height : " , imgRef.current.clientHeight);
+            console.log("image size : " , imgRef.current.clientWidth);
+        }
+    
+    }
 
     return (
         <div>
@@ -307,8 +318,9 @@ const ImageModalForProfile = ({ url, modalOpen, setIsModalOpen }: IProps) => {
                             각도: {imageDegree} &nbsp;&nbsp;
                         </div>
 
-                        <div style={{ display: "flex", justifyContent: "center", gap: "10px", height: "20px" }}>
+                        <div style={{ display: "flex", justifyContent: "center", gap: "10px", height: "20px" }} onClick={hello}>
                             <Img
+                                ref={imgRef}
                                 src={url}
                                 alt={"이미지 없음"}
                                 objectFit={objectFit}
