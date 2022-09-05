@@ -92,7 +92,7 @@ export class CatsController {
   }
 
   @Post("saveRowsForUsersTable")
-  async saveRowsForUsersTable(@Body() data) {
+  async saveForRowsForUsersTable(@Body() data) {
     // console.log("유저 테이블 정보 저장 check !!", data);
     this.CatsService.saveRowsForUsersTable(data);
 

@@ -8,10 +8,10 @@ import Notiflix from "notiflix";
 import Pagination from '@material-ui/lab/Pagination'
 
 
-// const rows = [
-//   { id: 0, email: 'tere@daum.net', name: "hyun", gender: "man", hobby: "game", position: "dev", height: "174", age: 30, company: "hyundae", job: "scientist" },
-//   { id: 1, email: 'demo@naver.com', name: "demo", gender: "girl", hobby: "game", position: "dev", height: "174", age: 30, company: "hyundae", job: "developer" }
-// ];
+const rows = [
+  { id: 0, email: 'tere@daum.net', name: "hyun", todo: "hi", test_complete:"hi" }
+  // { id: 1, email: 'demo@naver.com', name: "demo", gender: "girl", hobby: "game", position: "dev", height: "174", age: 30, company: "hyundae", job: "developer" }
+];
 
 const styles = {
   display: 'flex',
@@ -127,7 +127,7 @@ function users({ }: Props) {
             return {
               ...column,
               editor: column.editor === "TextEditor" ? TextEditor : "",
-              resizable: column.resizable === "true" ? true : false
+              resizable: column.resizable === "true" ? true : false,
             }
           }
         }).filter((v: any) => v)
@@ -195,7 +195,7 @@ function users({ }: Props) {
   return (
     <div style={styles}>
       <div>
-        <h2>Users Table</h2>
+        <h1>Users Table For 마일스톤</h1>
       </div>
       <DataGrid
         columns={columns}

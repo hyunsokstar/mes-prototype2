@@ -37,8 +37,8 @@ export class CatsService {
           {
             email: user.email,
             name: user.name,
-            age: user.age,
-            hobby: user.hobby
+            todo: user.todo,
+            test_complete: user.test_complete
           }
         )
 
@@ -48,12 +48,10 @@ export class CatsService {
         // const hashedPassword = await bcrypt.hash(user.password, 10);
 
         const result = await this.catsRepository.createForUsersTable({
-          // table_name: user.table_name,
           email: user.email,
           name: user.name,
-          // password: hashedPassword,
-          age: user.age,
-          hobby: user.hobby,
+          todo: user.todo,
+          test_complete: user.test_complete
         });
 
         // console.log("cat save result :: ", cat);

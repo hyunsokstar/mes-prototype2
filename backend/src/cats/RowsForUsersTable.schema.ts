@@ -1,3 +1,4 @@
+import { IsBoolean } from 'class-validator';
 // 이메일 네임 age hobby 이렇게 네개만 추가
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { IsEmail, IsNotEmpty, IsNumber, IsString } from 'class-validator';
@@ -36,26 +37,22 @@ export class RowsForUsersTable extends Document {
   @IsNotEmpty()
   name: string;
 
-  @Prop()
-  age: number;
-
-
-  @Prop({
-    required: true,
-  })
-  @ApiProperty({
-    example: "tennis",
-    description: "hobby"
-  })
   @IsString()
-  hobby: string;
+  @Prop()
+  todo: string;
+
+  @IsString()
+  @Prop()
+  test_complete: string;
+
+
 
   readonly readOnlyData: {
     id: string;
     email: string;
     name: string,
-    age: number,
-    hobby: string
+    todo: number,
+    test_complete: string
   };
 
 }
@@ -69,5 +66,7 @@ RowsForUsersTableSchema.virtual('readOnlyData').get(function (this: RowsForUsers
     id: this.id,
     email: this.email,
     name: this.name,
+    todo: this.todo,
+    test_complete: this.test_complete
   }
 })
