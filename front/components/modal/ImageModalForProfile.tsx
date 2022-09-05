@@ -15,7 +15,7 @@ interface IProps {
 }
 
 interface ImgProps {
-    src?: string,60
+    src?: string, 60
     originalWidth?: number,
     originalHeight?: number,
     style?: object,
@@ -46,7 +46,8 @@ const ImageModalForProfile = ({ url, modalOpen, setIsModalOpen }: IProps) => {
     const [imageDegree, setImageDegree] = useState(0);
 
     const [currentImageWidth, setCurrentImageWidth] = useState(0);
-    
+    const [currentImageHeight, setCurrentImageHeight] = useState(0);
+
 
 
     // console.log("url : ", url);
