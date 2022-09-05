@@ -61,7 +61,7 @@ export class CatsController {
     console.log("allCats : ", allCats);
 
     return allCats;
-  }  
+  }
 
   @Get("getListForUsersTable")
   getListForUsersTable() {
@@ -194,10 +194,10 @@ export class CatsController {
   @Bind(Param())
   getAllColumnsForCats(params) {
     // console.log("params : ",params.table_name, params.pageNum, params.limit);
-    const allCatsColumnns = this.CatsService.findAllCatsColumns(params.table_name,params.pageNum, params.limit);
+    const allCatsColumnns = this.CatsService.findAllCatsColumns(params.table_name, params.pageNum, params.limit);
 
     console.log("allCatsColumns : ", allCatsColumnns);
-    
+
 
     return allCatsColumnns;
   }
@@ -210,22 +210,22 @@ export class CatsController {
     return "modify_column_width 성공"
   }
 
-  @Get("getGridDataByTableName/:table_name")
+  @Get("getGridDataByTableName/:table_name/:pageNum/:limit")
   @Bind(Param())
   getDataForUsersTable(params) {
 
     const table_name = params.table_name;
 
     // const allUsers = this.CatsService.getListForUsersTable();
-    const dataForGrid = this.CatsService.getGridDataByTableName(table_name);
+    const dataForGrid = this.CatsService.getGridDataByTableName(table_name, params.pageNum, params.limit);
     console.log("dataForGrid : ", dataForGrid);
-    
+
     // console.log("params.table_name : ", params.table_name);
 
     // return allUsers;    
     return dataForGrid;
   }
-  
+
   @Get("cats_columns/:table_name")
   @Bind(Param())
   getAllColumnsForUsersTableWithoutPagination(params) {
@@ -234,7 +234,7 @@ export class CatsController {
     const allCatsColumnns = this.CatsService.getAllColumnsForUsersTableWithoutPagination(params.table_name);
 
     console.log("allCatsColumns : ", allCatsColumnns);
-    
+
 
     return allCatsColumnns;
   }

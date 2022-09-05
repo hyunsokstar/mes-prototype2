@@ -228,7 +228,6 @@ const MemberTable = (props: Props) => {
   const updateColumnWidthByKey = useCallback((index: number, width: number) => {
 
     // Notiflix.Loading.circle()
-
     const data = {
       table_name: "users_table",
       key: sample_columns[index-1].key,

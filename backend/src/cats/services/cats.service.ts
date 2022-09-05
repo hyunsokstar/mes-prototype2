@@ -30,13 +30,11 @@ export class CatsService {
 
       if (isUserExist) {
         console.log("회원 정보가 이미 존재 so update", index);
-        // const hashedPassword = await bcrypt.hash(user.password, 10);
 
         const filter = { email: user.email }
         const result = await this.catsRepository.updateForUsersTable(
           filter,
           {
-            table_name: user.table_name,
             email: user.email,
             name: user.name,
             age: user.age,
@@ -50,7 +48,7 @@ export class CatsService {
         // const hashedPassword = await bcrypt.hash(user.password, 10);
 
         const result = await this.catsRepository.createForUsersTable({
-          table_name: user.table_name,
+          // table_name: user.table_name,
           email: user.email,
           name: user.name,
           // password: hashedPassword,
@@ -271,10 +269,10 @@ export class CatsService {
   }
 
   // getGridDataByTableName
-  async getGridDataByTableName(table_name:any) {
+  async getGridDataByTableName(table_name:any, pageNum: number, limit: number) {
     // console.log("table_name at service: ", table_name);
     
-    const dataForGrid = await this.catsRepository.getGridDataByTableName(table_name);
+    const dataForGrid = await this.catsRepository.getGridDataByTableName(table_name, pageNum, limit);
     // console.log("dataForGrid : ", dataForGrid);
     
     return dataForGrid

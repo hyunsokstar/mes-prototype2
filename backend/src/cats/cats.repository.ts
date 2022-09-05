@@ -42,12 +42,11 @@ export class CatsRepository {
 
     // 1page 0 * 2 1 * 2
     async findAllCatsColumns(table_name, pageNum, limit) {
-        // const total_count = await this.catsColumnsModel.find({ table_name: table_name }).count()
-        // console.log("total_count, limit : ", total_count, limit);
 
         const total_page = await this.catsColumnsModel.find({ table_name: table_name }).count() / limit
         const total_page2 = Math.ceil(total_page);
         // console.log("total_page : ", total_page);
+
         const columns_list =
             // catsColumnsModel 에 대해 table_name 으로 검색해서 가져와라 
             await this.catsColumnsModel.find({ table_name: table_name })
@@ -207,23 +206,52 @@ export class CatsRepository {
         }
     }
 
-    async getGridDataByTableName(table_name: string) {
-
+    async getGridDataByTableName(table_name: string, pageNum: number, limit: number) {
         console.log("table_name : ", table_name);
-        
 
         let columns_for_grid;
         let rows_for_grid;
-        
+
+        let total_page;
+        let total_page2;
+
         if (table_name === "rowsForUsersTable") {
             columns_for_grid = await this.catsColumnsModel.find({ table_name: table_name }).sort({ order: 1 });
             rows_for_grid = await this.rowsForUsersTable.find().select('-password');
+
+            total_page = await this.rowsForUsersTable.find({ table_name: table_name }).count() / limit
+            total_page2 = Math.ceil(total_page);
+            // console.log("total_page : ", total_page);
+
+            rows_for_grid =
+                // catsColumnsModel 에 대해 table_name 으로 검색해서 가져와라 
+                await this.rowsForUsersTable.find({ table_name: table_name })
+                    // 페이지 수에 한페이지당 개수를 곱해서 그 다음부터 가져 와라 
+                    .skip((pageNum - 1) * limit).limit(limit)
+                    // order 로 정렬 해라 
+                    .sort({ order: 1 });
+
         } else {
             columns_for_grid = await this.catsColumnsModel.find({ table_name: table_name }).sort({ order: 1 });
-            rows_for_grid = this.rowsForUsersTable.find({ table_name: table_name }).select('-password');
+            rows_for_grid = await this.rowsForUsersTable.find().select('-password');
+
+            total_page = await this.rowsForUsersTable.find({ table_name: table_name }).count() / limit
+            total_page2 = Math.ceil(total_page);
+            // console.log("total_page : ", total_page);
+
+            rows_for_grid =
+                // catsColumnsModel 에 대해 table_name 으로 검색해서 가져와라 
+                await this.rowsForUsersTable.find({ table_name: table_name })
+                    // 페이지 수에 한페이지당 개수를 곱해서 그 다음부터 가져 와라 
+                    .skip((pageNum - 1) * limit).limit(limit)
+                    // order 로 정렬 해라 
+                    .sort({ order: 1 });
         }
 
         let data_for_grid = {
+            // page:pageNum,
+            current_page: pageNum,
+            total_page:total_page2,
             columns_for_grid: columns_for_grid,
             rows_for_grid: rows_for_grid
         }

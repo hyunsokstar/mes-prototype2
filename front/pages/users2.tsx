@@ -5,6 +5,7 @@ import api from "../utils/api"
 import TextEditor from '../components/util/TextEditor'
 import { throttle } from "lodash";
 import Notiflix from "notiflix";
+import Pagination from '@material-ui/lab/Pagination'
 
 
 const rows = [
@@ -38,11 +39,11 @@ function users({ }: Props) {
   // 1122
   useEffect(() => {
     // getAllColumns();
-    getAllGridDataForRowsForUsersTable();
+    getAllGridDataForRowsForUsersTable(pageInfo.page);
     // getAllRowsForUsersTable();
     // getGridTableForUsersTable(pageInfo.page);
 
-  }, [pageInfo])
+  }, [pageInfo.page])
 
   // const getAllRowsForUsersTable = async () => {
   //   try {
@@ -54,7 +55,7 @@ function users({ }: Props) {
 
   //       const new_columns = response.data.data.columns_list.map((column: any) => {
   //         if (column.editor && column.hidden !== "true") {
-            
+
   //           return {
   //             ...column,
   //             editor: column.editor === "TextEditor" ? TextEditor : "",
@@ -86,7 +87,7 @@ function users({ }: Props) {
 
   //       const new_columns = response.data.data.columns_list.map((column: any) => {
   //         if (column.editor && column.hidden !== "true") {
-            
+
   //           return {
   //             ...column,
   //             editor: column.editor === "TextEditor" ? TextEditor : "",
@@ -105,15 +106,17 @@ function users({ }: Props) {
 
   //   }
   // }
-  const getAllGridDataForRowsForUsersTable = async () => {
+  const getAllGridDataForRowsForUsersTable = async (page: number = 1) => {
 
     try {
       const response = await axios.get(
-        `${api.cats}/getGridDataByTableName/rowsForUsersTable`,
+        `${api.cats}/getGridDataByTableName/rowsForUsersTable/${page}/8`,
         { withCredentials: true }
       );
 
       if (response.data.success) {
+        console.log("respose : ", response);
+
         console.log("response.data.data : ", response.data.data);
 
         const columns_for_grid = response.data.data.columns_for_grid
@@ -131,6 +134,7 @@ function users({ }: Props) {
         console.log("new_columns : ", new_columns);
         setColumns(new_columns);
 
+        setPageInfo({ page: response.data.data.current_page, total: response.data.data.total_page })
         setBasicRows(rows_for_grid)
 
       }
@@ -184,6 +188,9 @@ function users({ }: Props) {
     Notiflix.Loading.remove()
   }, [])
 
+  const setPage = (page: any) => {
+    setPageInfo({ ...pageInfo, page: page });
+  }
 
   return (
     <div style={styles}>
@@ -199,6 +206,20 @@ function users({ }: Props) {
           throttle((index: number, width: number) => updateColumnWidthByKey(index, width, columns), 2000, { 'leading': false })
         }
       />
+
+      <br />
+
+      <Pagination
+        count={pageInfo.total}
+        page={pageInfo.page}
+        size="large"
+        defaultPage={1}
+        shape="rounded"
+        onChange={(e, page) => {
+          setPage(page)
+        }}
+      />
+
     </div>
   )
 }
