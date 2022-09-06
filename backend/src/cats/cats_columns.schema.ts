@@ -9,7 +9,7 @@ const options: SchemaOptions = {
 };
 
 @Schema(options)
-export class CatsColumns extends Document {
+export class ColumnsTable extends Document {
 
   @ApiProperty({
     example: "users_table",
@@ -56,22 +56,22 @@ export class CatsColumns extends Document {
     description: "에디터 종류"
   })
   @Prop({
-    required: true,
+    required: false,
   })
   @IsString()
   @IsNotEmpty()
   editor: string;
 
-  // @ApiProperty({
-  //   example: "formatter",
-  //   description: "포매터 종류"
-  // })
-  // @Prop({
-  //   required: true,
-  // })
-  // @IsString()
-  // @IsNotEmpty()
-  // formatter: string;
+  @ApiProperty({
+    example: "formatter",
+    description: "포매터 종류"
+  })
+  @Prop({
+    required: false,
+  })
+  @IsString()
+  @IsNotEmpty()
+  formatter: string;
 
   @ApiProperty({
     example: "order",
@@ -107,9 +107,9 @@ export class CatsColumns extends Document {
 
 }
 
-export const CatColumnsSchema = SchemaFactory.createForClass(CatsColumns);
+export const CatColumnsSchema = SchemaFactory.createForClass(ColumnsTable);
 
-CatColumnsSchema.virtual('readOnlyData').get(function (this: CatsColumns) {
+CatColumnsSchema.virtual('readOnlyData').get(function (this: ColumnsTable) {
   return {
     id: this.id,
     key: this.key,

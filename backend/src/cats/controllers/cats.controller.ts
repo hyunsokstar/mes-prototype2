@@ -194,9 +194,9 @@ export class CatsController {
   @Bind(Param())
   getAllColumnsForCats(params) {
     // console.log("params : ",params.table_name, params.pageNum, params.limit);
-    const allCatsColumnns = this.CatsService.findAllCatsColumns(params.table_name, params.pageNum, params.limit);
+    const allCatsColumnns = this.CatsService.findAllColumnsTable(params.table_name, params.pageNum, params.limit);
 
-    console.log("allCatsColumns : ", allCatsColumnns);
+    console.log("allColumnsTable : ", allCatsColumnns);
 
 
     return allCatsColumnns;
@@ -230,13 +230,22 @@ export class CatsController {
   @Bind(Param())
   getAllColumnsForUsersTableWithoutPagination(params) {
     // console.log("params : ",params.table_name, params.pageNum, params.limit);
-    // const allCatsColumnns = this.CatsService.findAllCatsColumns(params.table_name,params.pageNum, params.limit);
+    // const allCatsColumnns = this.CatsService.findAllColumnsTable(params.table_name,params.pageNum, params.limit);
     const allCatsColumnns = this.CatsService.getAllColumnsForUsersTableWithoutPagination(params.table_name);
 
-    console.log("allCatsColumns : ", allCatsColumnns);
+    console.log("allColumnsTable : ", allCatsColumnns);
 
 
     return allCatsColumnns;
   }
+
+  @Post("save_todos")
+  async saveToDos(@Body() data) {
+    console.log("컬럼 데이터 저장 !!", data);
+    // const search_result = await this.CatsService.saveColumnDatas(data);
+
+    return "save columns"
+  }
+
 
 }

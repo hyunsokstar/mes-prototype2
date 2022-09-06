@@ -6,9 +6,15 @@ import TextEditor from '../components/util/TextEditor'
 import { throttle } from "lodash";
 import Notiflix from "notiflix";
 import Pagination from '@material-ui/lab/Pagination'
-import {selectEditor} from '../common/editor_mapping';
+import {selectEditor, selectFormatter} from '../common/editor_mapping';
+// import {selectEditor} from '../common/editor_mapping';
 
-
+// const columns = [
+//   {key:"email", name: "email", editor:TextEditor, hidden:"false"},
+//   {key:"name", name: "name", editor:TextEditor, hidden:"false"},
+//   {key:"todo", name: "todo", editor:TextEditor, hidden:"false"},
+//   {key:"todo_complete", name: "todo_complete", editor:TextEditor, hidden:"false"}
+// ]
 
 const rows = [
   { id: 0, email: 'tere@daum.net', name: "hyun", todo: "hi", test_complete:"hi" }
@@ -107,7 +113,7 @@ function users({ }: Props) {
   //     console.log("error : ", error);
 
   //   }
-  // }
+  // } 
   const getAllGridDataForRowsForUsersTable = async (page: number = 1) => {
 
     try {
@@ -117,7 +123,7 @@ function users({ }: Props) {
       );
 
       if (response.data.success) {
-        console.log("respose : ", response);
+        // console.log("respose : ", response);
 
         console.log("response.data.data : ", response.data.data);
 
@@ -125,10 +131,11 @@ function users({ }: Props) {
         const rows_for_grid = response.data.data.rows_for_grid
 
         const new_columns = columns_for_grid.map((column: any) => {
-          if (column.editor && column.hidden !== "true") {
+          if (column.hidden !== "true") {
             return {
               ...column,
-              editor: selectEditor(column.editor),
+              editor: column.editor ? TextEditor : TextEditor,
+              formatter: column.formatter ? selectFormatter(column.formatter) : TextEditor,
               resizable: column.resizable === "true" ? true : false,
             }
           }
@@ -138,7 +145,7 @@ function users({ }: Props) {
         // console.log("rows_for_grid : ", rows_for_grid);
 
         setPageInfo({ page: response.data.data.current_page, total: response.data.data.total_page })
-        setBasicRows(rows_for_grid)
+        // setBasicRows(rows_for_grid)
 
       }
 
@@ -205,7 +212,7 @@ function users({ }: Props) {
       </div>
       <DataGrid
         columns={columns}
-        rows={basicRows}
+        rows={rows}
         style={{ width: "100%" }}
         onRowsChange={(data, idx) => { onRowsChangeHandler(data, idx) }}
         onColumnResize={

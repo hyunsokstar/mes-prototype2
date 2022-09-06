@@ -13,10 +13,30 @@ export const selectEditor = (editor: string) => {
         case "searchModalForUsers":
           return searchModalForUser;
         default:
-          // code block
+          return searchModalForUser;
+
       }
       
 
 
     return editor;
 } 
+
+export const selectFormatter = (formatter: string) => {
+
+
+  console.log("formatterText 에디터 실행", formatter);
+
+  switch(formatter) {
+      case "TextEditor":
+        return TextEditor;
+      case "searchModalForUsers":
+        return searchModalForUser;
+      default:
+        return searchModalForUser;
+    }
+    
+
+
+  // return editor;
+}

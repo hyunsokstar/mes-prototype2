@@ -6,7 +6,7 @@ import { Module, forwardRef } from '@nestjs/common';
 import { AuthModule } from 'src/auth/auth.module';
 import { MulterModule } from '@nestjs/platform-express/multer';
 import { Cat, CatSchema } from './cats.schema';
-import { CatsColumns, CatColumnsSchema } from './cats_columns.schema';
+import { ColumnsTable, CatColumnsSchema } from './cats_columns.schema';
 import { RowsForUsersTable, RowsForUsersTableSchema } from './RowsForUsersTable.schema';
 
 
@@ -18,7 +18,7 @@ import { RowsForUsersTable, RowsForUsersTableSchema } from './RowsForUsersTable.
     MongooseModule.forFeature(
       [
         { name: Cat.name, schema: CatSchema },
-        { name: CatsColumns.name, schema: CatColumnsSchema },
+        { name: ColumnsTable.name, schema: CatColumnsSchema },
         { name: RowsForUsersTable.name, schema: RowsForUsersTableSchema }
       ]
     ),

@@ -67,18 +67,18 @@ export class CatsService {
     await this.catsRepository.updateColumWidthForTableAndKey(data);
   }
 
-  async findAllCatsColumns(table_name: string, pageNum: number, limit: number) {
+  async findAllColumnsTable(table_name: string, pageNum: number, limit: number) {
 
-    const allCatsColumns = await this.catsRepository.findAllCatsColumns(table_name, pageNum, limit);
-    return allCatsColumns
+    const allColumnsTable = await this.catsRepository.findAllColumnsTable(table_name, pageNum, limit);
+    return allColumnsTable
 
   }
 
   async getAllColumnsForUsersTableWithoutPagination(table_name: string) {
 
-    // const allCatsColumns = await this.catsRepository.findAllCatsColumns(table_name, pageNum, limit);
-    const allCatsColumns = await this.catsRepository.findAllColumnsWithoutPagination(table_name);
-    return allCatsColumns
+    // const allColumnsTable = await this.catsRepository.findAllColumnsTable(table_name, pageNum, limit);
+    const allColumnsTable = await this.catsRepository.findAllColumnsWithoutPagination(table_name);
+    return allColumnsTable
   }
 
 
@@ -130,55 +130,6 @@ export class CatsService {
     })
 
     return "회원 정보 저장 성공 !!"
-
-  }
-
-  async saveColumnDatas(data: any) {
-    const { columns } = data;
-    // console.log("columns at service for saveColumnsDatas: ", data);
-    data.map(async (column) => {
-
-      const isKeyExist = await this.catsRepository.existsByKey(column._id);
-      // console.log("key 존재 여부 : ", isKeyExist);
-
-      if (isKeyExist) { // 이미 key 가 존재 <=>  업데이트
-
-        console.log("update 확인 ", column);
-
-        const filter = { table_name: column.table_name, key: column.key }
-
-        const catColumn = await this.catsRepository.updateCatsColumns(filter,
-          {
-            table_name: column.table_name,
-            key: column.key,
-            name: column.name,
-            width: column.width,
-            editor: column.editor,
-            // formatter: column.formatter,
-            order: column.order,
-            hidden: column.hidden,
-            resizable: column.resizable
-
-          })
-
-      } else { // 없을 경우 <=> save
-        console.log("save 확인 ", column);
-
-        const result = await this.catsRepository.createColumns
-          ({
-            table_name: column.table_name,
-            key: column.key,
-            name: column.name,
-            width: column.width,
-            editor: column.editor,
-            // formatter: column.formatter,
-            order: column.order,
-            hidden: column.hidden,
-            resizable: column.resizable
-          });
-      }
-
-    })
 
   }
 
@@ -279,5 +230,102 @@ export class CatsService {
     return dataForGrid
   }
 
+  async saveColumnDatas(data: any) {
+    const { columns } = data;
+    // console.log("columns at service for saveColumnsDatas: ", data);
+    data.map(async (column) => {
+
+      const isKeyExist = await this.catsRepository.existsByKey(column._id);
+      // console.log("key 존재 여부 : ", isKeyExist);
+
+      if (isKeyExist) { // 이미 key 가 존재 <=>  업데이트
+
+        console.log("update 확인 ", column);
+
+        const filter = { table_name: column.table_name, key: column.key }
+
+        const catColumn = await this.catsRepository.updateColumnsTable(filter,
+          {
+            table_name: column.table_name,
+            key: column.key,
+            name: column.name,
+            width: column.width,
+            editor: column.editor,
+            formatter: column.formatter,
+            order: column.order,
+            hidden: column.hidden,
+            resizable: column.resizable
+
+          })
+
+      } else { // 없을 경우 <=> save
+        console.log("save 확인 ", column);
+
+        const result = await this.catsRepository.createColumns
+          ({
+            table_name: column.table_name,
+            key: column.key,
+            name: column.name,
+            width: column.width,
+            editor: column.editor,
+            formatter: column.formatter,
+            order: column.order,
+            hidden: column.hidden,
+            resizable: column.resizable
+          });
+      }
+
+    })
+
+  }
+
+  async saveForTodos(data: any) {
+    const { columns } = data;
+
+    data.map(async (column) => {
+
+      const isKeyExist = await this.catsRepository.existsByKey(column._id);
+      // console.log("key 존재 여부 : ", isKeyExist);
+
+      if (isKeyExist) { // 이미 key 가 존재 <=>  업데이트
+
+        console.log("update 확인 ", column);
+
+        const filter = { table_name: column.table_name, key: column.key }
+
+        const catColumn = await this.catsRepository.updateColumnsTable(filter,
+          {
+            table_name: column.table_name,
+            key: column.key,
+            name: column.name,
+            width: column.width,
+            editor: column.editor,
+            formatter: column.formatter,
+            order: column.order,
+            hidden: column.hidden,
+            resizable: column.resizable
+
+          })
+
+      } else { // 없을 경우 <=> save
+        console.log("save 확인 ", column);
+
+        const result = await this.catsRepository.createColumns
+          ({
+            table_name: column.table_name,
+            key: column.key,
+            name: column.name,
+            width: column.width,
+            editor: column.editor,
+            formatter: column.formatter,
+            order: column.order,
+            hidden: column.hidden,
+            resizable: column.resizable
+          });
+      }
+
+    })
+
+  }
 
 }

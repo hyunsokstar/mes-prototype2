@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Cat } from './cats.schema';
-import { CatsColumns } from './cats_columns.schema';
+import { ColumnsTable } from './cats_columns.schema';
 import { RowsForUsersTable } from './RowsForUsersTable.schema';
 import { CatRequestDto } from './dto/cats.request.dto';
 import { CatCurrentDto } from './dto/cats.current.dto';
@@ -14,7 +14,7 @@ export class CatsRepository {
 
     constructor(
         @InjectModel(Cat.name) private readonly catModel: Model<Cat>,
-        @InjectModel(CatsColumns.name) private readonly catsColumnsModel: Model<CatsColumns>,
+        @InjectModel(ColumnsTable.name) private readonly catsColumnsModel: Model<ColumnsTable>,
         @InjectModel(RowsForUsersTable.name) private readonly rowsForUsersTable: Model<RowsForUsersTable>,
     ) { }
 
@@ -41,7 +41,7 @@ export class CatsRepository {
 
 
     // 1page 0 * 2 1 * 2
-    async findAllCatsColumns(table_name, pageNum, limit) {
+    async findAllColumnsTable(table_name, pageNum, limit) {
 
         const total_page = await this.catsColumnsModel.find({ table_name: table_name }).count() / limit
         const total_page2 = Math.ceil(total_page);
@@ -157,7 +157,7 @@ export class CatsRepository {
         return await this.rowsForUsersTable.create(user);
     }
 
-    async createColumns(cat: any): Promise<CatsColumns> {
+    async createColumns(cat: any): Promise<ColumnsTable> {
         console.log("cat :::::", cat);
         return await this.catsColumnsModel.create(cat);
     }
@@ -170,7 +170,7 @@ export class CatsRepository {
         return await this.rowsForUsersTable.findOneAndUpdate(filter, user);
     }
 
-    async updateCatsColumns(filter, cat: any): Promise<CatsColumns> {
+    async updateColumnsTable(filter, cat: any): Promise<ColumnsTable> {
         return await this.catsColumnsModel.findOneAndUpdate(filter, cat);
     }
 
