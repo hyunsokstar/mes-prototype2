@@ -62,6 +62,17 @@ export class CatsColumns extends Document {
   @IsNotEmpty()
   editor: string;
 
+  // @ApiProperty({
+  //   example: "formatter",
+  //   description: "포매터 종류"
+  // })
+  // @Prop({
+  //   required: true,
+  // })
+  // @IsString()
+  // @IsNotEmpty()
+  // formatter: string;
+
   @ApiProperty({
     example: "order",
     description: "컬럼"
@@ -70,7 +81,7 @@ export class CatsColumns extends Document {
   order: number;
 
   @ApiProperty({
-    example: "true",  
+    example: "true",
     description: "노출 여부"
   })
   @Prop({

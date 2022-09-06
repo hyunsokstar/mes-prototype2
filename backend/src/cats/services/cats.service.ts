@@ -154,6 +154,7 @@ export class CatsService {
             name: column.name,
             width: column.width,
             editor: column.editor,
+            // formatter: column.formatter,
             order: column.order,
             hidden: column.hidden,
             resizable: column.resizable
@@ -170,6 +171,7 @@ export class CatsService {
             name: column.name,
             width: column.width,
             editor: column.editor,
+            // formatter: column.formatter,
             order: column.order,
             hidden: column.hidden,
             resizable: column.resizable
@@ -226,6 +228,7 @@ export class CatsService {
 
   }
 
+
   async signUp(body: CatRequestDto) {
     const { email, name, password } = body;
     const isCatExist = await this.catsRepository.existsByEmail(email);
@@ -267,12 +270,12 @@ export class CatsService {
   }
 
   // getGridDataByTableName
-  async getGridDataByTableName(table_name:any, pageNum: number, limit: number) {
+  async getGridDataByTableName(table_name: any, pageNum: number, limit: number) {
     // console.log("table_name at service: ", table_name);
-    
+
     const dataForGrid = await this.catsRepository.getGridDataByTableName(table_name, pageNum, limit);
     // console.log("dataForGrid : ", dataForGrid);
-    
+
     return dataForGrid
   }
 

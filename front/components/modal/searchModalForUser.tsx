@@ -29,7 +29,11 @@ const customStyles = {
 };
 
 
-function searchModalForUser({ }: Props) {
+function searchModalForUser({ row, column, onRowChange }: any) {
+
+    console.log("row : ", row);
+
+
     let subtitle: HTMLHeadingElement | null;
     const [modalIsOpen, setIsOpen] = React.useState(false);
 
@@ -48,6 +52,7 @@ function searchModalForUser({ }: Props) {
 
     return (
         <div>
+            {row.text ? row.todo : ""}
             <button onClick={openModal}>Open Modal</button>
 
             <ModalWrapper>
@@ -61,7 +66,7 @@ function searchModalForUser({ }: Props) {
                     <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Hello</h2>
 
                     <div style={{ border: "0px solid green" }}>
-                        <div style={{display:"flex", justifyContent:"flex-end", border:"0px solid"}}>
+                        <div style={{ display: "flex", justifyContent: "flex-end", border: "0px solid" }}>
                             <button onClick={closeModal} >close</button>
                         </div>
                         <br />

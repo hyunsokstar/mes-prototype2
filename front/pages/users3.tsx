@@ -6,6 +6,8 @@ import TextEditor from '../components/util/TextEditor'
 import { throttle } from "lodash";
 import Notiflix from "notiflix";
 import Pagination from '@material-ui/lab/Pagination'
+import {selectEditor} from '../common/editor_mapping';
+
 
 
 const rows = [
@@ -126,13 +128,14 @@ function users({ }: Props) {
           if (column.editor && column.hidden !== "true") {
             return {
               ...column,
-              editor: column.editor === "TextEditor" ? TextEditor : "",
+              editor: selectEditor(column.editor),
               resizable: column.resizable === "true" ? true : false,
             }
           }
         }).filter((v: any) => v)
-        console.log("new_columns : ", new_columns);
+        // console.log("new_columns : ", new_columns);
         setColumns(new_columns);
+        // console.log("rows_for_grid : ", rows_for_grid);
 
         setPageInfo({ page: response.data.data.current_page, total: response.data.data.total_page })
         setBasicRows(rows_for_grid)
@@ -147,7 +150,6 @@ function users({ }: Props) {
 
   const onRowsChangeHandler = (data: any, idx: any) => {
     console.log("data for row change handler : ", data);
-
   }
 
   const modify_column_width_by_table_name_and_key = useCallback(async (data: object) => {
@@ -191,6 +193,10 @@ function users({ }: Props) {
   const setPage = (page: any) => {
     setPageInfo({ ...pageInfo, page: page });
   }
+
+  // const selected_editor = selectEditor("test_editor");
+  // console.log("selected_editor : ", selected_editor);
+  
 
   return (
     <div style={styles}>
