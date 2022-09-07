@@ -13,7 +13,7 @@ const sample_columns = [
   { key: "email", name: "email", editor: TextEditor, hidden: "false" , resizable: "true"},
   { key: "name", name: "name", editor: TextEditor, hidden: "false" , resizable: "true"},
   { key: "todo", name: "todo", formatter: searchModalForUser, hidden: "false" , resizable: "true"},
-  { key: "todo_complete", name: "todo_complete", editor: TextEditor, hidden: "false" , resizable: "true"}
+  { key: "test_complete", name: "test_complete", editor: TextEditor, hidden: "false" , resizable: "true"}
 ]
 
 const rows = [

@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components';
 
+
 type Props = {}
 
 
@@ -11,19 +12,18 @@ const Input = styled.input`
     text-align: center;
 `;
 
-const TextEditor = ({ row, column, onRowChange, onClose }: any) => {
+const PlaceHolder = ({ row, column, onRowChange, onClose }: any) => {
+
+    console.log("row : ", row);
+
 
     return (
         <div>
             <Input type="text"
+                placeholder=''
                 onChange={(event) => {
                     let eventValue = event.target.value
 
-                    onRowChange({
-                        ...row,
-                        [column.key]: eventValue,
-                        isChange: true
-                    })
                 }}
 
             />
@@ -31,4 +31,4 @@ const TextEditor = ({ row, column, onRowChange, onClose }: any) => {
     )
 }
 
-export default TextEditor
+export default PlaceHolder

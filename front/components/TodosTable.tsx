@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import axios from "axios";
 import api from "../utils/api"
-
 import DataGrid from 'react-data-grid';
 import Pagination from '@material-ui/lab/Pagination'
 import TextEditor from "../components/util/TextEditor"

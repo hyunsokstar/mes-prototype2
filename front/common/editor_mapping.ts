@@ -1,6 +1,6 @@
 import searchModalForUser from '../components/modal/searchModalForUser';
+import PlaceHolder from '../components/util/PlaceHolder';
 import TextEditor from '../components/util/TextEditor'
-
 
 export const selectEditor = (editor: string) => {
 
@@ -13,7 +13,7 @@ export const selectEditor = (editor: string) => {
         case "searchModalForUsers":
           return searchModalForUser;
         default:
-          return searchModalForUser;
+          return "";
 
       }
       
@@ -33,7 +33,7 @@ export const selectFormatter = (formatter: string) => {
       case "searchModalForUsers":
         return searchModalForUser;
       default:
-        return searchModalForUser;
+        return PlaceHolder;
     }
     
 

@@ -1,7 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react'
 import styled from 'styled-components'
 import Modal from 'react-modal';
 import DataGrid from 'react-data-grid';
+import axios from "axios";
+import api from "../../utils/api"
+import Pagination from '@material-ui/lab/Pagination'
+import TextEditor from "../../components/util/TextEditor"
+import { selectEditor, selectFormatter } from '../../common/editor_mapping';
+
 
 const columns = [
     { key: 'id', name: 'ID' },
@@ -26,29 +32,109 @@ const customStyles = {
         transform: 'translate(-50%, -50%)',
         padding: "auto",
         width: "60%",
+        display:"flex",
+        justifyContent:"center",
+        alignItems:"center",
+        flexDirection: "column",
+        height: "50vh"
     },
 };
 
 
 function searchModalForUser({ row, column, onRowChange }: any) {
+    const [modalIsOpen, setIsOpen] = React.useState(false);
 
-    console.log("row : ", row);
+    const [selectList, setSelectList] = useState<Set<any>>(new Set());
+    const [columns, setColumns] = useState<any>([])
+    const [basicRows, setBasicRows] = useState([]);
+    const [pageInfo, setPageInfo] = useState<{ page: number, total: number }>({
+        page: 1,
+        total: 1
+    });
+
 
 
     let subtitle: HTMLHeadingElement | null;
-    const [modalIsOpen, setIsOpen] = React.useState(false);
+    console.log("row : ", row);
 
     function openModal() {
         setIsOpen(true);
     }
-
     function afterOpenModal() {
         // references are now sync'd and can be accessed.
-        // subtitle.style.color = '#f00';
+        subtitle.style.color = '#f00';
     }
-
     function closeModal() {
         setIsOpen(false);
+    }
+
+    useEffect(() => {
+        getAllTodosFromBackend(pageInfo.page);
+        getAllColumns(pageInfo.page);
+    }, [pageInfo.page])
+
+    const getAllColumns = async (page: number = 1) => {
+
+        try {
+            const response = await axios.get(
+                // `${api.cats}/cats_columns/rowsForUsersTable/${page}/8`,
+                `${api.cats}/cats_columns/columnsForTodosTable/`,
+                // `${api.cats}/all_cats_columns/${page}/2`,
+                { withCredentials: true }
+            );
+            console.log("resposne.data for columns: ", response.data);
+
+            if (response.data.success) {
+
+                const new_columns = response.data.data.columns_list.map((column: any) => {
+                    if (column) {
+                        return {
+                            ...column,
+                            editor: column.editor === "TextEditor" ? selectEditor(column.editor) : selectFormatter(column.formatter),
+                            formatter: column.formatter && selectFormatter(column.formatter)
+                        }
+                    }
+                }).filter((v: any) => v)
+
+                console.log("new_columns : ", new_columns);
+
+                // setPageInfo({ page: response.data.data.current_page, total: response.data.data.total_page })
+                setColumns(new_columns);
+            }
+
+        } catch (error) {
+            console.log("error : ", error);
+
+        }
+    }
+
+    const getAllTodosFromBackend = async (page: number = 1) => {
+        try {
+            const response = await axios.get(
+                `${api.cats}/getTodosForTodosTable/${page}/4`,
+                { withCredentials: true }
+            );
+            const rows_data = response.data.data.rows_for_grid
+
+            if (response.data.success) {
+                console.log("rows_data : ", rows_data);
+                setBasicRows(rows_data)
+            }
+
+            setPageInfo({ page: response.data.data.current_page, total: response.data.data.total_page })
+
+        } catch (error) {
+            console.log("error : ", error);
+        }
+    }
+
+    const setPage = (page: any) => {
+        setPageInfo({ ...pageInfo, page: page });
+    }
+
+    const onRowsChangeHandler = (data: any, idx: any) => {
+        console.log("data for row change handler : ", data);
+        setBasicRows(data);
     }
 
     return (
@@ -66,15 +152,25 @@ function searchModalForUser({ row, column, onRowChange }: any) {
                     style={customStyles}
                     contentLabel="Example Modal"
                 >
-                    <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Hello</h2>
+                    <h2 ref={(_subtitle) => (subtitle = _subtitle)}>todo for task</h2>
 
-                    <div style={{ border: "0px solid green" }}>
-                        <div style={{ display: "flex", justifyContent: "flex-end", border: "0px solid" }}>
-                            <button onClick={closeModal} >close</button>
-                        </div>
-                        <br />
-                        <DataGrid columns={columns} rows={rows} />
-                    </div>
+                    <DataGrid
+                        columns={columns}
+                        rows={basicRows}
+                        onRowsChange={(data, idx) => { onRowsChangeHandler(data, idx) }}
+
+                    />
+
+                    <Pagination
+                        count={pageInfo.total}
+                        page={pageInfo.page}
+                        size="large"
+                        defaultPage={1}
+                        shape="rounded"
+                        onChange={(e, page) => {
+                            setPage(page)
+                        }}
+                    />
 
                 </Modal>
 
