@@ -57,7 +57,7 @@ export class CatsRepository {
                 // order 로 정렬 해라 
                 .sort({ order: 1 });
 
-        // console.log("column_list : ", columns_list);
+        console.log("column_list for columns page list : ", columns_list);
 
         return {
             current_page: pageNum,

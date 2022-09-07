@@ -67,11 +67,13 @@ const MemberTable = (props: Props) => {
 
     try {
       const response = await axios.get(
-        `${api.cats}/cats_columns/rowsForUsersTable/${page}/8`,
+        // `${api.cats}/cats_columns/rowsForUsersTable/${page}/8`,
+        `${api.cats}/cats_columns/columnsForTodosTable/${page}/8`,
         // `${api.cats}/all_cats_columns/${page}/2`,
         { withCredentials: true }
       );
-      console.log("resposne : ", response);
+      console.log("resposne.data : ", response.data);
+
       if (response.data.success) {
 
         const new_columns = response.data.data.columns_list.map((column: any) => {
@@ -81,10 +83,14 @@ const MemberTable = (props: Props) => {
               // editor: column.editor === "TextEditor" ? TextEditor : ""
             }
           }
-        })
+        }).filter((v:any) => v)
+
+        console.log("new");
+        
 
         setPageInfo({ page: response.data.data.current_page, total: response.data.data.total_page })
         setBasicRows(new_columns);
+
       }
 
     } catch (error) {
@@ -222,21 +228,19 @@ const MemberTable = (props: Props) => {
       console.log("error : ", error);
     }
 
-
   }, [])
 
   const updateColumnWidthByKey = useCallback((index: number, width: number) => {
 
     // Notiflix.Loading.circle()
     const data = {
-      table_name: "users_table",
+      table_name: "columnsForTodosTable",
       key: sample_columns[index-1].key,
       width: width.toFixed(2)
     }
 
     console.log("data : ", data);
     modify_column_width_by_table_name_and_key(data);
-
 
     // Notiflix.Loading.remove()
   }, [])
@@ -261,7 +265,10 @@ const MemberTable = (props: Props) => {
           columns={[SelectColumn, ...sample_columns]}
           rows={basicRows} style={{ width: "100%" }}
           onRowsChange={(data, idx) => { onRowsChangeHandler(data, idx) }}
-          rowKeyGetter={(row) => row._id || ""}
+          rowKeyGetter={(row) => {
+            console.log("row : ", row);
+            return row._id;
+          }}
           selectedRows={selectList}
           onSelectedRowsChange={(row) => {
             console.log("row : ", row);

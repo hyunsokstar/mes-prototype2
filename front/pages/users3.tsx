@@ -7,7 +7,6 @@ import { throttle } from "lodash";
 import Notiflix from "notiflix";
 import Pagination from '@material-ui/lab/Pagination'
 import {selectEditor, selectFormatter} from '../common/editor_mapping';
-// import {selectEditor} from '../common/editor_mapping';
 
 // const columns = [
 //   {key:"email", name: "email", editor:TextEditor, hidden:"false"},
@@ -17,8 +16,8 @@ import {selectEditor, selectFormatter} from '../common/editor_mapping';
 // ]
 
 const rows = [
-  { id: 0, email: 'tere@daum.net', name: "hyun", todo: "hi", test_complete:"hi" }
-  // { id: 1, email: 'demo@naver.com', name: "demo", gender: "girl", hobby: "game", position: "dev", height: "174", age: 30, company: "hyundae", job: "developer" }
+  { id: 0, email: 'tere@daum.net', name: "hyun", todo: "hi", test_complete:"hi" },
+  { id: 1, email: 'tere@daum.net', name: "hyun", todo: "hi", test_complete:"hi" },
 ];
 
 const styles = {
@@ -73,17 +72,17 @@ function users({ }: Props) {
             return {
               ...column,
               editor: column.editor ? TextEditor : TextEditor,
-              formatter: column.formatter ? selectFormatter(column.formatter) : TextEditor,
+              // formatter: column.formatter ? selectFormatter(column.formatter) : TextEditor,
               resizable: column.resizable === "true" ? true : false,
             }
           }
         }).filter((v: any) => v)
-        // console.log("new_columns : ", new_columns);
+        console.log("new_columns : ", new_columns);
         setColumns(new_columns);
-        // console.log("rows_for_grid : ", rows_for_grid);
+        console.log("rows_for_grid : ", rows_for_grid);
 
         setPageInfo({ page: response.data.data.current_page, total: response.data.data.total_page })
-        // setBasicRows(rows_for_grid)
+        setBasicRows(rows_for_grid)
 
       }
 
@@ -151,6 +150,7 @@ function users({ }: Props) {
       <DataGrid
         columns={columns}
         rows={rows}
+        // rows={basicRows}
         style={{ width: "100%" }}
         onRowsChange={(data, idx) => { onRowsChangeHandler(data, idx) }}
         onColumnResize={

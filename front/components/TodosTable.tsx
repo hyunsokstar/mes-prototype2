@@ -30,10 +30,8 @@ function TodosTable({ }: Props) {
     });
 
     useEffect(() => {
-        // getAllTodosFromBackend(pageInfo.page);
         getAllTodosFromBackend(pageInfo.page);
     }, [])
-
 
     const getAllTodosFromBackend = async (page: number = 1) => {
         try {
@@ -45,7 +43,6 @@ function TodosTable({ }: Props) {
 
             if (response.data.success) {
                 console.log("response.data : ", response.data.data);
-                // console.log("respose success check !! ");
                 setBasicRows(rows_data)
             }
 
