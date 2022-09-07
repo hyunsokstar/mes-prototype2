@@ -62,6 +62,7 @@ export class CatsController {
 
     return allCats;
   }
+  
 
   @Get("getListForUsersTable")
   getListForUsersTable() {
@@ -227,9 +228,7 @@ export class CatsController {
   @Bind(Param())
   getAllColumnsForUsersTableWithoutPagination(params) {
     const allCatsColumnns = this.CatsService.getAllColumnsForUsersTableWithoutPagination(params.table_name);
-
     console.log("allColumnsTable : ", allCatsColumnns);
-
 
     return allCatsColumnns;
   }
@@ -238,11 +237,18 @@ export class CatsController {
   async saveDataForTodosTable(@Body() data) {
     console.log("saveDataForTodosTable 실행 확인 !!", data);
     const result_for_create_data_for_todos_table = await this.CatsService.saveDataForTodosTable(data);
-
-    // console.log("result for create For Todos Table : ", result_for_create_data_for_todos_table);
+    console.log("result_for_create_data_for_todos_table : ", result_for_create_data_for_todos_table);
 
     return "saveDataForTodosTable 성공"
   }
 
+  @Get("getTodosForTodosTable")
+  async getTodoListForTodosTable() {
+
+    const allTodos = await this.CatsService.getAllTodosForUsersTable();
+    console.log("allTodos : ", allTodos);
+
+    return allTodos;
+  }
 
 }

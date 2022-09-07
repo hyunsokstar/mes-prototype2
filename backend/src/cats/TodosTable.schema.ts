@@ -35,11 +35,16 @@ export class TodosTable extends Document {
   @IsNotEmpty()
   page: string;
 
+
+  @Prop({
+    required: false,
+  })
   @ApiProperty({
     example: "김철수",
     description: "담당자"
   })
   @IsString()
+  // @IsNotEmpty()
   manager: string;
 
 

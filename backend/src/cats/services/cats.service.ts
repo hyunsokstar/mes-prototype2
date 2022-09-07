@@ -142,19 +142,33 @@ export class CatsService {
 
       if (mongoose.isValidObjectId(todo.id)) {
         isTodoExist = await this.catsRepository.findByIdForTodosTable(todo.id);
+
       } else {
         isTodoExist = false
       }
-      
-      console.log("isTodoExist : ", isTodoExist);
 
       if (isTodoExist) {
+        console.log("todo가 존재함을 확인 !! ");
+
         const filter = { _id: todo.id }
-        console.log("todo update !!");
+
+        const todoUpdateResult = await this.catsRepository.updateTodosTable(filter,
+          {
+            todo: todo.todo,
+            level: todo.level,
+            page: todo.page,
+            manager: todo.manager
+          })
+
+          console.log("todoUpdateResult : ", todoUpdateResult);
+          
+
+        return todoUpdateResult;
 
       } else {
-
+        console.log("todo가 존재하지 않음을 확인 !! ");
         console.log("todo 생성 시도 확인", todo, index);
+
         const create_result = await this.catsRepository.createForTodosTable({
           todo: todo.todo,
           level: todo.level,
@@ -165,7 +179,7 @@ export class CatsService {
         return create_result;
 
       }
-      
+
     })
 
     return "todos table 에 데이터 저장 하기 !!"
@@ -366,5 +380,12 @@ export class CatsService {
     })
 
   }
+
+  // todos 
+  // list
+  async getAllTodosForUsersTable() {
+    const allTodos = await this.catsRepository.getAllTodosForUsersTable();
+    return allTodos
+  }  
 
 }

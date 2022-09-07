@@ -100,7 +100,7 @@ export class CatsRepository {
 
     }
     // fix 1122 
-    async findByIdForTodosTable (todoId: string ) {
+    async findByIdForTodosTable(todoId: string) {
         // const result = await this.todosForTodosTable.findByIdAndUpdate(todoId, { imgUrl: `http://localhost:8000/media/${fileName}` });
 
         const result = await this.rowsForTodosTable.exists({ _id: todoId });
@@ -186,6 +186,16 @@ export class CatsRepository {
         return await this.catModel.findOneAndUpdate(filter, cat);
     }
 
+    async updateTodosTable(filter, todo: any): Promise<TodosTable> {
+
+        console.log("filter : ", filter);
+        console.log("todo : ", todo);
+
+
+
+        return await this.rowsForTodosTable.findOneAndUpdate(filter, todo);
+    }
+
     async updateForUsersTable(filter, user: any): Promise<RowsForUsersTable> {
         return await this.rowsForUsersTable.findOneAndUpdate(filter, user);
     }
@@ -209,6 +219,8 @@ export class CatsRepository {
     async findAllCats() {
         return await this.catModel.find().select('-password');
     }
+
+    
 
     async getListForUsersTable() {
         return await this.rowsForUsersTable.find().select('-password');
@@ -269,18 +281,22 @@ export class CatsRepository {
         }
 
         console.log("columns_for_grid : ", columns_for_grid);
-        
+
 
         let data_for_grid = {
             // page:pageNum,
             current_page: pageNum,
-            total_page:total_page2,
+            total_page: total_page2,
             columns_for_grid: columns_for_grid,
             rows_for_grid: rows_for_grid
         }
 
         return data_for_grid;
 
+    }
+
+    async getAllTodosForUsersTable() {
+        return await this.rowsForTodosTable.find().select('-password');
     }
 
 }
