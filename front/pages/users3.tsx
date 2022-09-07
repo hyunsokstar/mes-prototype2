@@ -48,72 +48,10 @@ function users({ }: Props) {
   useEffect(() => {
     // getAllColumns();
     getAllGridDataForRowsForUsersTable(pageInfo.page);
-    // getAllRowsForUsersTable();
-    // getGridTableForUsersTable(pageInfo.page);
 
   }, [pageInfo.page])
 
-  // const getAllRowsForUsersTable = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       `${api.cats}/cats_columns/rowsForUsersTable`,
-  //       { withCredentials: true }
-  //     );
-  //     if (response.data.success) {
 
-  //       const new_columns = response.data.data.columns_list.map((column: any) => {
-  //         if (column.editor && column.hidden !== "true") {
-
-  //           return {
-  //             ...column,
-  //             editor: column.editor === "TextEditor" ? TextEditor : "",
-  //             resizable: column.resizable === "true" ? true : false
-  //           }
-  //         }
-  //       }).filter((v: any) => v)
-
-  //       console.log("new_columns : ", new_columns);
-
-  //       setColumns(new_columns);
-  //     }
-
-  //   } catch (error) {
-  //     console.log("error : ", error);
-
-  //   }
-  // }
-
-
-  // const getAllColumns = async () => {
-
-  //   try {
-  //     const response = await axios.get(
-  //       `${api.cats}/cats_columns/users_table`,
-  //       { withCredentials: true }
-  //     );
-  //     if (response.data.success) {
-
-  //       const new_columns = response.data.data.columns_list.map((column: any) => {
-  //         if (column.editor && column.hidden !== "true") {
-
-  //           return {
-  //             ...column,
-  //             editor: column.editor === "TextEditor" ? TextEditor : "",
-  //             resizable: column.resizable === "true" ? true : false
-  //           }
-  //         }
-  //       }).filter((v: any) => v)
-
-  //       console.log("new_columns : ", new_columns);
-
-  //       setColumns(new_columns);
-  //     }
-
-  //   } catch (error) {
-  //     console.log("error : ", error);
-
-  //   }
-  // } 
   const getAllGridDataForRowsForUsersTable = async (page: number = 1) => {
 
     try {

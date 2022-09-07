@@ -220,7 +220,7 @@ export class CatsRepository {
         return await this.catModel.find().select('-password');
     }
 
-    
+
 
     async getListForUsersTable() {
         return await this.rowsForUsersTable.find().select('-password');
@@ -295,8 +295,25 @@ export class CatsRepository {
 
     }
 
-    async getAllTodosForUsersTable() {
-        return await this.rowsForTodosTable.find().select('-password');
+    async getAllTodosForUsersTable(pageNum, limit) {
+        const todos_for_data_grid = await this.rowsForTodosTable.find()
+            // 페이지 수에 한페이지당 개수를 곱해서 그 다음부터 가져 와라 
+            .skip((pageNum - 1) * limit).limit(limit)
+            // order 로 정렬 해라 
+            .sort({ order: 1 });
+
+        let total_page = await this.rowsForTodosTable.find().count() / limit
+        let total_page2 = Math.ceil(total_page);
+
+        let data_for_grid = {
+            current_page: pageNum,
+            total_page: total_page2,
+            rows_for_grid: todos_for_data_grid
+        }
+
+        return data_for_grid;
+
+
     }
 
 }

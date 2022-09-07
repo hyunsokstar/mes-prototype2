@@ -233,6 +233,9 @@ export class CatsController {
     return allCatsColumnns;
   }
 
+
+  // function for todos 2244
+
   @Post("saveDataForTodosTable")
   async saveDataForTodosTable(@Body() data) {
     console.log("saveDataForTodosTable 실행 확인 !!", data);
@@ -242,10 +245,12 @@ export class CatsController {
     return "saveDataForTodosTable 성공"
   }
 
-  @Get("getTodosForTodosTable")
-  async getTodoListForTodosTable() {
-
-    const allTodos = await this.CatsService.getAllTodosForUsersTable();
+  // @Get("getGridDataByTableName/:table_name/:pageNum/:limit")
+  @Get("getTodosForTodosTable/:pageNum/:limit")
+  @Bind(Param())
+  async getTodoListForTodosTable(params) {
+    // const dataForGrid = this.CatsService.getGridDataByTableName(table_name, params.pageNum, params.limit);
+    const allTodos = await this.CatsService.getAllTodosForUsersTable(params.pageNum, params.limit);
     console.log("allTodos : ", allTodos);
 
     return allTodos;

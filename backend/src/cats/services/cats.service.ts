@@ -160,8 +160,8 @@ export class CatsService {
             manager: todo.manager
           })
 
-          console.log("todoUpdateResult : ", todoUpdateResult);
-          
+        console.log("todoUpdateResult : ", todoUpdateResult);
+
 
         return todoUpdateResult;
 
@@ -383,9 +383,9 @@ export class CatsService {
 
   // todos 
   // list
-  async getAllTodosForUsersTable() {
-    const allTodos = await this.catsRepository.getAllTodosForUsersTable();
+  async getAllTodosForUsersTable(pageNum: number, limit: number) {
+    const allTodos = await this.catsRepository.getAllTodosForUsersTable(pageNum, limit);
     return allTodos
-  }  
+  }
 
 }
