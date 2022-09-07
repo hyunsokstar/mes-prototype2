@@ -62,16 +62,16 @@ export class ColumnsTable extends Document {
   @IsNotEmpty()
   editor: string;
 
-  @ApiProperty({
-    example: "formatter",
-    description: "포매터 종류"
-  })
-  @Prop({
-    required: false,
-  })
-  @IsString()
-  @IsNotEmpty()
-  formatter: string;
+  // @ApiProperty({
+  //   example: "formatter",
+  //   description: "포매터 종류"
+  // })
+  // @Prop({
+  //   required: true,
+  // })
+  // @IsString()
+  // @IsNotEmpty()
+  // formatter: string;
 
   @ApiProperty({
     example: "order",
@@ -107,9 +107,9 @@ export class ColumnsTable extends Document {
 
 }
 
-export const CatColumnsSchema = SchemaFactory.createForClass(ColumnsTable);
+export const ColumnsSchema = SchemaFactory.createForClass(ColumnsTable);
 
-CatColumnsSchema.virtual('readOnlyData').get(function (this: ColumnsTable) {
+ColumnsSchema.virtual('readOnlyData').get(function (this: ColumnsTable) {
   return {
     id: this.id,
     key: this.key,

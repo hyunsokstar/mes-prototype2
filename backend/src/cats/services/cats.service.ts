@@ -133,6 +133,45 @@ export class CatsService {
 
   }
 
+  async saveDataForTodosTable(data: any) {
+    const { todos } = data;
+    console.log("todos : ", todos);
+
+    todos.map(async (todo, index) => {
+      let isTodoExist;
+
+      if (mongoose.isValidObjectId(todo.id)) {
+        isTodoExist = await this.catsRepository.findByIdForTodosTable(todo.id);
+      } else {
+        isTodoExist = false
+      }
+      
+      console.log("isTodoExist : ", isTodoExist);
+
+      if (isTodoExist) {
+        const filter = { _id: todo.id }
+        console.log("todo update !!");
+
+      } else {
+
+        console.log("todo 생성 시도 확인", todo, index);
+        const create_result = await this.catsRepository.createForTodosTable({
+          todo: todo.todo,
+          level: todo.level,
+          page: todo.page,
+          manager: todo.manager,
+        });
+
+        return create_result;
+
+      }
+      
+    })
+
+    return "todos table 에 데이터 저장 하기 !!"
+
+  }
+
   async searchUsers(searchOption: string, searchKeyword: string) {
     return await this.catsRepository.searchUsers(searchOption, searchKeyword)
   }

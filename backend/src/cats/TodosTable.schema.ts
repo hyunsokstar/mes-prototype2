@@ -9,7 +9,7 @@ const options: SchemaOptions = {
 };
 
 @Schema(options)
-export class Todos extends Document {
+export class TodosTable extends Document {
 
   @ApiProperty({
     example: "무한 스크롤 구현 하기",
@@ -17,9 +17,7 @@ export class Todos extends Document {
   })
   @Prop({
     required: true,
-    // unique: true,
   })
-  @IsEmail()
   @IsNotEmpty()
   todo: string;
 
@@ -56,9 +54,9 @@ export class Todos extends Document {
 
 }
 
-export const TodosSchema = SchemaFactory.createForClass(Todos);
+export const TodosTableSchema = SchemaFactory.createForClass(TodosTable);
 
-TodosSchema.virtual('readOnlyData').get(function (this: Todos) {
+TodosTableSchema.virtual('readOnlyData').get(function (this: TodosTable) {
   return {
     id: this.id,
     todo: this.todo,

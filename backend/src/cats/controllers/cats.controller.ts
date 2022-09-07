@@ -193,7 +193,6 @@ export class CatsController {
   @Get("cats_columns/:table_name/:pageNum/:limit")
   @Bind(Param())
   getAllColumnsForCats(params) {
-    // console.log("params : ",params.table_name, params.pageNum, params.limit);
     const allCatsColumnns = this.CatsService.findAllColumnsTable(params.table_name, params.pageNum, params.limit);
 
     console.log("allColumnsTable : ", allCatsColumnns);
@@ -215,8 +214,6 @@ export class CatsController {
   getDataForUsersTable(params) {
 
     const table_name = params.table_name;
-
-    // const allUsers = this.CatsService.getListForUsersTable();
     const dataForGrid = this.CatsService.getGridDataByTableName(table_name, params.pageNum, params.limit);
     console.log("dataForGrid : ", dataForGrid);
 
@@ -229,8 +226,6 @@ export class CatsController {
   @Get("cats_columns/:table_name")
   @Bind(Param())
   getAllColumnsForUsersTableWithoutPagination(params) {
-    // console.log("params : ",params.table_name, params.pageNum, params.limit);
-    // const allCatsColumnns = this.CatsService.findAllColumnsTable(params.table_name,params.pageNum, params.limit);
     const allCatsColumnns = this.CatsService.getAllColumnsForUsersTableWithoutPagination(params.table_name);
 
     console.log("allColumnsTable : ", allCatsColumnns);
@@ -239,12 +234,14 @@ export class CatsController {
     return allCatsColumnns;
   }
 
-  @Post("save_todos")
-  async saveToDos(@Body() data) {
-    console.log("컬럼 데이터 저장 !!", data);
-    // const search_result = await this.CatsService.saveColumnDatas(data);
+  @Post("saveDataForTodosTable")
+  async saveDataForTodosTable(@Body() data) {
+    console.log("saveDataForTodosTable 실행 확인 !!", data);
+    const result_for_create_data_for_todos_table = await this.CatsService.saveDataForTodosTable(data);
 
-    return "save columns"
+    // console.log("result for create For Todos Table : ", result_for_create_data_for_todos_table);
+
+    return "saveDataForTodosTable 성공"
   }
 
 

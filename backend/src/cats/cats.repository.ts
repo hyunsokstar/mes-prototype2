@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Cat } from './cats.schema';
 import { ColumnsTable } from './cats_columns.schema';
+import { TodosTable } from './TodosTable.schema';
 import { RowsForUsersTable } from './RowsForUsersTable.schema';
 import { CatRequestDto } from './dto/cats.request.dto';
 import { CatCurrentDto } from './dto/cats.current.dto';
@@ -14,21 +15,22 @@ export class CatsRepository {
 
     constructor(
         @InjectModel(Cat.name) private readonly catModel: Model<Cat>,
-        @InjectModel(ColumnsTable.name) private readonly catsColumnsModel: Model<ColumnsTable>,
+        @InjectModel(ColumnsTable.name) private readonly columnsTableModel: Model<ColumnsTable>,
         @InjectModel(RowsForUsersTable.name) private readonly rowsForUsersTable: Model<RowsForUsersTable>,
+        @InjectModel(TodosTable.name) private readonly rowsForTodosTable: Model<TodosTable>,
     ) { }
 
     async updateColumWidthForTableAndKey(data: any) {
         // throw new Error('Method not implemented.');
         console.log("data : ", data);
-        const result = await this.catsColumnsModel.findOneAndUpdate({ table_name: data.table_name, key: data.key }, { width: data.width })
+        const result = await this.columnsTableModel.findOneAndUpdate({ table_name: data.table_name, key: data.key }, { width: data.width })
         console.log("result : ", result);
     }
 
     async deleteColumnsByIdsArray(ids_for_delete: any) {
 
         console.log("ids_for_delete : ", ids_for_delete);
-        const result = await this.catsColumnsModel.deleteMany(
+        const result = await this.columnsTableModel.deleteMany(
             {
                 _id: {
                     $in: ids_for_delete
@@ -43,13 +45,13 @@ export class CatsRepository {
     // 1page 0 * 2 1 * 2
     async findAllColumnsTable(table_name, pageNum, limit) {
 
-        const total_page = await this.catsColumnsModel.find({ table_name: table_name }).count() / limit
+        const total_page = await this.columnsTableModel.find({ table_name: table_name }).count() / limit
         const total_page2 = Math.ceil(total_page);
         // console.log("total_page : ", total_page);
 
         const columns_list =
-            // catsColumnsModel 에 대해 table_name 으로 검색해서 가져와라 
-            await this.catsColumnsModel.find({ table_name: table_name })
+            // columnsTableModel 에 대해 table_name 으로 검색해서 가져와라 
+            await this.columnsTableModel.find({ table_name: table_name })
                 // 페이지 수에 한페이지당 개수를 곱해서 그 다음부터 가져 와라 
                 .skip((pageNum - 1) * limit).limit(limit)
                 // order 로 정렬 해라 
@@ -65,12 +67,12 @@ export class CatsRepository {
 
     }
     async findAllColumnsWithoutPagination(table_name) {
-        // const total_count = await this.catsColumnsModel.find({ table_name: table_name }).count()
+        // const total_count = await this.columnsTableModel.find({ table_name: table_name }).count()
         // console.log("total_count, limit : ", total_count, limit);
         // console.log("total_page : ", total_page);
         const columns_list =
-            // catsColumnsModel 에 대해 table_name 으로 검색해서 가져와라 
-            await this.catsColumnsModel.find({ table_name: table_name }).sort({ order: 1 })
+            // columnsTableModel 에 대해 table_name 으로 검색해서 가져와라 
+            await this.columnsTableModel.find({ table_name: table_name }).sort({ order: 1 })
 
         return {
             columns_list
@@ -84,7 +86,7 @@ export class CatsRepository {
 
     async existsByKey(_id: any): Promise<boolean> {
         // throw new Error('Method not implemented.');
-        const result = await this.catsColumnsModel.exists({ _id });
+        const result = await this.columnsTableModel.exists({ _id });
         if (result) {
             return true
         } else return false
@@ -97,6 +99,19 @@ export class CatsRepository {
         return result;
 
     }
+    // fix 1122 
+    async findByIdForTodosTable (todoId: string ) {
+        // const result = await this.todosForTodosTable.findByIdAndUpdate(todoId, { imgUrl: `http://localhost:8000/media/${fileName}` });
+
+        const result = await this.rowsForTodosTable.exists({ _id: todoId });
+
+        if (result) return true
+
+        else return false
+
+    }
+
+
 
     async searchUsers(searchOption: string, searchKeyword: string) {
         console.log("검색 조건 check  : ", searchOption, searchKeyword);
@@ -157,9 +172,14 @@ export class CatsRepository {
         return await this.rowsForUsersTable.create(user);
     }
 
+    async createForTodosTable(todo: any): Promise<TodosTable> {
+        console.log("user for RowsForUsersTable at repository :::::", todo);
+        return await this.rowsForTodosTable.create(todo);
+    }
+
     async createColumns(cat: any): Promise<ColumnsTable> {
         console.log("cat :::::", cat);
-        return await this.catsColumnsModel.create(cat);
+        return await this.columnsTableModel.create(cat);
     }
 
     async update(filter, cat: CatRequestDto): Promise<Cat> {
@@ -171,7 +191,7 @@ export class CatsRepository {
     }
 
     async updateColumnsTable(filter, cat: any): Promise<ColumnsTable> {
-        return await this.catsColumnsModel.findOneAndUpdate(filter, cat);
+        return await this.columnsTableModel.findOneAndUpdate(filter, cat);
     }
 
     async findCatByIdWithoutPassword(
@@ -216,7 +236,7 @@ export class CatsRepository {
         let total_page2;
 
         if (table_name === "rowsForUsersTable") {
-            columns_for_grid = await this.catsColumnsModel.find({ table_name: table_name }).sort({ order: 1 });
+            columns_for_grid = await this.columnsTableModel.find({ table_name: table_name }).sort({ order: 1 });
             rows_for_grid = await this.rowsForUsersTable.find().select('-password');
 
             total_page = await this.rowsForUsersTable.find({ table_name: table_name }).count() / limit
@@ -224,7 +244,7 @@ export class CatsRepository {
             // console.log("total_page : ", total_page);
 
             rows_for_grid =
-                // catsColumnsModel 에 대해 table_name 으로 검색해서 가져와라 
+                // columnsTableModel 에 대해 table_name 으로 검색해서 가져와라 
                 await this.rowsForUsersTable.find({ table_name: table_name })
                     // 페이지 수에 한페이지당 개수를 곱해서 그 다음부터 가져 와라 
                     .skip((pageNum - 1) * limit).limit(limit)
@@ -232,7 +252,7 @@ export class CatsRepository {
                     .sort({ order: 1 });
 
         } else {
-            columns_for_grid = await this.catsColumnsModel.find({ table_name: table_name }).sort({ order: 1 });
+            columns_for_grid = await this.columnsTableModel.find({ table_name: table_name }).sort({ order: 1 });
             rows_for_grid = await this.rowsForUsersTable.find().select('-password');
 
             total_page = await this.rowsForUsersTable.find({ table_name: table_name }).count() / limit
@@ -240,13 +260,16 @@ export class CatsRepository {
             // console.log("total_page : ", total_page);
 
             rows_for_grid =
-                // catsColumnsModel 에 대해 table_name 으로 검색해서 가져와라 
+                // columnsTableModel 에 대해 table_name 으로 검색해서 가져와라 
                 await this.rowsForUsersTable.find({ table_name: table_name })
                     // 페이지 수에 한페이지당 개수를 곱해서 그 다음부터 가져 와라 
                     .skip((pageNum - 1) * limit).limit(limit)
                     // order 로 정렬 해라 
                     .sort({ order: 1 });
         }
+
+        console.log("columns_for_grid : ", columns_for_grid);
+        
 
         let data_for_grid = {
             // page:pageNum,
