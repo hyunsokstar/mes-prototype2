@@ -62,16 +62,15 @@ export class ColumnsTable extends Document {
   @IsNotEmpty()
   editor: string;
 
-  // @ApiProperty({
-  //   example: "formatter",
-  //   description: "포매터 종류"
-  // })
-  // @Prop({
-  //   required: true,
-  // })
-  // @IsString()
-  // @IsNotEmpty()
-  // formatter: string;
+  @ApiProperty({
+    example: "formatter",
+    description: "포매터 종류"
+  })
+  @Prop({
+    required: false,
+  })
+  @IsString()
+  formatter: string;
 
   @ApiProperty({
     example: "order",

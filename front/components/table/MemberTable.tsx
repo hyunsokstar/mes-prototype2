@@ -67,7 +67,6 @@ const MemberTable = (props: Props) => {
 
     try {
       const response = await axios.get(
-        // `${api.cats}/cats_columns/rowsForUsersTable/${page}/8`,
         `${api.cats}/cats_columns/columnsForTodosTable/${page}/8`,
         // `${api.cats}/all_cats_columns/${page}/2`,
         { withCredentials: true }
@@ -77,7 +76,7 @@ const MemberTable = (props: Props) => {
       if (response.data.success) {
 
         const new_columns = response.data.data.columns_list.map((column: any) => {
-          if (column.editor) {
+          if (column) {
             return {
               ...column,
               // editor: column.editor === "TextEditor" ? TextEditor : ""

@@ -53,8 +53,10 @@ function searchModalForUser({ row, column, onRowChange }: any) {
 
     return (
         <div>
-            {row.text ? row.todo : ""}
-            <button onClick={openModal}>Open Modal</button>
+            <div style={{ display: "flex", justifyContent: "space-around" }}>
+                {row.todo ? row.todo : ""}
+                <button onClick={openModal} onDoubleClick={openModal}>Open Modal</button>
+            </div>
 
             <ModalWrapper>
                 <Modal

@@ -6,18 +6,19 @@ import TextEditor from '../components/util/TextEditor'
 import { throttle } from "lodash";
 import Notiflix from "notiflix";
 import Pagination from '@material-ui/lab/Pagination'
-import {selectEditor, selectFormatter} from '../common/editor_mapping';
+import { selectEditor, selectFormatter } from '../common/editor_mapping';
+import searchModalForUser from '../components/modal/searchModalForUser';
 
-// const columns = [
-//   {key:"email", name: "email", editor:TextEditor, hidden:"false"},
-//   {key:"name", name: "name", editor:TextEditor, hidden:"false"},
-//   {key:"todo", name: "todo", editor:TextEditor, hidden:"false"},
-//   {key:"todo_complete", name: "todo_complete", editor:TextEditor, hidden:"false"}
-// ]
+const sample_columns = [
+  { key: "email", name: "email", editor: TextEditor, hidden: "false" , resizable: "true"},
+  { key: "name", name: "name", editor: TextEditor, hidden: "false" , resizable: "true"},
+  { key: "todo", name: "todo", formatter: searchModalForUser, hidden: "false" , resizable: "true"},
+  { key: "todo_complete", name: "todo_complete", editor: TextEditor, hidden: "false" , resizable: "true"}
+]
 
 const rows = [
-  { id: 0, email: 'tere@daum.net', name: "hyun", todo: "hi", test_complete:"hi" },
-  { id: 1, email: 'tere@daum.net', name: "hyun", todo: "hi", test_complete:"hi" },
+  { id: 0, email: 'tere@daum.net', name: "hyun", todo: "hi", test_complete: "hi" },
+  { id: 1, email: 'tere@daum.net', name: "hyun", todo: "hi", test_complete: "hi" },
 ];
 
 const styles = {
@@ -50,12 +51,14 @@ function users({ }: Props) {
 
   }, [pageInfo.page])
 
+  // `${api.cats}/cats_columns/rowsForUsersTable/${page}/8`,
 
   const getAllGridDataForRowsForUsersTable = async (page: number = 1) => {
 
     try {
       const response = await axios.get(
         `${api.cats}/getGridDataByTableName/rowsForUsersTable/${page}/8`,
+        // `${api.cats}/getGridDataByTableName/columnsForTodosTable/${page}/8`,
         { withCredentials: true }
       );
 
@@ -72,7 +75,7 @@ function users({ }: Props) {
             return {
               ...column,
               editor: column.editor ? TextEditor : TextEditor,
-              // formatter: column.formatter ? selectFormatter(column.formatter) : TextEditor,
+              formatter: column.formatter && selectFormatter(column.formatter),
               resizable: column.resizable === "true" ? true : false,
             }
           }
@@ -94,6 +97,7 @@ function users({ }: Props) {
 
   const onRowsChangeHandler = (data: any, idx: any) => {
     console.log("data for row change handler : ", data);
+    setBasicRows(data);
   }
 
   const modify_column_width_by_table_name_and_key = useCallback(async (data: object) => {
@@ -138,9 +142,8 @@ function users({ }: Props) {
     setPageInfo({ ...pageInfo, page: page });
   }
 
-  // const selected_editor = selectEditor("test_editor");
-  // console.log("selected_editor : ", selected_editor);
-  
+
+
 
   return (
     <div style={styles}>
@@ -148,9 +151,9 @@ function users({ }: Props) {
         <h1>Users Table For 마일스톤</h1>
       </div>
       <DataGrid
-        columns={columns}
-        rows={rows}
-        // rows={basicRows}
+        columns={sample_columns}
+        // columns={columns}
+        rows={basicRows}
         style={{ width: "100%" }}
         onRowsChange={(data, idx) => { onRowsChangeHandler(data, idx) }}
         onColumnResize={
