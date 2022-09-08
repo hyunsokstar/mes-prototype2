@@ -165,19 +165,21 @@ function searchModalForUser({ row, column, onRowChange }: any) {
 
         const rows_for_register = basicRows.map((row: any) => {
             if (selectedRows.has(row._id)) {
-                return row
+                return {
+                    ...row,
+                    email: "tere@daum.net",
+                    name: "hyun",
+                    test_complete: "false"
+                }
             }
-        }).filter((v)=> v);
+        }).filter((v) => v);
 
         console.log("rows_for_register : ", rows_for_register);
-        
+
 
         dispatch(
             taskBoardSlice.actions.setBasicRows({
-                email:"tere@daum.net",
-                name:"hyun",
                 new_basic_rows: rows_for_register,
-                test_complete:"false"
             }),
         )
 
