@@ -174,7 +174,10 @@ function searchModalForUser({ row, column, onRowChange }: any) {
 
         dispatch(
             taskBoardSlice.actions.setBasicRows({
-                new_basic_rows: rows_for_register
+                email:"tere@daum.net",
+                name:"hyun",
+                new_basic_rows: rows_for_register,
+                test_complete:"false"
             }),
         )
 
