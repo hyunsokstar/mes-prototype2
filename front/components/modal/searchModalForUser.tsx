@@ -177,8 +177,6 @@ function searchModalForUser({ row, column, onRowChange }: any) {
                         onRowsChange={(data, idx) => { onRowsChangeHandler(data, idx) }}
                         rowKeyGetter={(row) => row._id || ""}
                         selectedRows={selectedRows}
-                        onRowsChange={(data, idx) => { onRowsChangeHandler(data, idx) }}
-
                         onSelectedRowsChange={(row) => {
                             console.log("row : ", row);
                             setSelectedRows(row)
