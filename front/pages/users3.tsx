@@ -61,7 +61,7 @@ function TaskBoard({ }: Props) {
   const dispatch = useDispatch();
   // const test = useSelector((state: RootState) => state.task_board.columns);
 
-  console.log("columns from redux : ", columns);
+  // console.log("columns from redux : ", columns);
 
 
   const getAllGridDataForRowsForUsersTable = async (page: number = 1) => {
@@ -71,7 +71,7 @@ function TaskBoard({ }: Props) {
         { withCredentials: true }
       );
       if (response.data.success) {
-        console.log("response.data.data : ", response.data.data);
+        // console.log("response.data.data : ", response.data.data);
         const columns_for_grid = response.data.data.columns_for_grid
         const rows_for_grid = response.data.data.rows_for_grid
         const new_columns = columns_for_grid.map((column: any) => {
@@ -84,7 +84,7 @@ function TaskBoard({ }: Props) {
             }
           }
         }).filter((v: any) => v)
-        console.log("new_columns : ", new_columns);
+        // console.log("new_columns : ", new_columns);s
         // setColumns(new_columns);
         // setBasicRows(rows_for_grid)
 
@@ -100,7 +100,7 @@ function TaskBoard({ }: Props) {
           }),
         )
 
-        console.log("rows_for_grid : ", rows_for_grid);
+        // console.log("rows_for_grid : ", rows_for_grid);
         setPageInfo({ page: response.data.data.current_page, total: response.data.data.total_page })
       }
     } catch (error) {
@@ -110,15 +110,15 @@ function TaskBoard({ }: Props) {
   }
 
   const onRowsChangeHandler = (data: any, idx: any) => {
-    console.log("data for row change handler : ", data);
-    setBasicRows(data);
+    // console.log("data for row change handler : ", data);
+    // setBasicRows(data);
   }
 
   const modify_column_width_by_table_name_and_key = useCallback(async (data: object) => {
     Notiflix.Loading.circle()
 
     try {
-      console.log("data_for_save : ", data);
+      // console.log("data_for_save : ", data);
       const response = await axios.post(
         `${api.cats}/modify_column_width_by_table_name_and_key`,
         data,
@@ -126,7 +126,7 @@ function TaskBoard({ }: Props) {
       );
       if (response.data.success) {
         Notiflix.Loading.remove()
-        console.log("response.data : ", response.data);
+        // console.log("response.data : ", response.data);
         console.log("컬럼 넓이 api 요청 !!");
         return
       }
@@ -174,7 +174,7 @@ function TaskBoard({ }: Props) {
         rowKeyGetter={(row) => row._id || ""}
         selectedRows={selectedRows}
         onSelectedRowsChange={(row) => {
-          console.log("row : ", row);
+          // console.log("row : ", row);
           setSelectedRows(row)
         }}
       />

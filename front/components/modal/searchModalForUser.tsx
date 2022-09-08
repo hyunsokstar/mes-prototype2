@@ -8,6 +8,8 @@ import Pagination from '@material-ui/lab/Pagination'
 import TextEditor from "../../components/util/TextEditor"
 import { selectEditor, selectFormatter } from '../../common/editor_mapping';
 import { SelectColumn } from "react-data-grid";
+import { useSelector, useDispatch } from 'react-redux';
+import taskBoardSlice from '../../slices/task_board';
 
 
 const columns = [
@@ -43,6 +45,11 @@ const customStyles = {
 
 
 function searchModalForUser({ row, column, onRowChange }: any) {
+
+    // redux 
+    const dispatch = useDispatch();
+
+
     const [columns, setColumns] = useState<any>([])
     const [basicRows, setBasicRows] = useState([]);
     const [pageInfo, setPageInfo] = useState<{ page: number, total: number }>({
@@ -55,7 +62,7 @@ function searchModalForUser({ row, column, onRowChange }: any) {
 
 
     let subtitle: HTMLHeadingElement | null;
-    console.log("row : ", row);
+    // console.log("row : ", row);
 
     function openModal() {
         setIsOpen(true);
@@ -82,7 +89,7 @@ function searchModalForUser({ row, column, onRowChange }: any) {
                 // `${api.cats}/all_cats_columns/${page}/2`,
                 { withCredentials: true }
             );
-            console.log("resposne.data for columns: ", response.data);
+            // console.log("resposne.data for columns: ", response.data);
 
             if (response.data.success) {
 
@@ -96,7 +103,7 @@ function searchModalForUser({ row, column, onRowChange }: any) {
                     }
                 }).filter((v: any) => v)
 
-                console.log("new_columns : ", new_columns);
+                // console.log("new_columns : ", new_columns);
 
                 // setPageInfo({ page: response.data.data.current_page, total: response.data.data.total_page })
                 setColumns(new_columns);
@@ -117,7 +124,7 @@ function searchModalForUser({ row, column, onRowChange }: any) {
             const rows_data = response.data.data.rows_for_grid
 
             if (response.data.success) {
-                console.log("rows_data : ", rows_data);
+                // console.log("rows_data : ", rows_data);
                 setBasicRows(rows_data)
             }
 
@@ -153,8 +160,30 @@ function searchModalForUser({ row, column, onRowChange }: any) {
     }
 
     const passSelectedDataToPage = () => {
+        console.log("등록 버튼 클릭");
+        console.log("selectedRows : ", selectedRows);
+
+        const rows_for_register = basicRows.map((row: any) => {
+            if (selectedRows.has(row._id)) {
+                return row
+            }
+        }).filter((v)=> v);
+
+        console.log("rows_for_register : ", rows_for_register);
+        
+
+        dispatch(
+            taskBoardSlice.actions.setBasicRows({
+                new_basic_rows: rows_for_register
+            }),
+        )
+
+        setIsOpen(false);
 
     }
+
+
+
 
     return (
         <div>
@@ -180,7 +209,6 @@ function searchModalForUser({ row, column, onRowChange }: any) {
                         rowKeyGetter={(row) => row._id || ""}
                         selectedRows={selectedRows}
                         onSelectedRowsChange={(row) => {
-                            console.log("row : ", row);
                             setSelectedRows(row)
                         }}
 
@@ -188,7 +216,7 @@ function searchModalForUser({ row, column, onRowChange }: any) {
 
                     <div>
                         <button>취소</button>
-                        <button onClick = {passSelectedDataToPage}>등록</button>
+                        <button onClick={passSelectedDataToPage}>등록</button>
                     </div>
 
 

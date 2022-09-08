@@ -19,7 +19,6 @@ const sample_columns = [
 
 
 function TodosTable({ }: Props) {
-    const [selectList, setSelectList] = useState<Set<any>>(new Set());
     const [columns, setColumns] = useState<any>([])
     const [basicRows, setBasicRows] = useState([]);
     const [pageInfo, setPageInfo] = useState<{ page: number, total: number }>({
@@ -56,9 +55,8 @@ function TodosTable({ }: Props) {
                 }).filter((v: any) => v)
 
                 console.log("new_columns : ", new_columns);
-
-                // setPageInfo({ page: response.data.data.current_page, total: response.data.data.total_page })
                 setColumns(new_columns);
+
             }
 
         } catch (error) {
@@ -96,6 +94,12 @@ function TodosTable({ }: Props) {
         setBasicRows(data);
     }
 
+    // const registerForTaskBoard = () => {
+    //     const newTasks = basicRows.map((row)=> {
+    //         if(seletro)
+    //     })
+    // }
+
     return (
         <div>
             <h2>todos page</h2>
@@ -103,8 +107,8 @@ function TodosTable({ }: Props) {
                 columns={[SelectColumn ,...columns]}
                 rows={basicRows}
                 onRowsChange={(data, idx) => { onRowsChangeHandler(data, idx) }}
-
             />
+
 
             <Pagination
                 count={pageInfo.total}
