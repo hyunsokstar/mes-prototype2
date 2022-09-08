@@ -5,6 +5,7 @@ import DataGrid from 'react-data-grid';
 import Pagination from '@material-ui/lab/Pagination'
 import TextEditor from "../components/util/TextEditor"
 import { selectEditor, selectFormatter } from '../common/editor_mapping';
+import { SelectColumn } from "react-data-grid";
 
 
 type Props = {}
@@ -99,7 +100,7 @@ function TodosTable({ }: Props) {
         <div>
             <h2>todos page</h2>
             <DataGrid
-                columns={columns}
+                columns={[SelectColumn ,...columns]}
                 rows={basicRows}
                 onRowsChange={(data, idx) => { onRowsChangeHandler(data, idx) }}
 

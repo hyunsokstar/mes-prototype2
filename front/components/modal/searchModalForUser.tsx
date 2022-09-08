@@ -7,6 +7,7 @@ import api from "../../utils/api"
 import Pagination from '@material-ui/lab/Pagination'
 import TextEditor from "../../components/util/TextEditor"
 import { selectEditor, selectFormatter } from '../../common/editor_mapping';
+import { SelectColumn } from "react-data-grid";
 
 
 const columns = [
@@ -32,9 +33,9 @@ const customStyles = {
         transform: 'translate(-50%, -50%)',
         padding: "auto",
         width: "60%",
-        display:"flex",
-        justifyContent:"center",
-        alignItems:"center",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
         flexDirection: "column",
         height: "50vh"
     },
@@ -42,15 +43,14 @@ const customStyles = {
 
 
 function searchModalForUser({ row, column, onRowChange }: any) {
-    const [modalIsOpen, setIsOpen] = React.useState(false);
-
-    const [selectList, setSelectList] = useState<Set<any>>(new Set());
     const [columns, setColumns] = useState<any>([])
     const [basicRows, setBasicRows] = useState([]);
     const [pageInfo, setPageInfo] = useState<{ page: number, total: number }>({
         page: 1,
         total: 1
     });
+    const [modalIsOpen, setIsOpen] = React.useState(false);
+    const [selectedRows, setSelectedRows] = useState<any>(() => new Set());
 
 
 
@@ -132,10 +132,27 @@ function searchModalForUser({ row, column, onRowChange }: any) {
         setPageInfo({ ...pageInfo, page: page });
     }
 
+    // const onRowsChangeHandler = (data: any, idx: any) => {
+    //     console.log("data for row change handler : ", data);
+    //     setBasicRows(data);
+    // }
+
     const onRowsChangeHandler = (data: any, idx: any) => {
         console.log("data for row change handler : ", data);
+
+        let tmp: Set<any> = selectedRows;
+        data.map((v: any, i: any) => {
+            if (v.isChange) {
+                tmp.add(v._id)
+                v.isChange = false
+            }
+        });
+        setSelectedRows(tmp);
         setBasicRows(data);
+
     }
+
+
 
     return (
         <div>
@@ -155,10 +172,17 @@ function searchModalForUser({ row, column, onRowChange }: any) {
                     <h2 ref={(_subtitle) => (subtitle = _subtitle)}>todo for task</h2>
 
                     <DataGrid
-                        columns={columns}
+                        columns={[SelectColumn, ...columns]}
                         rows={basicRows}
                         onRowsChange={(data, idx) => { onRowsChangeHandler(data, idx) }}
+                        rowKeyGetter={(row) => row._id || ""}
+                        selectedRows={selectedRows}
+                        onRowsChange={(data, idx) => { onRowsChangeHandler(data, idx) }}
 
+                        onSelectedRowsChange={(row) => {
+                            console.log("row : ", row);
+                            setSelectedRows(row)
+                        }}
                     />
 
                     <Pagination

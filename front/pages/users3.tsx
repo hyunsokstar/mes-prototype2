@@ -8,6 +8,8 @@ import Notiflix from "notiflix";
 import Pagination from '@material-ui/lab/Pagination'
 import { selectEditor, selectFormatter } from '../common/editor_mapping';
 import searchModalForUser from '../components/modal/searchModalForUser';
+import { SelectColumn } from "react-data-grid";
+
 
 const sample_columns = [
   { key: "email", name: "email", editor: TextEditor, hidden: "false" , resizable: "true"},
@@ -37,11 +39,11 @@ type Props = {}
 function users({ }: Props) {
   const [columns, setColumns] = useState<any>([])
   const [basicRows, setBasicRows] = useState([]);
-  const [selectList, setSelectList] = useState<Set<any>>(new Set());
   const [pageInfo, setPageInfo] = useState<{ page: number, total: number }>({
     page: 1,
     total: 1
   })
+  const [selectedRows, setSelectedRows] = useState<ReadonlySet<number>>(() => new Set());
 
   // get grid data
   // 1122
@@ -151,14 +153,19 @@ function users({ }: Props) {
         <h1>Users Table For 마일스톤</h1>
       </div>
       <DataGrid
-        columns={sample_columns}
-        // columns={columns}
+        columns={[SelectColumn, ...sample_columns]} 
         rows={basicRows}
         style={{ width: "100%" }}
         onRowsChange={(data, idx) => { onRowsChangeHandler(data, idx) }}
         onColumnResize={
           throttle((index: number, width: number) => updateColumnWidthByKey(index, width, columns), 2000, { 'leading': false })
         }
+        rowKeyGetter={(row) => row._id || ""}
+        selectedRows={selectedRows}
+        onSelectedRowsChange={(row) => {
+          console.log("row : ", row);
+          setSelectedRows(row)
+      }}
       />
 
       <br />
@@ -172,6 +179,7 @@ function users({ }: Props) {
         onChange={(e, page) => {
           setPage(page)
         }}
+        
       />
 
     </div>
