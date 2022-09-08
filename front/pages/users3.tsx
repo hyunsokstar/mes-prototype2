@@ -19,10 +19,10 @@ import router, { useRouter } from 'next/router'
 
 
 const sample_columns = [
-  { key: "email", name: "email", editor: TextEditor, hidden: "false" , resizable: "true"},
-  { key: "name", name: "name", editor: TextEditor, hidden: "false" , resizable: "true"},
-  { key: "todo", name: "todo", formatter: searchModalForUser, hidden: "false" , resizable: "true"},
-  { key: "test_complete", name: "test_complete", editor: TextEditor, hidden: "false" , resizable: "true"}
+  { key: "email", name: "email", editor: TextEditor, hidden: "false", resizable: "true" },
+  { key: "name", name: "name", editor: TextEditor, hidden: "false", resizable: "true" },
+  { key: "todo", name: "todo", formatter: searchModalForUser, hidden: "false", resizable: "true" },
+  { key: "test_complete", name: "test_complete", editor: TextEditor, hidden: "false", resizable: "true" }
 ]
 
 const rows = [
@@ -44,9 +44,10 @@ type Props = {}
 
 function TaskBoard({ }: Props) {
   const columns = useSelector((state: RootState) => state.task_board.columns);
+  const basicRows = useSelector((state: RootState) => state.task_board.basicRows);
   // const [columns, setColumns] = useState<any>([])
-  
-  const [basicRows, setBasicRows] = useState([]);
+  // const [basicRows, setBasicRows] = useState([]);
+
   const [pageInfo, setPageInfo] = useState<{ page: number, total: number }>({
     page: 1,
     total: 1
@@ -55,13 +56,13 @@ function TaskBoard({ }: Props) {
   useEffect(() => {
     getAllGridDataForRowsForUsersTable(pageInfo.page);
   }, [pageInfo.page])
-  
+
   // 리덕스 관련
   const dispatch = useDispatch();
   // const test = useSelector((state: RootState) => state.task_board.columns);
 
   console.log("columns from redux : ", columns);
-  
+
 
   const getAllGridDataForRowsForUsersTable = async (page: number = 1) => {
     try {
@@ -85,17 +86,22 @@ function TaskBoard({ }: Props) {
         }).filter((v: any) => v)
         console.log("new_columns : ", new_columns);
         // setColumns(new_columns);
+        // setBasicRows(rows_for_grid)
 
         dispatch(
           taskBoardSlice.actions.setColumns({
-            new_columns: new_columns 
-          }),
-      );
+            new_columns: new_columns
+          })
+        );
 
+        dispatch(
+          taskBoardSlice.actions.setBasicRows({
+            new_basic_rows: rows_for_grid
+          }),
+        )
 
         console.log("rows_for_grid : ", rows_for_grid);
         setPageInfo({ page: response.data.data.current_page, total: response.data.data.total_page })
-        setBasicRows(rows_for_grid)
       }
     } catch (error) {
       console.log("error : ", error);
@@ -158,7 +164,7 @@ function TaskBoard({ }: Props) {
         <h1>taks board</h1>
       </div>
       <DataGrid
-        columns={[SelectColumn, ...sample_columns]} 
+        columns={[SelectColumn, ...sample_columns]}
         rows={basicRows}
         style={{ width: "100%" }}
         onRowsChange={(data, idx) => { onRowsChangeHandler(data, idx) }}
@@ -170,7 +176,7 @@ function TaskBoard({ }: Props) {
         onSelectedRowsChange={(row) => {
           console.log("row : ", row);
           setSelectedRows(row)
-      }}
+        }}
       />
 
       <br />
@@ -184,7 +190,7 @@ function TaskBoard({ }: Props) {
         onChange={(e, page) => {
           setPage(page)
         }}
-        
+
       />
 
     </div>

@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import userSlice from "../slices/user"
 import { useSelector, useDispatch } from 'react-redux';
+import { Satellite } from '@mui/icons-material';
 
 interface TaskBoardState {
 
@@ -15,7 +16,6 @@ interface TaskBoardState {
 // const [selectedRows, setSelectedRows] = useState<ReadonlySet<number>>(() => new Set());
 
 interface TaskBoardState {
-  // columns: Array<{ key: string, name: string }>;
   columns: Array<{}>;
   basicRows: [];
   pageInfo: {
@@ -45,7 +45,10 @@ const taskBoardSlice = createSlice({
       console.log("action.payload :", action.payload);
       state.columns = action.payload.new_columns
     },
-    
+    setBasicRows(state, action) {
+      state.basicRows = action.payload.new_basic_rows
+    }
+
   },
   extraReducers: builder => { },
 });
