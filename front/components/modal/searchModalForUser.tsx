@@ -28,16 +28,16 @@ const customStyles = {
         top: '50%',
         left: '50%',
         right: 'auto',
-        bottom: 'auto',
+        // bottom: 'auto',
         marginRight: '-50%',
         transform: 'translate(-50%, -50%)',
-        padding: "auto",
-        width: "60%",
+        // padding: "auto",
+        // width: "60%",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "column",
-        height: "50vh"
+        // height: "100%"
     },
 };
 
@@ -152,7 +152,9 @@ function searchModalForUser({ row, column, onRowChange }: any) {
 
     }
 
-
+    const passSelectedDataToPage = () => {
+        
+    }
 
     return (
         <div>
@@ -181,7 +183,14 @@ function searchModalForUser({ row, column, onRowChange }: any) {
                             console.log("row : ", row);
                             setSelectedRows(row)
                         }}
+
                     />
+
+                    <div>
+                        <button>취소</button>
+                        <button onClick = {passSelectedDataToPage}>등록</button>
+                    </div>
+
 
                     <Pagination
                         count={pageInfo.total}
