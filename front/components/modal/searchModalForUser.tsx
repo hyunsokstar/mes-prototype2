@@ -49,8 +49,8 @@ function searchModalForUser({ row, column, onRowChange }: any) {
         page: 1,
         total: 1
     });
-    const [modalIsOpen, setIsOpen] = React.useState(false);
     const [selectedRows, setSelectedRows] = useState<any>(() => new Set());
+    const [modalIsOpen, setIsOpen] = React.useState(false);
 
 
 
@@ -153,7 +153,7 @@ function searchModalForUser({ row, column, onRowChange }: any) {
     }
 
     const passSelectedDataToPage = () => {
-        
+
     }
 
     return (

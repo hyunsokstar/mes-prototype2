@@ -10,6 +10,13 @@ import { selectEditor, selectFormatter } from '../common/editor_mapping';
 import searchModalForUser from '../components/modal/searchModalForUser';
 import { SelectColumn } from "react-data-grid";
 
+// redux 작업
+import { RootState } from '../store/reducer';
+import taskBoardSlice from '../slices/task_board';
+
+import { useSelector, useDispatch } from 'react-redux';
+import router, { useRouter } from 'next/router'
+
 
 const sample_columns = [
   { key: "email", name: "email", editor: TextEditor, hidden: "false" , resizable: "true"},
@@ -35,43 +42,37 @@ const styles = {
 
 type Props = {}
 
-
-function users({ }: Props) {
-  const [columns, setColumns] = useState<any>([])
+function TaskBoard({ }: Props) {
+  const columns = useSelector((state: RootState) => state.task_board.columns);
+  // const [columns, setColumns] = useState<any>([])
+  
   const [basicRows, setBasicRows] = useState([]);
   const [pageInfo, setPageInfo] = useState<{ page: number, total: number }>({
     page: 1,
     total: 1
   })
   const [selectedRows, setSelectedRows] = useState<ReadonlySet<number>>(() => new Set());
-
-  // get grid data
-  // 1122
   useEffect(() => {
-    // getAllColumns();
     getAllGridDataForRowsForUsersTable(pageInfo.page);
-
   }, [pageInfo.page])
+  
+  // 리덕스 관련
+  const dispatch = useDispatch();
+  // const test = useSelector((state: RootState) => state.task_board.columns);
 
-  // `${api.cats}/cats_columns/rowsForUsersTable/${page}/8`,
+  console.log("columns from redux : ", columns);
+  
 
   const getAllGridDataForRowsForUsersTable = async (page: number = 1) => {
-
     try {
       const response = await axios.get(
         `${api.cats}/getGridDataByTableName/rowsForUsersTable/${page}/8`,
-        // `${api.cats}/getGridDataByTableName/columnsForTodosTable/${page}/8`,
         { withCredentials: true }
       );
-
       if (response.data.success) {
-        // console.log("respose : ", response);
-
         console.log("response.data.data : ", response.data.data);
-
         const columns_for_grid = response.data.data.columns_for_grid
         const rows_for_grid = response.data.data.rows_for_grid
-
         const new_columns = columns_for_grid.map((column: any) => {
           if (column.hidden !== "true") {
             return {
@@ -83,14 +84,19 @@ function users({ }: Props) {
           }
         }).filter((v: any) => v)
         console.log("new_columns : ", new_columns);
-        setColumns(new_columns);
-        console.log("rows_for_grid : ", rows_for_grid);
+        // setColumns(new_columns);
 
+        dispatch(
+          taskBoardSlice.actions.setColumns({
+            new_columns: new_columns 
+          }),
+      );
+
+
+        console.log("rows_for_grid : ", rows_for_grid);
         setPageInfo({ page: response.data.data.current_page, total: response.data.data.total_page })
         setBasicRows(rows_for_grid)
-
       }
-
     } catch (error) {
       console.log("error : ", error);
 
@@ -146,11 +152,10 @@ function users({ }: Props) {
 
 
 
-
   return (
     <div style={styles}>
       <div>
-        <h1>Users Table For 마일스톤</h1>
+        <h1>taks board</h1>
       </div>
       <DataGrid
         columns={[SelectColumn, ...sample_columns]} 
@@ -186,4 +191,4 @@ function users({ }: Props) {
   )
 }
 
-export default users
+export default TaskBoard

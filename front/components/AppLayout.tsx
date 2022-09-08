@@ -15,7 +15,7 @@ interface LayoutProps {
 }
 
 const AppLayout = ({ children }: LayoutProps) => {
-    const isLoggedIn = useSelector((state: RootState) => !!state.user.me.email);
+    const isLoggedIn = useSelector((state: RootState) => !state.user.me.email);
     const user = useSelector((state: RootState) => state.user.me);
     const dispatch = useDispatch();
 
