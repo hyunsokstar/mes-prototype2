@@ -17,7 +17,6 @@ import { useSelector, useDispatch } from 'react-redux';
 type Props = {}
 
 function TaskBoardTable({ }: Props) {
-
     const columns = useSelector((state: RootState) => state.task_board.columns);
     const basicRows = useSelector((state: RootState) => state.task_board.basicRows);
   
@@ -25,6 +24,7 @@ function TaskBoardTable({ }: Props) {
       page: 1,
       total: 1
     })
+    
     const [selectedRows, setSelectedRows] = useState<ReadonlySet<number>>(() => new Set());
     useEffect(() => {
       getAllGridDataForRowsForUsersTable(pageInfo.page);
@@ -33,7 +33,6 @@ function TaskBoardTable({ }: Props) {
     // 리덕스 관련
     const dispatch = useDispatch();
     // const test = useSelector((state: RootState) => state.task_board.columns);
-  
     // console.log("columns from redux : ", columns);
   
   
@@ -114,7 +113,7 @@ function TaskBoardTable({ }: Props) {
   
       const data = {
         table_name: "rowsForUsersTable",
-        key: columns[index].key,
+        key: columns[index-1].key,
         width: width.toFixed(2)
       }
   

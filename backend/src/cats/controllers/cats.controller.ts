@@ -251,7 +251,7 @@ export class CatsController {
   async getTodoListForTodosTable(params) {
     // const dataForGrid = this.CatsService.getGridDataByTableName(table_name, params.pageNum, params.limit);
     const allTodos = await this.CatsService.getAllTodosForUsersTable(params.pageNum, params.limit);
-    console.log("allTodos : ", allTodos);
+    // console.log("allTodos : ", allTodos);
 
     return allTodos;
   }

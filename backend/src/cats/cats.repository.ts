@@ -22,7 +22,7 @@ export class CatsRepository {
 
     async updateColumWidthForTableAndKey(data: any) {
         // throw new Error('Method not implemented.');
-        console.log("data : ", data);
+        console.log("data for update width: ", data);
         const result = await this.columnsTableModel.findOneAndUpdate({ table_name: data.table_name, key: data.key }, { width: data.width })
         console.log("result : ", result);
     }
