@@ -90,9 +90,7 @@ function searchModalForUser({ row, column, onRowChange }: any) {
                 { withCredentials: true }
             );
             // console.log("resposne.data for columns: ", response.data);
-
             if (response.data.success) {
-
                 const new_columns = response.data.data.columns_list.map((column: any) => {
                     if (column) {
                         return {
@@ -102,9 +100,7 @@ function searchModalForUser({ row, column, onRowChange }: any) {
                         }
                     }
                 }).filter((v: any) => v)
-
                 // console.log("new_columns : ", new_columns);
-
                 // setPageInfo({ page: response.data.data.current_page, total: response.data.data.total_page })
                 setColumns(new_columns);
             }
@@ -163,24 +159,38 @@ function searchModalForUser({ row, column, onRowChange }: any) {
         console.log("등록 버튼 클릭");
         console.log("selectedRows : ", selectedRows);
 
+        let tmp: Set<any> = selectedRows;
+
+
         const rows_for_register = basicRows.map((row: any) => {
             if (selectedRows.has(row._id)) {
+                tmp.add(row._id)
                 return {
                     ...row,
+                    id: row._id,
                     email: "tere@daum.net",
                     name: "hyun",
                     test_complete: "false"
                 }
             }
+
         }).filter((v) => v);
 
         console.log("rows_for_register : ", rows_for_register);
 
+        // let tmp: Set<any> = selectedRows;
+        // rows_for_register.map((v: any, i: any) => {
+        //     tmp.add(v._id)
+        // });
+
+        // console.log("tmp for register: ", tmp);
 
         dispatch(
-            taskBoardSlice.actions.setBasicRows({
-                new_basic_rows: rows_for_register,
-            }),
+            taskBoardSlice.actions.setSelectedRows(tmp)
+        )
+
+        dispatch(
+            taskBoardSlice.actions.addMultiRowsForSearchBoardForReadyToRegister(rows_for_register)
         )
 
         setIsOpen(false);

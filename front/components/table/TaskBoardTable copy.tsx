@@ -18,21 +18,14 @@ type Props = {}
 function TaskBoardTable({ }: Props) {
     const columns = useSelector((state: RootState) => state.task_board.columns);
     const basicRows = useSelector((state: RootState) => state.task_board.basicRows);
-    let selectedRows = useSelector((state: RootState) => state.task_board.selectedRows);
+    const selectedRows = useSelector((state: RootState) => state.task_board.selectedRows);
 
     const [pageInfo, setPageInfo] = useState<{ page: number, total: number }>({
         page: 1,
         total: 1
     })
-
-    // console.log("selectedRows : ", selectedRows);
-    // selectedRows.add("1234") 
-
-    // 여기서 에러 발생 
-    // 에러 메세지 :
-    // Error: [Immer] This object has been frozen and should not be mutated
-
-
+    // const [selectedRows, setSelectedRows] = useState<ReadonlySet<number>>(() => new Set());
+    // const selectedRows = useSelector((state: RootState) => state.task_board.selectedRows);
 
     useEffect(() => {
         getAllGridDataForRowsForUsersTable(pageInfo.page);
@@ -82,21 +75,22 @@ function TaskBoardTable({ }: Props) {
     }
 
     const onRowsChangeHandler = (data: any, idx: any) => {
-        console.log("data for row change handler : data ", data);
-        console.log("data for row change handler idx: ", idx);
-        let tmp: Set<any> = new Set(selectedRows);
-        
-        console.log("data : ", data);
-        data.map((v, i) => {
-            if (v.isChange) {
-              tmp.add(v._id)
-              v.isChange = false
-            }
-          });     
+        // console.log("data for row change handler : ", data);
+        // setBasicRows(data);
+
+        // let tmp: Set<any> = selectedRows;
+        // data.map((v: any, i: any) => {
+        //     if (v.isChange) {
+        //         tmp.add(v._id)
+        //         v.isChange = false
+        //     }
+        // });
+        // setSelectedRows(tmp);
 
         dispatch(
-            taskBoardSlice.actions.setSelectedRows(tmp)
+            taskBoardSlice.actions.setSelectedRows(data)
         )
+
 
         dispatch(
             taskBoardSlice.actions.setBasicRows({
@@ -166,26 +160,20 @@ function TaskBoardTable({ }: Props) {
         }).filter((v) => v)
 
 
-       const data_for_save_request = {
+        const data_for_save_request = {
             users: new_basic_rows_for_save
         }
 
         try {
-            console.log("data_for_save_request : ", data_for_save_request);
-
+            console.log("data_for_save : ", new_basic_rows_for_save);
             const response = await axios.post(
                 `${api.cats}/saveRowsForUsersTable`,
                 data_for_save_request,
                 { withCredentials: true }
             );
 
-            if (response.data.success) {
+            if (response.data) {
                 console.log("response.data : ", response.data);
-
-                dispatch(
-                    taskBoardSlice.actions.setSelectedRows(new Set())
-                )
-
             }
 
             alert(response.data.data);
@@ -276,7 +264,7 @@ function TaskBoardTable({ }: Props) {
         // ]);
 
         const default_row = {
-            _id: random_id,
+            id: random_id,
             email: "",
             name: "",
             todo: "",
@@ -308,13 +296,9 @@ function TaskBoardTable({ }: Props) {
                 rowKeyGetter={(row) => row._id || ""}
                 selectedRows={selectedRows}
                 onSelectedRowsChange={(row) => {
-                    console.log("row 1234 : ", row);
-                    let tmp: Set<any> = row;
-                    // tmp.add(row)
-                    
-                    dispatch(
-                        taskBoardSlice.actions.setSelectedRows(row)
-                    )
+                    // dispatch(
+                    //     taskBoardSlice.actions.setSelectedRows(row)
+                    // )
                 }}
             />
             <br />

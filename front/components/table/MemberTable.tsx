@@ -52,7 +52,6 @@ const MemberTable = (props: Props) => {
     page: 1,
     total: 1
   })
-
   const [columnWidthInfo, setColumnWidthInfo] = useState<{ key: string, width: number }>({
     key: "name",
     width: 200
@@ -198,6 +197,7 @@ const MemberTable = (props: Props) => {
     } catch (error) {
 
     }
+
 
   }
 

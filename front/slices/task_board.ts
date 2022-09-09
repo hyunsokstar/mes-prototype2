@@ -4,25 +4,18 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Satellite } from '@mui/icons-material';
 
 interface TaskBoardState {
-
 }
 
-// const [columns, setColumns] = useState<any>([])
-// const [basicRows, setBasicRows] = useState([]);
-// const [pageInfo, setPageInfo] = useState<{ page: number, total: number }>({
-//   page: 1,
-//   total: 1
-// })
 // const [selectedRows, setSelectedRows] = useState<ReadonlySet<number>>(() => new Set());
 
 interface TaskBoardState {
   columns: Array<{}>;
-  basicRows: Array<{}>;
+  basicRows: Array<any>;
   pageInfo: {
     page: number,
     total: number
   };
-  selectedRows: [];
+  selectedRows: Set<any>;
 }
 
 const initialState = {
@@ -32,7 +25,8 @@ const initialState = {
     page: 1,
     total: 1
   },
-  selectedRows: []
+  selectedRows: new Set<any>()
+
 } as TaskBoardState;
 
 
@@ -48,16 +42,30 @@ const taskBoardSlice = createSlice({
     setBasicRows(state, action) {
       state.basicRows = action.payload.new_basic_rows
     },
-    addRows(state, action) {
+    addDefaultRow(state, action) {
       const random_id = Math.random() * 1000;
 
-      state.basicRows = [...state.basicRows, {
-        id: random_id,
-        email: "",
-        name: "",
-        todo: "",
-        teste_complete: ""
-      }]
+
+
+      state.basicRows = [...state.basicRows, action.payload]
+    },
+    addMultiRowsForSearchBoardForReadyToRegister(state, action) {
+      // const random_id = Math.random() * 1000;
+      state.basicRows = [...state.basicRows, ...action.payload]
+    },
+    setSelectedRows(state, action) {
+      console.log("action.payload : ", action.payload);
+      // let tmp: Set<any> = state.selectedRows;
+      // tmp.add("1234")
+
+      // action.payload.map((v, i) => {
+      //   if (v.isChange) {
+      //     console.log("v : ", v);
+      //     tmp.add(v._id)
+      //   }
+      // });
+
+      state.selectedRows = action.payload
     }
 
   },

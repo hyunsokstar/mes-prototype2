@@ -21,7 +21,7 @@ export class CatsService {
       let isUserExist;
 
       if (user.email) {
-        isUserExist = await this.catsRepository.existsByEmailForRowsForUsersTable(user.email);
+        isUserExist = await this.catsRepository.existsByIdForRowsForUsersTable(user._id);
       } else {
         isUserExist = false
       }
@@ -31,7 +31,7 @@ export class CatsService {
       if (isUserExist) {
         console.log("회원 정보가 이미 존재 so update", index);
 
-        const filter = { email: user.email }
+        const filter = { _id: user._id }
         const result = await this.catsRepository.updateForUsersTable(
           filter,
           {

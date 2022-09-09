@@ -101,7 +101,7 @@ export class CatsController {
   }
 
 
-
+  
   @Post("deleteMembers")
   async deleteMultiUsers(@Body() data) {
     console.log("유저 테이블 정보 저장 check !!");
