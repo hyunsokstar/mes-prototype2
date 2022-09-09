@@ -17,6 +17,7 @@ import { useSelector, useDispatch } from 'react-redux';
 type Props = {}
 
 function TaskBoardTable({ }: Props) {
+    // 1122
     const columns = useSelector((state: RootState) => state.task_board.columns);
     const basicRows = useSelector((state: RootState) => state.task_board.basicRows);
   
@@ -56,9 +57,7 @@ function TaskBoardTable({ }: Props) {
               }
             }
           }).filter((v: any) => v)
-          // console.log("new_columns : ", new_columns);s
-          // setColumns(new_columns);
-          // setBasicRows(rows_for_grid)
+          // console.log("new_columns : ", new_columns);
   
           dispatch(
             taskBoardSlice.actions.setColumns({
@@ -84,6 +83,22 @@ function TaskBoardTable({ }: Props) {
     const onRowsChangeHandler = (data: any, idx: any) => {
       // console.log("data for row change handler : ", data);
       // setBasicRows(data);
+
+      let tmp: Set<any> = selectedRows;
+      data.map((v: any, i: any) => {
+        if (v.isChange) {
+          tmp.add(v._id)
+          v.isChange = false
+        }
+      });
+      setSelectedRows(tmp);
+
+
+      dispatch(
+        taskBoardSlice.actions.setBasicRows({
+          new_basic_rows: data
+        }),
+      )
     }
   
     const modify_column_width_by_table_name_and_key = useCallback(async (data: object) => {
@@ -128,8 +143,61 @@ function TaskBoardTable({ }: Props) {
       setPageInfo({ ...pageInfo, page: page });
     }
 
+    /** rowsForTaskBoard 에 데이터를 저장하기 위한 함수 www.daum.net */
+    // 2244
+    const saveRowForTaskBoard = async () => {
+        console.log("saveRowForTaskBoard click check");
+        console.log("selectedRows : ", selectedRows);
+        console.log("basicRow : ", basicRows);
+
+        if(selectedRows.size == 0 ){
+            alert("1행 이상 선택해주세요 ");
+            return;
+        }
+
+        const new_basic_rows_for_save = basicRows.map((row:any)=> {
+            if(selectedRows.has(row._id)){
+                return row
+            }
+        }).filter((v)=> v)
+
+
+        const data_for_save_request = {
+            users : new_basic_rows_for_save
+        }
+        
+        try {
+            console.log("data_for_save : ", new_basic_rows_for_save);
+            const response = await axios.post(
+              `${api.cats}/saveRowsForUsersTable`,
+              data_for_save_request,
+              { withCredentials: true }
+            );
+
+            if (response.data) {
+              console.log("response.data : ", response.data);
+            }
+      
+            alert(response.data.data);
+      
+            
+          } catch (error: any) {
+            console.log("error : ", error);
+          }
+
+        
+    }
+
+
     return (
         <div>
+
+            <div style={{display:"flex", justifyContent:"center", marginBottom:"10px", gap: "10px"}}>
+                <button>행 추가</button>
+                <button onClick = {saveRowForTaskBoard}>저장 </button>
+                <button>삭제 </button>
+            </div>
+
 
             <DataGrid
                 columns={[SelectColumn, ...columns]}
@@ -142,7 +210,6 @@ function TaskBoardTable({ }: Props) {
                 rowKeyGetter={(row) => row._id || ""}
                 selectedRows={selectedRows}
                 onSelectedRowsChange={(row) => {
-                    // console.log("row : ", row);
                     setSelectedRows(row)
                 }}
             />

@@ -52,6 +52,7 @@ const MemberTable = (props: Props) => {
     page: 1,
     total: 1
   })
+
   const [columnWidthInfo, setColumnWidthInfo] = useState<{ key: string, width: number }>({
     key: "name",
     width: 200
@@ -67,7 +68,8 @@ const MemberTable = (props: Props) => {
 
     try {
       const response = await axios.get(
-        `${api.cats}/cats_columns/columnsForTodosTable/${page}/8`,
+        // `${api.cats}/cats_columns/columnsForTodosTable/${page}/8`,
+        `${api.cats}/allCatsColumns`,
         // `${api.cats}/all_cats_columns/${page}/2`,
         { withCredentials: true }
       );
@@ -94,7 +96,6 @@ const MemberTable = (props: Props) => {
 
     } catch (error) {
       console.log("error : ", error);
-
     }
   }
 
@@ -132,6 +133,7 @@ const MemberTable = (props: Props) => {
 
       alert(response.data.data);
 
+      
     } catch (error: any) {
       console.log("error : ", error);
     }
@@ -196,7 +198,6 @@ const MemberTable = (props: Props) => {
     } catch (error) {
 
     }
-
 
   }
 

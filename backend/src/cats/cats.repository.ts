@@ -80,6 +80,17 @@ export class CatsRepository {
 
     }
 
+    async allCatsColumns() {
+
+        const columns_list =
+            await this.columnsTableModel.find({}).sort({ table_name: 1 })
+
+        return {
+            columns_list
+        }
+
+    }
+
     async saveColumnDatas(data: any) {
         console.log("data at cat repository for saveColumns: ", data);
     }

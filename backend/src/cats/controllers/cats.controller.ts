@@ -94,9 +94,9 @@ export class CatsController {
 
   @Post("saveRowsForUsersTable")
   async saveForRowsForUsersTable(@Body() data) {
-    // console.log("유저 테이블 정보 저장 check !!", data);
+    console.log("유저 테이블 정보 저장 check !!", data);
     this.CatsService.saveRowsForUsersTable(data);
-
+    
     return "유저스 테이블에 row 정보 저장 성공"
   }
 
@@ -191,6 +191,8 @@ export class CatsController {
     return "save columns"
   }
 
+  // 
+
   @Get("cats_columns/:table_name/:pageNum/:limit")
   @Bind(Param())
   getAllColumnsForCats(params) {
@@ -233,9 +235,16 @@ export class CatsController {
     return allCatsColumnns;
   }
 
+  @Get("allCatsColumns")
+  @Bind(Param())
+  allCatsColumns(params) {
+    const allCatsColumnns = this.CatsService.allCatsColumns(params.table_name);
+    console.log("allColumnsTable : ", allCatsColumnns);
+
+    return allCatsColumnns;
+  }
 
   // function for todos 2244
-
   @Post("saveDataForTodosTable")
   async saveDataForTodosTable(@Body() data) {
     console.log("saveDataForTodosTable 실행 확인 !!", data);
@@ -245,7 +254,6 @@ export class CatsController {
     return "saveDataForTodosTable 성공"
   }
 
-  // @Get("getGridDataByTableName/:table_name/:pageNum/:limit")
   @Get("getTodosForTodosTable/:pageNum/:limit")
   @Bind(Param())
   async getTodoListForTodosTable(params) {

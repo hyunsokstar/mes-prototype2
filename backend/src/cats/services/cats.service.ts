@@ -75,9 +75,14 @@ export class CatsService {
   }
 
   async getAllColumnsForUsersTableWithoutPagination(table_name: string) {
-
     // const allColumnsTable = await this.catsRepository.findAllColumnsTable(table_name, pageNum, limit);
     const allColumnsTable = await this.catsRepository.findAllColumnsWithoutPagination(table_name);
+    return allColumnsTable
+  }
+
+  async allCatsColumns(table_name: string) {
+    // const allColumnsTable = await this.catsRepository.findAllColumnsTable(table_name, pageNum, limit);
+    const allColumnsTable = await this.catsRepository.allCatsColumns();
     return allColumnsTable
   }
 
