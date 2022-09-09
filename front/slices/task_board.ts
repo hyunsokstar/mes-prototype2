@@ -17,7 +17,7 @@ interface TaskBoardState {
 
 interface TaskBoardState {
   columns: Array<{}>;
-  basicRows: [];
+  basicRows: Array<{}>;
   pageInfo: {
     page: number,
     total: number
@@ -47,6 +47,17 @@ const taskBoardSlice = createSlice({
     },
     setBasicRows(state, action) {
       state.basicRows = action.payload.new_basic_rows
+    },
+    addRows(state, action) {
+      const random_id = Math.random() * 1000;
+
+      state.basicRows = [...state.basicRows, {
+        id: random_id,
+        email: "",
+        name: "",
+        todo: "",
+        teste_complete: ""
+      }]
     }
 
   },

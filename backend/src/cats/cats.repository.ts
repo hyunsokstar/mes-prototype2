@@ -145,6 +145,18 @@ export class CatsRepository {
         return result;
     }
 
+    async deleteRowsForTaskBoard(ids_for_delete: []) {
+        console.log("ids_for_delete : ", ids_for_delete);
+        const result = await this.rowsForUsersTable.deleteMany(
+            {
+                _id: {
+                    $in: ids_for_delete
+                }
+            },
+        );
+        return result;
+    }
+
     async existsByEmail(email: string): Promise<boolean> {
         const result = await this.catModel.exists({ email });
         if (result) {

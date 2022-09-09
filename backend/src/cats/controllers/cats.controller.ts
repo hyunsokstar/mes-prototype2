@@ -107,7 +107,22 @@ export class CatsController {
     console.log("유저 테이블 정보 저장 check !!");
     // console.log("body data : ", data);
 
-    return this.CatsService.deleteMultiUsers(data);
+    const ids_for_delete_users = data 
+    console.log("ids_for_delete_users : ", ids_for_delete_users);
+
+    return this.CatsService.deleteMultiUsers(ids_for_delete_users);
+  }
+
+  @Post("deleteRowsForTaskBoard")
+  async deleteRowsForTaskBoard(@Body() data) {
+    console.log("유저 테이블 정보 저장 check !!");
+    // console.log("body data : ", data);
+
+    const ids_for_delete_users = data 
+    console.log("ids_for_delete_users : ", ids_for_delete_users);
+
+    // return this.CatsService.deleteMultiUsers(ids_for_delete_users);
+    return this.CatsService.deleteRowsForTaskBoard(ids_for_delete_users);
   }
 
   @Post("deleteColumns")
