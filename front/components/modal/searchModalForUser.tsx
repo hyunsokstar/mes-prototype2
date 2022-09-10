@@ -60,6 +60,7 @@ function searchModalForUser({ row, column, onRowChange }: any) {
     const [modalIsOpen, setIsOpen] = React.useState(false);
 
     const user = useSelector((state: RootState) => state.user.me);
+    let selectedRows_for_users_table = useSelector((state: RootState) => state.task_board.selectedRows);
 
 
     let subtitle: HTMLHeadingElement | null;
@@ -160,7 +161,9 @@ function searchModalForUser({ row, column, onRowChange }: any) {
         console.log("등록 버튼 클릭");
         console.log("selectedRows : ", selectedRows);
 
-        let tmp: Set<any> = selectedRows;
+        // let tmp: Set<any> = selectedRows;
+        let tmp: Set<any> = new Set(selectedRows_for_users_table);
+
 
 
         const rows_for_register = basicRows.map((row: any) => {
@@ -201,16 +204,41 @@ function searchModalForUser({ row, column, onRowChange }: any) {
     const my_setrow = (e: any) => {
         console.log("행 클릭", e);
 
+
         let tmp: Set<any> = selectedRows;
         tmp.add(e._id)
-        // e.map((v: any, i: any) => {
-        //     tmp.add(d._id)
-        // });
+
+        setSelectedRows(tmp)
 
         console.log("tmp for register: ", tmp);
 
     }
 
+    const selectOneRow = (e:any) => {
+
+        let tmp: Set<any> = new Set(selectedRows_for_users_table);
+        tmp.add(e._id)
+
+        dispatch(
+            taskBoardSlice.actions.setSelectedRows(tmp)
+        )
+
+        const custom_data = {
+            ...e,
+            email: user.email,
+            name: user.name,
+            test_complete: false
+        }
+
+        const custom_row = [custom_data]
+
+        dispatch(
+            taskBoardSlice.actions.addMultiRowsForSearchBoardForReadyToRegister(custom_row)
+        )
+
+        setIsOpen(false)
+
+    }
 
     return (
         <div>
@@ -239,6 +267,7 @@ function searchModalForUser({ row, column, onRowChange }: any) {
                             setSelectedRows(row)
                         }}
                         onRowClick={my_setrow}
+                        onRowDoubleClick={selectOneRow}
                     />
 
                     <div>
