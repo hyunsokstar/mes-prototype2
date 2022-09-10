@@ -66,6 +66,9 @@ function TaskBoardTable({ }: Props) {
                     })
                 );
 
+                console.log("rows_for_grid : ", rows_for_grid);
+
+
                 dispatch(
                     taskBoardSlice.actions.setBasicRows({
                         new_basic_rows: rows_for_grid
@@ -73,6 +76,8 @@ function TaskBoardTable({ }: Props) {
                 )
 
                 // console.log("rows_for_grid : ", rows_for_grid);
+                console.log("response.data.data.current_page : ", response.data.data.current_page);
+                
                 setPageInfo({ page: response.data.data.current_page, total: response.data.data.total_page })
             }
         } catch (error) {
@@ -85,14 +90,14 @@ function TaskBoardTable({ }: Props) {
         console.log("data for row change handler : data ", data);
         console.log("data for row change handler idx: ", idx);
         let tmp: Set<any> = new Set(selectedRows);
-        
+
         console.log("data : ", data);
         data.map((v, i) => {
             if (v.isChange) {
-              tmp.add(v._id)
-              v.isChange = false
+                tmp.add(v._id)
+                v.isChange = false
             }
-          });     
+        });
 
         dispatch(
             taskBoardSlice.actions.setSelectedRows(tmp)
@@ -166,7 +171,7 @@ function TaskBoardTable({ }: Props) {
         }).filter((v) => v)
 
 
-       const data_for_save_request = {
+        const data_for_save_request = {
             users: new_basic_rows_for_save
         }
 
@@ -300,7 +305,7 @@ function TaskBoardTable({ }: Props) {
             <DataGrid
                 columns={[SelectColumn, ...columns]}
                 rows={basicRows}
-                style={{ width: "100%" }}
+                style={{ width: "100%", height: "500px" }}
                 onRowsChange={(data, idx) => { onRowsChangeHandler(data, idx) }}
                 onColumnResize={
                     throttle((index: number, width: number) => updateColumnWidthByKey(index, width, columns), 2000, { 'leading': false })
@@ -311,23 +316,27 @@ function TaskBoardTable({ }: Props) {
                     console.log("row 1234 : ", row);
                     let tmp: Set<any> = row;
                     // tmp.add(row)
-                    
+
                     dispatch(
                         taskBoardSlice.actions.setSelectedRows(row)
                     )
                 }}
             />
             <br />
-            <Pagination
-                count={pageInfo.total}
-                page={pageInfo.page}
-                size="large"
-                defaultPage={1}
-                shape="rounded"
-                onChange={(e, page) => {
-                    setPage(page)
-                }}
-            />
+
+            <div style={{ display:"flex", justifyContent:"center", border:"0px solid black" }}>
+                {/* {pageInfo.page} */}
+                <Pagination
+                    count={pageInfo.total}
+                    page={pageInfo.page}
+                    size="large"
+                    defaultPage={1}
+                    shape="rounded"
+                    onChange={(e, page) => {
+                        setPage(page)
+                    }}
+                />
+            </div>
 
         </div>
     )

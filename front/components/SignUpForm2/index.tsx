@@ -59,7 +59,9 @@ function SignUpForm2() {
 
             console.log("response : ", response);
             if (response.data.success) {
-                router.push('/')
+                console.log("response.data : ", response.data);
+                
+                // router.push('/')
             }
 
         } catch (error) {

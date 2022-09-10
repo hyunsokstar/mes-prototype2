@@ -232,6 +232,11 @@ export class CatsService {
 
   async signUp(body: CatRequestDto) {
     const { email, name, password } = body;
+
+
+    console.log("password at aservice: ", password);
+    
+
     const isCatExist = await this.catsRepository.existsByEmail(email);
 
     if (isCatExist) {

@@ -1,4 +1,5 @@
 import React from 'react'
+import AppLayout from '../AppLayout'
 import TaskBoardTable from '../table/TaskBoardTable'
 
 type Props = {}
@@ -6,8 +7,10 @@ type Props = {}
 const TaskBoardContainer = (props: Props) => {
     return (
         <div>
-            <h2>TaskBoard</h2>
-            <TaskBoardTable />
+            <AppLayout>
+                <h2 style={{ textAlign: "center" }}>TaskBoard</h2>
+                <TaskBoardTable />
+            </AppLayout>
         </div>
     )
 }

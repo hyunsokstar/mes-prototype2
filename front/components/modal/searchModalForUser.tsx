@@ -8,9 +8,10 @@ import Pagination from '@material-ui/lab/Pagination'
 import TextEditor from "../../components/util/TextEditor"
 import { selectEditor, selectFormatter } from '../../common/editor_mapping';
 import { SelectColumn } from "react-data-grid";
-import { useSelector, useDispatch } from 'react-redux';
 import taskBoardSlice from '../../slices/task_board';
 
+import { RootState } from '../../store/reducer';
+import { useSelector, useDispatch } from 'react-redux';
 
 const columns = [
     { key: 'id', name: 'ID' },
@@ -49,7 +50,6 @@ function searchModalForUser({ row, column, onRowChange }: any) {
     // redux 
     const dispatch = useDispatch();
 
-
     const [columns, setColumns] = useState<any>([])
     const [basicRows, setBasicRows] = useState([]);
     const [pageInfo, setPageInfo] = useState<{ page: number, total: number }>({
@@ -59,6 +59,7 @@ function searchModalForUser({ row, column, onRowChange }: any) {
     const [selectedRows, setSelectedRows] = useState<any>(() => new Set());
     const [modalIsOpen, setIsOpen] = React.useState(false);
 
+    const user = useSelector((state: RootState) => state.user.me);
 
 
     let subtitle: HTMLHeadingElement | null;
@@ -168,8 +169,8 @@ function searchModalForUser({ row, column, onRowChange }: any) {
                 return {
                     ...row,
                     id: row._id,
-                    email: "tere@daum.net",
-                    name: "hyun",
+                    email: user.email,
+                    name: user.name,
                     test_complete: "false"
                 }
             }

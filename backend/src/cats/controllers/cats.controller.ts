@@ -132,7 +132,7 @@ export class CatsController {
 
     return this.CatsService.deleteColumns(data);
   }
-
+// 
   @ApiResponse({
     status: 500,
     description: 'server Errror'
@@ -144,7 +144,7 @@ export class CatsController {
   })
   @ApiOperation({ summary: "회원 가입" })
   @Post()
-  async signUp(@Body() body: CatRequestDto) {
+  async signUp(@Body() body: any) {
     console.log("body : ", body);
     console.log("회원 가입 실행 확인 !!");
     return await this.CatsService.signUp(body);
@@ -153,6 +153,9 @@ export class CatsController {
   @ApiOperation({ summary: "로그인" })
   @Post('login')
   logIn(@Body() data: LoginRequestDto) {
+
+    console.log("로그인 확인");    
+
     return this.authService.jwtlogin(data);
   }
 

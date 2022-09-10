@@ -20,7 +20,9 @@ interface TaskBoardState {
 
 const initialState = {
   columns: [{ key: "hi", name: "hyun" }],
-  basicRows: [],
+  basicRows: [{
+    
+  }],
   pageInfo: {
     page: 1,
     total: 1

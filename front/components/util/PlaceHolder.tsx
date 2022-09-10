@@ -14,13 +14,12 @@ const Input = styled.input`
 
 const PlaceHolder = ({ row, column, onRowChange, onClose }: any) => {
 
-    console.log("row : ", row);
-
+    
 
     return (
         <div>
             <Input type="text"
-                placeholder=''
+            placeholder=''
                 onChange={(event) => {
                     let eventValue = event.target.value
 
