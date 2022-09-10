@@ -198,12 +198,23 @@ function searchModalForUser({ row, column, onRowChange }: any) {
 
     }
 
+    const my_setrow = (e: any) => {
+        console.log("행 클릭", e);
 
+        let tmp: Set<any> = selectedRows;
+        tmp.add(e._id)
+        // e.map((v: any, i: any) => {
+        //     tmp.add(d._id)
+        // });
+
+        console.log("tmp for register: ", tmp);
+
+    }
 
 
     return (
         <div>
-            <div style={{ display: "flex", justifyContent: "space-between"}}>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
                 {row.todo ? row.todo : ""}
                 <button onClick={openModal} onDoubleClick={openModal}>Open Modal</button>
             </div>
@@ -227,7 +238,7 @@ function searchModalForUser({ row, column, onRowChange }: any) {
                         onSelectedRowsChange={(row) => {
                             setSelectedRows(row)
                         }}
-
+                        onRowClick={my_setrow}
                     />
 
                     <div>
