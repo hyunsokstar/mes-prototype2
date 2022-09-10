@@ -15,7 +15,10 @@ const TextEditor = ({ row, column, onRowChange, onClose }: any) => {
 
     return (
         <div>
-            <Input type="text"
+            <Input
+                style={{ textAlign: "left" }}
+                type="text"
+                value={row[column.key]}
                 onChange={(event) => {
                     let eventValue = event.target.value
 
