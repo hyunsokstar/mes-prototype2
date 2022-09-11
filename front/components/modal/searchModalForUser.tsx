@@ -160,13 +160,13 @@ function searchModalForUser({ row, column, onRowChange }: any) {
 
     const passSelectedDataToPage = () => {
         console.log("등록 버튼 클릭");
-        console.log("selectedRows : ", selectedRows);
+        // console.log("selectedRows : ", selectedRows);
 
         // let tmp: Set<any> = selectedRows;
         let tmp: Set<any> = new Set(selectedRows_for_users_table);
         let tmp2: Set<any> = selectedRows;
 
-        const rows_for_register = basicRows.map((row: any) => {
+        let rows_for_register = basicRows.map((row: any) => {
             if (selectedRows.has(row._id)) {
                 tmp.add(row._id)
                 return {
@@ -182,12 +182,8 @@ function searchModalForUser({ row, column, onRowChange }: any) {
         console.log("rows_for_register : ", rows_for_register);
 
         // 추가로 등록한 경우
-        // dispatch(
-        //     taskBoardSlice.actions.setSelectedRows(tmp)
-        // )
-
         dispatch(
-            taskBoardSlice.actions.addMultiRowsForSearchBoardForReadyToRegister(rows_for_register)
+            taskBoardSlice.actions.setSelectedRows(tmp)
         )
 
         // 취소한 경우 기존거에서 취소한걸 빼야 된다
@@ -196,8 +192,54 @@ function searchModalForUser({ row, column, onRowChange }: any) {
         // let selectedRows_for_users_table = useSelector((state: RootState) => state.task_board.selectedRows);
         const before_selecetd_rows = selectedRows_for_users_table;
         const new_selected_rows = selectedRows;
-        console.log("before_selecetd_rows : ", before_selecetd_rows);
-        console.log("new_selected_row : ", new_selected_rows);
+        // console.log("before_selecetd_rows : ", before_selecetd_rows);
+        // console.log("new_selected_row : ", new_selected_rows);
+
+        const ids_array_before = Array.from(selectedRows_for_users_table);
+        const ids_array_after = Array.from(selectedRows);
+
+        console.log("ids_array_before : ", ids_array_before);
+        console.log("ids_array_after : ", ids_array_after);
+        
+
+        // 뺀 아이디 추출
+        const ids_for_update_after_cancel = ids_array_before.filter(x => !ids_array_after.includes(x))
+
+        console.log("ids_for_update_after_cancel : ", ids_for_update_after_cancel);
+        
+
+        if (ids_array_before.length > ids_array_after.length) {
+            console.log("hi");
+            
+            rows_for_register = basicRowsForTaskBoard.filter((row: any) => {
+                if (!ids_for_update_after_cancel.includes(row._id)) {
+                    return row
+                }
+            })
+            console.log("취소된것까지 고려한 rows_for_register :  ", rows_for_register);
+
+
+            const payload = {
+                new_basic_rows: rows_for_register
+            }
+
+            dispatch(
+                taskBoardSlice.actions.setBasicRows(payload)
+            )
+
+            dispatch(
+                taskBoardSlice.actions.setSelectedRows(selectedRows)
+            )
+
+            
+        } else {
+
+            dispatch(
+                taskBoardSlice.actions.addMultiRowsForSearchBoardForReadyToRegister(rows_for_register)
+            )
+        }
+
+
         // selectedRows_for_users_table.delete(new_selected_rows); 
 
         setIsOpen(false);
@@ -242,7 +284,7 @@ function searchModalForUser({ row, column, onRowChange }: any) {
 
     useEffect(() => {
         setSelectedRows(selectedRows_for_users_table);
-    }, [selectedRows, selectedRows_for_users_table])
+    }, [selectedRows_for_users_table])
 
 
     return (
@@ -272,16 +314,11 @@ function searchModalForUser({ row, column, onRowChange }: any) {
                         selectedRows={selectedRows}
                         onSelectedRowsChange={(row) => {
 
-                            // if (selectedRows.size > row.size) {
-                            //     console.log("체크를 취소 했음");
-                            // }
+                            
 
                             setSelectedRows(row)
-                            my_setrow(row)
                         }}
 
-                        // onRowClick={my_setrow}
-                        onRowDoubleClick={selectOneRow}
                     />
 
                     <div>
