@@ -5,7 +5,7 @@ import TextEditor from '../components/util/TextEditor'
 export const selectEditor = (editor: string) => {
 
     let editorText = editor;
-    console.log("셀렉트 에디터 실행", editorText);
+    // console.log("셀렉트 에디터 실행", editorText);
 
     switch(editor) {
         case "TextEditor":
@@ -25,7 +25,7 @@ export const selectEditor = (editor: string) => {
 export const selectFormatter = (formatter: string) => {
 
 
-  console.log("formatterText 에디터 실행", formatter);
+  // console.log("formatterText 에디터 실행", formatter);
 
   switch(formatter) {
       case "TextEditor":

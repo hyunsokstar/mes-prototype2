@@ -284,26 +284,11 @@ export class CatsRepository {
                     // 페이지 수에 한페이지당 개수를 곱해서 그 다음부터 가져 와라 
                     .skip((pageNum - 1) * limit).limit(limit)
                     // order 로 정렬 해라 
-                    .sort({ order: 1 });
-
-        } else {
-            columns_for_grid = await this.columnsTableModel.find({ table_name: table_name }).sort({ order: 1 });
-            rows_for_grid = await this.rowsForUsersTable.find().select('-password');
-
-            total_page = await this.rowsForUsersTable.find({ table_name: table_name }).count() / limit
-            total_page2 = Math.ceil(total_page);
-            // console.log("total_page : ", total_page);
-
-            rows_for_grid =
-                // columnsTableModel 에 대해 table_name 으로 검색해서 가져와라 
-                await this.rowsForUsersTable.find({ table_name: table_name })
-                    // 페이지 수에 한페이지당 개수를 곱해서 그 다음부터 가져 와라 
-                    .skip((pageNum - 1) * limit).limit(limit)
-                    // order 로 정렬 해라 
-                    .sort({ order: 1 });
-        }
-
-        console.log("columns_for_grid : ", columns_for_grid);
+                    .sort({ createAt: 1 });
+                } 
+                
+                console.log("rows_for_grid : ", rows_for_grid);
+        // console.log("columns_for_grid : ", columns_for_grid);
 
 
         let data_for_grid = {
@@ -319,11 +304,19 @@ export class CatsRepository {
     }
 
     async getAllTodosForUsersTable(pageNum, limit) {
+        console.log("limit : ", limit);
+        console.log("pageNum : ", pageNum);
+        
         const todos_for_data_grid = await this.rowsForTodosTable.find()
-            // 페이지 수에 한페이지당 개수를 곱해서 그 다음부터 가져 와라 
-            .skip((pageNum - 1) * limit).limit(limit)
+            // 페이지 수에 한페이지당 개수를 곱해서 그 다음부터 가져 와라             
+
+            .skip(limit* (pageNum-1))
+            .limit(limit)
+            // .sort({ createdAt: 1 })
             // order 로 정렬 해라 
-            .sort({ order: 1 });
+
+            console.log("todos for data grid : ", todos_for_data_grid);
+            
 
         let total_page = await this.rowsForTodosTable.find().count() / limit
         let total_page2 = Math.ceil(total_page);

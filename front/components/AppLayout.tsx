@@ -44,7 +44,7 @@ const AppLayout = ({ children }: LayoutProps) => {
         });
 
         // console.log("login_user : ", login_user);
-        console.log("isLoggedIn : ", isLoggedIn);
+        // console.log("isLoggedIn : ", isLoggedIn);
         
 
 

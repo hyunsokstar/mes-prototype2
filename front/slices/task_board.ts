@@ -52,8 +52,18 @@ const taskBoardSlice = createSlice({
       state.basicRows = [...state.basicRows, action.payload]
     },
     addMultiRowsForSearchBoardForReadyToRegister(state, action) {
-      // const random_id = Math.random() * 1000;
-      state.basicRows = [...state.basicRows, ...action.payload]
+      
+      const exist_row_ids = action.payload.map((row:any)=> {
+        return row._id
+      })
+
+      const initialize_row = state.basicRows.filter((row)=> {
+        if(!exist_row_ids.includes(row._id)){
+          return row 
+        }
+      })
+
+      state.basicRows = [...initialize_row, ...action.payload]
     },
     setSelectedRows(state, action) {
       console.log("action.payload : ", action.payload);

@@ -66,7 +66,7 @@ function TaskBoardTable({ }: Props) {
                     })
                 );
 
-                console.log("rows_for_grid : ", rows_for_grid);
+                // console.log("rows_for_grid : ", rows_for_grid);
 
 
                 dispatch(
@@ -76,7 +76,7 @@ function TaskBoardTable({ }: Props) {
                 )
 
                 // console.log("rows_for_grid : ", rows_for_grid);
-                console.log("response.data.data.current_page : ", response.data.data.current_page);
+                // console.log("response.data.data.current_page : ", response.data.data.current_page);
                 
                 setPageInfo({ page: response.data.data.current_page, total: response.data.data.total_page })
             }
@@ -315,11 +315,10 @@ function TaskBoardTable({ }: Props) {
                 onSelectedRowsChange={(row) => {
                     console.log("row 1234 : ", row);
                     let tmp: Set<any> = row;
-                    // tmp.add(row)
-
                     dispatch(
                         taskBoardSlice.actions.setSelectedRows(row)
                     )
+
                 }}
             />
             <br />

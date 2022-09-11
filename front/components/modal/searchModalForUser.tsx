@@ -56,11 +56,12 @@ function searchModalForUser({ row, column, onRowChange }: any) {
         page: 1,
         total: 1
     });
-    const [selectedRows, setSelectedRows] = useState<any>(() => new Set());
+    const [selectedRows, setSelectedRows] = useState<any>(new Set());
     const [modalIsOpen, setIsOpen] = React.useState(false);
 
     const user = useSelector((state: RootState) => state.user.me);
     let selectedRows_for_users_table = useSelector((state: RootState) => state.task_board.selectedRows);
+    let basicRowsForTaskBoard = useSelector((state: RootState) => state.task_board.basicRows);
 
 
     let subtitle: HTMLHeadingElement | null;
@@ -163,11 +164,10 @@ function searchModalForUser({ row, column, onRowChange }: any) {
 
         // let tmp: Set<any> = selectedRows;
         let tmp: Set<any> = new Set(selectedRows_for_users_table);
-
-
+        let tmp2: Set<any> = selectedRows;
 
         const rows_for_register = basicRows.map((row: any) => {
-            if (selectedRows.has(row._id)) {
+            if (selectedRows.has(row._id) && !selectedRows_for_users_table.has(row._id) ) {
                 tmp.add(row._id)
                 return {
                     ...row,
@@ -177,44 +177,46 @@ function searchModalForUser({ row, column, onRowChange }: any) {
                     test_complete: "false"
                 }
             }
-
         }).filter((v) => v);
-
+        setSelectedRows(tmp);
         console.log("rows_for_register : ", rows_for_register);
 
-        // let tmp: Set<any> = selectedRows;
-        // rows_for_register.map((v: any, i: any) => {
-        //     tmp.add(v._id)
-        // });
-
-        // console.log("tmp for register: ", tmp);
-
+        // 추가로 등록한 경우
         dispatch(
             taskBoardSlice.actions.setSelectedRows(tmp)
         )
-
         dispatch(
             taskBoardSlice.actions.addMultiRowsForSearchBoardForReadyToRegister(rows_for_register)
         )
 
-        setIsOpen(false);
+        // 취소한 경우 기존거에서 취소한걸 빼야 된다
+        // 취소한 행 번호를 보내줘야 빼던지 말던지
+        const before_selecetd_rows = selectedRows_for_users_table;
+        const new_selected_rows = selectedRows;
+        console.log("before_selecetd_rows : ", before_selecetd_rows);
+        console.log("new_selected_row : ", new_selected_rows);
 
+        setIsOpen(false);
     }
 
     const my_setrow = (e: any) => {
         console.log("행 클릭", e);
 
-
-        let tmp: Set<any> = selectedRows;
-        tmp.add(e._id)
+        let tmp: Set<any> = new Set(selectedRows);
+        if (selectedRows.has(e._id)) {
+            console.log("실행 확인 11");
+            tmp.delete(e._id)
+        } else {
+            console.log("실행 확인 22");
+            tmp.add(e._id)
+        }
 
         setSelectedRows(tmp)
-
         console.log("tmp for register: ", tmp);
 
     }
 
-    const selectOneRow = (e:any) => {
+    const selectOneRow = (e) => {
 
         let tmp: Set<any> = new Set(selectedRows_for_users_table);
         tmp.add(e._id)
@@ -230,15 +232,20 @@ function searchModalForUser({ row, column, onRowChange }: any) {
             test_complete: false
         }
 
-        const custom_row = [custom_data]
+        const data = [e]
 
         dispatch(
-            taskBoardSlice.actions.addMultiRowsForSearchBoardForReadyToRegister(custom_row)
+            taskBoardSlice.actions.addMultiRowsForSearchBoardForReadyToRegister(data)
         )
-
         setIsOpen(false)
 
     }
+
+    useEffect(() => {
+        setSelectedRows(selectedRows_for_users_table);
+    }, [])
+
+
 
     return (
         <div>
@@ -257,6 +264,8 @@ function searchModalForUser({ row, column, onRowChange }: any) {
                 >
                     <h2 ref={(_subtitle) => (subtitle = _subtitle)}>todo for task</h2>
 
+
+                    {selectedRows}
                     <DataGrid
                         columns={[SelectColumn, ...columns]}
                         rows={basicRows}
@@ -264,14 +273,15 @@ function searchModalForUser({ row, column, onRowChange }: any) {
                         rowKeyGetter={(row) => row._id || ""}
                         selectedRows={selectedRows}
                         onSelectedRowsChange={(row) => {
+
                             setSelectedRows(row)
+
                         }}
-                        onRowClick={my_setrow}
                         onRowDoubleClick={selectOneRow}
                     />
 
                     <div>
-                        <button>취소</button>
+                        <button onClick={() => setIsOpen(false)}>취소</button>
                         <button onClick={passSelectedDataToPage}>등록</button>
                     </div>
 

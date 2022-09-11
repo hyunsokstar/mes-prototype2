@@ -295,7 +295,7 @@ function TaskBoardTable({ }: Props) {
                 onColumnResize={
                     throttle((index: number, width: number) => updateColumnWidthByKey(index, width, columns), 2000, { 'leading': false })
                 }
-                rowKeyGetter={(row) => row._id || ""}
+                rowKeyGetter={(row) => row._id }
                 selectedRows={selectedRows}
                 onSelectedRowsChange={(row) => {
                     console.log("row : ", row);
