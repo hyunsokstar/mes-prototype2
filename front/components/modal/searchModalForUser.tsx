@@ -207,16 +207,22 @@ function searchModalForUser({ row, column, onRowChange }: any) {
         console.log("행 클릭", e);
 
         let tmp: Set<any> = new Set(selectedRows);
+        let tmp2: Set<any> = new Set(selectedRows_for_users_table);
         if (selectedRows.has(e._id)) {
             console.log("실행 확인 11");
             tmp.delete(e._id)
+            tmp2.delete(e._id)
         } else {
             console.log("실행 확인 22");
             tmp.add(e._id)
+            tmp2.add(e._id)
         }
-
         setSelectedRows(tmp)
-        console.log("tmp for register: ", tmp);
+
+        dispatch(
+            taskBoardSlice.actions.setSelectedRows(tmp2)
+        )
+
 
     }
 
@@ -247,31 +253,8 @@ function searchModalForUser({ row, column, onRowChange }: any) {
 
     useEffect(() => {
         setSelectedRows(selectedRows_for_users_table);
-    }, [])
+    }, [selectedRows, selectedRows_for_users_table])
 
-    const my_row_click = (e) => {
-        console.log("hi");
-
-        console.log("hi", e);
-        let tmp: Set<any> = new Set(selectedRows)
-        let tmp2: Set<any> = new Set(selectedRows_for_users_table)
-
-        if (selectedRows.has(e._id)) {
-            tmp.delete(e._id)
-            tmp2.delete(e._id)
-        } else {
-            tmp.add(e._id)
-            tmp2.add(e._id)
-        }
-
-        dispatch(
-            taskBoardSlice.actions.setSelectedRows(tmp2)
-        )
-
-        setSelectedRows(tmp)
-        // tmp.add
-
-    }
 
     return (
         <div>
@@ -306,7 +289,7 @@ function searchModalForUser({ row, column, onRowChange }: any) {
 
                         //     setSelectedRows(row)
                         // }}
-                        onRowClick={my_row_click}
+                        onRowClick={my_setrow}
                         onRowDoubleClick={selectOneRow}
                     />
 
