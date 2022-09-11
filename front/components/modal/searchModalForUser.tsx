@@ -265,7 +265,7 @@ function searchModalForUser({ row, column, onRowChange }: any) {
                     <h2 ref={(_subtitle) => (subtitle = _subtitle)}>todo for task</h2>
 
 
-                    {selectedRows}
+                    {/* {selectedRows} */}
                     <DataGrid
                         columns={[SelectColumn, ...columns]}
                         rows={basicRows}

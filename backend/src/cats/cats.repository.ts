@@ -285,9 +285,9 @@ export class CatsRepository {
                     .skip((pageNum - 1) * limit).limit(limit)
                     // order 로 정렬 해라 
                     .sort({ createAt: 1 });
-                } 
-                
-                console.log("rows_for_grid : ", rows_for_grid);
+        }
+
+        console.log("rows_for_grid : ", rows_for_grid);
         // console.log("columns_for_grid : ", columns_for_grid);
 
 
@@ -306,17 +306,20 @@ export class CatsRepository {
     async getAllTodosForUsersTable(pageNum, limit) {
         console.log("limit : ", limit);
         console.log("pageNum : ", pageNum);
-        
-        const todos_for_data_grid = await this.rowsForTodosTable.find()
+
+        const todos_for_data_grid = await this.rowsForTodosTable.find({})
             // 페이지 수에 한페이지당 개수를 곱해서 그 다음부터 가져 와라             
 
-            .skip(limit* (pageNum-1))
+            // .skip(limit* (pageNum-1))
+            // .sort({ createAt: 1 })
+            .skip((pageNum - 1) * limit)
             .limit(limit)
-            // .sort({ createdAt: 1 })
-            // order 로 정렬 해라 
+            // .limit(limit)
+            // .sort({createdAt:1})
+        // order 로 정렬 해라 
 
-            console.log("todos for data grid : ", todos_for_data_grid);
-            
+        console.log("todos for data grid : ", todos_for_data_grid);
+
 
         let total_page = await this.rowsForTodosTable.find().count() / limit
         let total_page2 = Math.ceil(total_page);
