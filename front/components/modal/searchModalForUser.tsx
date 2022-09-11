@@ -203,26 +203,15 @@ function searchModalForUser({ row, column, onRowChange }: any) {
         setIsOpen(false);
     }
 
-    const my_setrow = (e: any) => {
-        console.log("행 클릭", e);
+    const my_setrow = (row: any) => {
+        console.log("행 클릭", row);
 
-        let tmp: Set<any> = new Set(selectedRows);
         let tmp2: Set<any> = new Set(selectedRows_for_users_table);
-        if (selectedRows.has(e._id)) {
-            console.log("실행 확인 11");
-            tmp.delete(e._id)
-            tmp2.delete(e._id)
-        } else {
-            console.log("실행 확인 22");
-            tmp.add(e._id)
-            tmp2.add(e._id)
-        }
-        setSelectedRows(tmp)
+        tmp2 = row
 
         dispatch(
             taskBoardSlice.actions.setSelectedRows(tmp2)
         )
-
 
     }
 
@@ -281,15 +270,17 @@ function searchModalForUser({ row, column, onRowChange }: any) {
                         onRowsChange={(data, idx) => { onRowsChangeHandler(data, idx) }}
                         rowKeyGetter={(row) => row._id || ""}
                         selectedRows={selectedRows}
-                        // onSelectedRowsChange={(row) => {
+                        onSelectedRowsChange={(row) => {
 
-                        //     if (selectedRows.size > row.size) {
-                        //         console.log("체크를 취소 했음");
-                        //     }
+                            // if (selectedRows.size > row.size) {
+                            //     console.log("체크를 취소 했음");
+                            // }
 
-                        //     setSelectedRows(row)
-                        // }}
-                        onRowClick={my_setrow}
+                            setSelectedRows(row)
+                            my_setrow(row)
+                        }}
+
+                        // onRowClick={my_setrow}
                         onRowDoubleClick={selectOneRow}
                     />
 
