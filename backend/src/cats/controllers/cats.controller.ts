@@ -39,7 +39,7 @@ export class CatsController {
   loginCheckForUserReuquest(@CurrentUser() cat) {
 
     if (cat) {
-      // console.log("현재 로그인한 cat 정보 : ", cat);
+      console.log("현재 로그인한 cat 정보 : ", cat);
       return cat.readOnlyData;
     } else {
       {

@@ -167,11 +167,11 @@ function searchModalForUser({ row, column, onRowChange }: any) {
         let tmp2: Set<any> = selectedRows;
 
         const rows_for_register = basicRows.map((row: any) => {
-            if (selectedRows.has(row._id) && !selectedRows_for_users_table.has(row._id)) {
+            if (selectedRows.has(row._id)) {
                 tmp.add(row._id)
                 return {
                     ...row,
-                    id: row._id,
+                    _id: row._id,
                     email: user.email,
                     name: user.name,
                     test_complete: "false"
@@ -182,9 +182,10 @@ function searchModalForUser({ row, column, onRowChange }: any) {
         console.log("rows_for_register : ", rows_for_register);
 
         // 추가로 등록한 경우
-        dispatch(
-            taskBoardSlice.actions.setSelectedRows(tmp)
-        )
+        // dispatch(
+        //     taskBoardSlice.actions.setSelectedRows(tmp)
+        // )
+
         dispatch(
             taskBoardSlice.actions.addMultiRowsForSearchBoardForReadyToRegister(rows_for_register)
         )
@@ -248,7 +249,29 @@ function searchModalForUser({ row, column, onRowChange }: any) {
         setSelectedRows(selectedRows_for_users_table);
     }, [])
 
+    const my_row_click = (e) => {
+        console.log("hi");
 
+        console.log("hi", e);
+        let tmp: Set<any> = new Set(selectedRows)
+        let tmp2: Set<any> = new Set(selectedRows_for_users_table)
+
+        if (selectedRows.has(e._id)) {
+            tmp.delete(e._id)
+            tmp2.delete(e._id)
+        } else {
+            tmp.add(e._id)
+            tmp2.add(e._id)
+        }
+
+        dispatch(
+            taskBoardSlice.actions.setSelectedRows(tmp2)
+        )
+
+        setSelectedRows(tmp)
+        // tmp.add
+
+    }
 
     return (
         <div>
@@ -275,9 +298,15 @@ function searchModalForUser({ row, column, onRowChange }: any) {
                         onRowsChange={(data, idx) => { onRowsChangeHandler(data, idx) }}
                         rowKeyGetter={(row) => row._id || ""}
                         selectedRows={selectedRows}
-                        onSelectedRowsChange={(row) => {
-                            setSelectedRows(row)
-                        }}
+                        // onSelectedRowsChange={(row) => {
+
+                        //     if (selectedRows.size > row.size) {
+                        //         console.log("체크를 취소 했음");
+                        //     }
+
+                        //     setSelectedRows(row)
+                        // }}
+                        onRowClick={my_row_click}
                         onRowDoubleClick={selectOneRow}
                     />
 

@@ -60,6 +60,9 @@ function TaskBoardTable({ }: Props) {
                     }
                 }).filter((v: any) => v)
 
+                console.log("new_columns : ", new_columns);
+                
+
                 dispatch(
                     taskBoardSlice.actions.setColumns({
                         new_columns: new_columns
@@ -318,8 +321,8 @@ function TaskBoardTable({ }: Props) {
                     dispatch(
                         taskBoardSlice.actions.setSelectedRows(row)
                     )
-
                 }}
+                
             />
             <br />
 
