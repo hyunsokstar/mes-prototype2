@@ -167,7 +167,7 @@ function searchModalForUser({ row, column, onRowChange }: any) {
         let tmp2: Set<any> = selectedRows;
 
         const rows_for_register = basicRows.map((row: any) => {
-            if (selectedRows.has(row._id) && !selectedRows_for_users_table.has(row._id) ) {
+            if (selectedRows.has(row._id) && !selectedRows_for_users_table.has(row._id)) {
                 tmp.add(row._id)
                 return {
                     ...row,
@@ -190,11 +190,14 @@ function searchModalForUser({ row, column, onRowChange }: any) {
         )
 
         // 취소한 경우 기존거에서 취소한걸 빼야 된다
-        // 취소한 행 번호를 보내줘야 빼던지 말던지
+        // 리덕스 선언:   selectedRows: new Set<any>()
+        // 컴퍼넌트에서 가져오기:
+        // let selectedRows_for_users_table = useSelector((state: RootState) => state.task_board.selectedRows);
         const before_selecetd_rows = selectedRows_for_users_table;
         const new_selected_rows = selectedRows;
         console.log("before_selecetd_rows : ", before_selecetd_rows);
         console.log("new_selected_row : ", new_selected_rows);
+        // selectedRows_for_users_table.delete(new_selected_rows); 
 
         setIsOpen(false);
     }
@@ -273,9 +276,7 @@ function searchModalForUser({ row, column, onRowChange }: any) {
                         rowKeyGetter={(row) => row._id || ""}
                         selectedRows={selectedRows}
                         onSelectedRowsChange={(row) => {
-
                             setSelectedRows(row)
-
                         }}
                         onRowDoubleClick={selectOneRow}
                     />
